@@ -1,0 +1,36 @@
+mario:
+  sheet: "assets/smb1.png"
+  thickness: 1
+  frame_time: 2
+  type: "asset.boxed"
+  boxes:
+    - [-6, 0, 6, 16]
+  # casts
+  animations:
+    idle:
+      loop: true
+      box: 0
+      elements:
+        - quads: [[0, 0, 16, 16, 8, 0]]
+    pipe:
+      loop: true
+      elements:
+        - quads: [[0, 0, 16, 16, 8, 0]]
+    walk:
+      box: 0
+      elements:
+        - quads: [[16, 0, 16, 16, 8, 0]]
+        - quads: [[32, 0, 16, 16, 8, 0]]
+        - quads: [[48, 0, 16, 16, 8, 0]]
+    jump:
+      box: 0
+      elements:
+        - quads: [ [80, 0, 16, 16, 8, 0]]
+    dead:
+      box: 0
+      elements:
+        - quads: [ [96, 0, 16, 16, 8, 0]]
+    slide:
+      box: 0
+      elements:
+        - quads: [ [176, 64, 16, 16, 8, 0]]
