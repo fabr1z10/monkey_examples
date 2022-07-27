@@ -4,9 +4,18 @@ mario:
   frame_time: 2
   type: "asset.boxed"
   boxes:
-    - [-6, 0, 6, 16]
+    - [-6, 6, 0, 16]
   # casts
   animations:
+    walk:
+      box: 0
+      elements:
+        - quads: [[16, 0, 16, 16, 8, 0]]
+          ticks: 5
+        - quads: [[32, 0, 16, 16, 8, 0]]
+          ticks: 5
+        - quads: [[48, 0, 16, 16, 8, 0]]
+          ticks: 5
     idle:
       loop: true
       box: 0
@@ -16,12 +25,6 @@ mario:
       loop: true
       elements:
         - quads: [[0, 0, 16, 16, 8, 0]]
-    walk:
-      box: 0
-      elements:
-        - quads: [[16, 0, 16, 16, 8, 0]]
-        - quads: [[32, 0, 16, 16, 8, 0]]
-        - quads: [[48, 0, 16, 16, 8, 0]]
     jump:
       box: 0
       elements:
@@ -34,3 +37,112 @@ mario:
       box: 0
       elements:
         - quads: [ [176, 64, 16, 16, 8, 0]]
+supermario:
+  sheet: "assets/smb1.png"
+  boxes:
+    - [ -6, 6, 0, 32 ]
+  # casts
+  animations:
+    idle:
+      loop: true
+      box: 0
+      elements:
+        - quads: [[80, 16, 16, 32, 8, 0]]
+    walk:
+      box: 0
+      elements:
+        - ticks: 10
+          quads: [[96, 16, 16, 32, 8, 0]]
+        - ticks: 10
+          quads: [[112, 16, 16, 32, 8, 0]]
+        - ticks: 10
+          quads: [[96, 16, 16, 32, 8, 0]]
+        - ticks: 10
+          quads: [[128, 16, 16, 32, 8, 0]]
+    jump:
+      box: 0
+      elements:
+        - quads: [[144, 16, 16, 32, 8, 0]]
+    slide:
+      elements:
+        - quads: [[192, 64, 16, 32, 8, 0]]
+
+mushroom:
+  type: model.boxed
+  sheet: "assets/smb1.png"
+  boxes:
+    - [-8, 8, 0, 16]
+  animations:
+    idle:
+      elements:
+        - quads: [[48, 16, 16, 16, 8, 0]]
+    walk:
+      box: 0
+      elements:
+        - quads: [[48, 16, 16, 16, 8, 0]]
+pr1:
+  sheet: "assets/prova1.png"
+  type: "asset.boxed"
+  animations:
+    walk:
+      box: 0
+      elements:
+        - quads: [ [ 2, 8, 41, 47, 20, 0 ] ]
+          ticks: 5
+        - quads: [ [ 48,5, 36, 50, 12, 0 ] ]
+          ticks: 5
+        - quads: [ [89, 8, 46,47, 26, 0 ] ]
+          ticks: 5
+        - quads: [ [ 48,5, 36, 50, 12, 0 ] ]
+          ticks: 5
+bonusbrick:
+  type: model.sprite
+  sheet: "assets/smb1.png"
+  animations:
+    default:
+      elements:
+        - ticks: 5
+          quads: [[160, 0, 16, 16]]
+        - ticks: 5
+          quads: [[176, 0, 16, 16]]
+        - ticks: 5
+          quads: [[192, 0, 16, 16]]
+        - ticks: 5
+          quads: [[176, 0, 16, 16]]
+    taken:
+      elements:
+        - quads: [[224, 0, 16, 16]]
+flying_coin:
+  type: model.sprite
+  sheet: "assets/smb1.png"
+  animations:
+    walk:
+      elements:
+        - quads: [[160, 16, 16, 16, 0, 0]]
+          ticks: 5
+        - quads: [[176, 16, 16, 16, 0, 0]]
+          ticks: 5
+        - quads: [[192, 16, 16, 16, 0, 0]]
+          ticks: 5
+        - quads: [[208, 16, 16, 16, 0, 0]]
+          ticks: 5
+brick:
+  type: model.sprite
+  sheet: "assets/smb1.png"
+  animations:
+    idle:
+      elements:
+        - quads: [[240, 0, 16, 16]]
+          ticks: 1
+brickpiece:
+  sheet: "assets/smb1.png"
+  animations:
+    idle:
+      elements:
+        - quads: [[64, 16, 16, 16]]
+brickpiece2:
+  sheet: "assets/smb1.png"
+  animations:
+    idle:
+      elements:
+        - quads: [[224, 80, 16, 16]]

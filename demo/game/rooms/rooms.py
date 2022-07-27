@@ -52,7 +52,7 @@ def text():
     node.set_position(-128,120,0)
 
     node1 = monkey.Node()
-    node1.set_model(monkey.get_sprite('sprites/mario'))
+    node1.set_model(monkey.get_sprite('sprites/pr1'))
     cam_node.add(node1)
     return room
 

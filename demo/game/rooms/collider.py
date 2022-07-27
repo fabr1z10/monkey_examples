@@ -11,11 +11,11 @@ def make_white(a, b):
 
 def draw_lines(parent):
     # draw lines
-    for i in range(-2, 2):
+    for i in range(-2, 12):
         cn = monkey.Node()
         cn.set_model(monkey.RawModel(monkey.SHADER_COLOR, np.array([-160, 80 * i, 0, 1, 1, 1, 1, 160, 80 * i, 0, 1, 1, 1, 1]), np.array([0, 1]), prim=monkey.LINES))
         parent.add(cn)
-    for i in range(-2, 2):
+    for i in range(-2, 12):
         cn = monkey.Node()
         cn.set_model(monkey.RawModel(monkey.SHADER_COLOR, np.array([80*i, -160, 0, 1, 1, 1, 1, 80*i,160, 0, 1, 1, 1, 1]), np.array([0, 1]), prim=monkey.LINES))
         parent.add(cn)
