@@ -134,6 +134,9 @@ brick:
       elements:
         - quads: [[240, 0, 16, 16]]
           ticks: 1
+    taken:
+      elements:
+        - quads: [[224, 0, 16, 16]]
 brickpiece:
   sheet: "assets/smb1.png"
   animations:
@@ -146,3 +149,57 @@ brickpiece2:
     idle:
       elements:
         - quads: [[224, 80, 16, 16]]
+goomba:
+  sheet: "assets/smb1.png"
+  animations:
+    walk:
+      box: 0
+      loop: true
+      elements:
+        - quads: [[112, 0, 16, 16, 8, 0]]
+          ticks: 5
+        - quads: [[128, 0, 16, 16, 8, 0]]
+          ticks: 5
+    idle:
+      box: 0
+      elements:
+        - quads: [[112, 0, 16, 16, 8, 0]]
+    dead:
+      elements:
+        - quads: [[144, 0, 16, 16, 8, 0]]
+    dead2:
+      elements:
+        - quads: [[112, 0, 16, 16, 8, 0]]
+  boxes:
+    - [-6, 6, 0, 16]
+koopa:
+  sheet: "assets/smb1.png"
+  boxes:
+    - [-8, 8, 0, 24]
+    - [-8, 8, 0, 16]
+  animations:
+    idle:
+      box: 0
+      elements:
+        - quads: [[0, 16, 16, 32, 8, 0]]
+          ticks: 5
+        - quads: [[16, 16, 16, 32, 8, 0]]
+          ticks: 5
+    walk:
+      box: 0
+      elements:
+        - quads: [[0, 16, 16, 32, 8, 0]]
+          ticks: 5
+        - quads: [[16, 16, 16, 32, 8, 0]]
+          ticks: 5
+    hide:
+      box: 1
+      elements:
+        - quads: [[32, 32, 16, 16, 8, 0]]
+          ticks: 5
+
+    hide_blink:
+      box: 1
+      elements:
+        - quads: [[32, 32, 16, 16, 8, 0]]
+        - quads: [[32, 16, 16, 16, 8, 0]]

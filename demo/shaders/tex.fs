@@ -6,8 +6,8 @@ in vec2 tex;
 in vec4 col;
 
 uniform sampler2D texture_diffuse1;
-//#uniform vec4 add_color;
-//uniform vec4 mult_color;
+uniform vec4 add_color;
+uniform vec4 mult_color;
 
 void main()
 {
@@ -16,8 +16,8 @@ void main()
 		discard;
 	}
 	//texColor *= col;
-	//texColor *= mult_color;
-	//texColor += add_color;
+	texColor *= mult_color;
+	texColor += add_color;
 	fragColor = texColor;
 }
 

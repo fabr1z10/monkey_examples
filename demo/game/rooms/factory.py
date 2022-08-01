@@ -16,6 +16,8 @@ def mario(cam, x, y):
     node.set_model(monkey.get_sprite(sta['model']))
     sm = monkey.state_machine()
     sm.add(monkey.walk_2d_player("pango", speed=200, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5))
+    sm.add(monkey.idle("dead", "dead"))
+    sm.add(monkey.idle("warp", "idle"))
     sm.set_initial_state("pango")
     node.add_component(sm)
     node.add_component(monkey.follow(cam, (0, 0, 5), (0, 1, 0)))
@@ -76,4 +78,110 @@ def brick_piece(y0, x, y, vx, vy):
     mm.set_constant_force(0, -state.gravity, 0)
     mm.set_callback(f)
     node.add_component(mm)
+    return node
+
+
+def foe(x, y, model, walk, dead, flip, tag):
+    node = monkey.Node()
+    node.set_model(monkey.get_sprite(model))
+    node.set_position(x, y, 0)
+    sm = monkey.state_machine()
+    #sm.add(monkey.idle("idle", 'idle'))
+    sm.add(monkey.walk_2d_foe("pango", speed=20, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5, jump_anim=walk, flip=flip))
+    sm.add(monkey.walk_2d_foe("dead", speed=0, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5, jump_anim=dead,
+                              walk_anim=dead, idle_anim=dead, flip=flip))
+    sm.set_initial_state('pango')
+    node.add_component(sm)
+    node.add_component(monkey.sprite_collider(flags.foe, flags.player, tag))
+    node.add_component(monkey.controller_2d(size=(10, 10, 0), center=(5, 0, 0)))
+    node.add_component(monkey.dynamics())
+    return node
+
+
+def on_jump_goomba(goomba_id):
+    s = monkey.script()
+    ii = s.add(monkey.delay(1))
+    sid = s.add(monkey.remove(id=goomba_id), ii)
+    monkey.play(s)
+    return sid
+
+def on_jump_koopa(koopa_id):
+    s = monkey.script()
+    ii = s.add(monkey.delay(1))
+    ii = s.add(monkey.blink(id=koopa_id, duration=10, period=0.2), ii)
+    ii = s.add(monkey.set_state(id=koopa_id, state='pango'), ii)
+    sid =  monkey.play(s)
+    return sid
+
+
+def goomba(x, y):
+    node = monkey.Node()
+    node.set_model(monkey.get_sprite('sprites/goomba'))
+    node.set_position(x, y, 0)
+    sm = monkey.state_machine()
+    sm.add(monkey.walk_2d_foe("pango", speed=20, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5,
+                              jump_anim='walk', flip=False))
+    sm.add(monkey.walk_2d_foe("dead", speed=0, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5, jump_anim='dead',
+                              walk_anim='dead', idle_anim='dead', flip=False, script=on_jump_goomba))
+    sm.add(monkey.idle("dead2", "dead2"))
+    sm.set_initial_state('pango')
+    node.add_component(sm)
+    node.add_component(monkey.sprite_collider(flags.foe, flags.player, tags.goomba))
+    node.add_component(monkey.controller_2d(size=(10, 10, 0), center=(5, 0, 0)))
+    node.add_component(monkey.dynamics())
+    return node
+
+def koopa(x, y):
+    node = monkey.Node()
+    node.set_model(monkey.get_sprite('sprites/koopa'))
+    node.set_position(x, y, 0)
+    sm = monkey.state_machine()
+    sm.add(monkey.walk_2d_foe("pango", speed=20, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5,
+                              jump_anim='walk', flip=True))
+    sm.add(monkey.walk_2d_foe("dead", speed=0, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5, jump_anim='hide',
+                              walk_anim='hide', idle_anim='hide', flip=True, script=on_jump_koopa))
+    sm.add(monkey.walk_2d_foe("fly", speed=80, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5, jump_anim='hide',
+                              walk_anim='hide', idle_anim='hide', flip=True))
+    sm.set_initial_state('pango')
+    node.add_component(sm)
+    node.add_component(monkey.sprite_collider(flags.foe, flags.player | flags.foe, tags.koopa))
+    node.add_component(monkey.controller_2d(size=(10, 10, 0), center=(5, 0, 0)))
+    node.add_component(monkey.dynamics())
+    return node
+
+
+def make_nodes(l):
+    def f():
+        main = monkey.engine().get_node(state.cn)
+        for a in l:
+            main.add(a[0](*a[1:]))
+    return f
+
+def enter_warp(warp_to):
+    def f():
+        state.warp = warp_to
+    return f
+
+
+def leave_warp():
+    state.warp = 0
+
+
+def hotspot(x, y, w, h):
+    node = monkey.Node()
+    shape1 = monkey.rect(w, h)
+    node.set_position(x, y, 0)
+    node.add_component(monkey.collider(shape1, flags.foe, flags.player, tags.hotspot))
+
+    return node
+
+def spawn(x, y, l):
+    node = hotspot(x, y, 2, 256)
+    node.user_data = {'on_start': make_nodes(l)}
+    return node
+
+def warp_down(x, y, warp_to):
+    node = hotspot(x - 8, y, 16, 2)
+    node.user_data = {'remove': False, 'on_start': enter_warp(warp_to), 'on_end': leave_warp}
+    #node.user_data = {'callback': make_nodes(l)}
     return node
