@@ -5,9 +5,9 @@ invincible = False
 invincible_duration = 5
 warp = 0
 player_id = -1
-
+start_position = 0
 cn = None
-
+main_cam = None
 
 
 

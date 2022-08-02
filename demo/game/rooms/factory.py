@@ -1,10 +1,44 @@
 import monkey
 from .util import *
-from ..pippo import *
-
+from .. import pippo
+from . import functions
 from . import state
 
 cache = dict()
+
+
+def room(world_width):
+    room = monkey.Room("mario")
+    ce = monkey.collision_engine(80, 80)
+    ce.add_response(tags.player, tags.sensor, on_start=functions.hit_sensor)
+    ce.add_response(tags.player, tags.powerup, on_start=functions.hit_powerup)
+    ce.add_response(tags.player, tags.goomba, on_start=functions.hit_goomba)
+    ce.add_response(tags.player, tags.koopa, on_start=functions.hit_koopa)
+    ce.add_response(tags.player, tags.hotspot, on_start=functions.hit_hotspot, on_end=functions.leave_hotspot)
+    ce.add_response(tags.goomba, tags.koopa, on_start=functions.hit_gk)
+    room.add_runner(ce)
+    room.add_runner(monkey.scheduler())
+    root = room.root()
+    kb = monkey.keyboard()
+    kb.add(299, 1, 0, restart)
+    kb.add(264, 1, 0, check_warp)
+    root.add_component(kb)
+
+    # create camera
+    device_size = pippo.device_size
+    device_width = device_size[0]
+    device_height = device_size[1]
+    device_half_width = device_width // 2
+    device_half_height = device_height // 2
+    cam_node = monkey.Node()
+    state.cn = cam_node.id
+    cam = monkey.camera_ortho(device_width, device_height)
+    cam.set_bounds(device_half_width, world_width - device_half_width, device_half_height, device_half_height, -100, 100)
+    cam_node.set_camera(cam)
+    root.add(cam_node)
+    state.main_cam = cam
+    return room, cam, cam_node
+
 
 def mario(cam, x, y):
     node = monkey.Node()
@@ -16,12 +50,30 @@ def mario(cam, x, y):
     node.set_model(monkey.get_sprite(sta['model']))
     sm = monkey.state_machine()
     sm.add(monkey.walk_2d_player("pango", speed=200, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5))
+    sm.add(monkey.walk_2d_auto("auto", speed=200, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5))
     sm.add(monkey.idle("dead", "dead"))
     sm.add(monkey.idle("warp", "idle"))
     sm.set_initial_state("pango")
     node.add_component(sm)
     node.add_component(monkey.follow(cam, (0, 0, 5), (0, 1, 0)))
     return node
+
+
+def rect(w, h, x, y):
+    node = monkey.Node()
+    shape1 = monkey.rect(16*w, 16*h)
+    node.set_position(x*16, y*16, 0)
+    node.add_component(monkey.collider(shape1, flags.platform, 0, tags.platform))
+    return node
+
+
+def line(w, x, y):
+    node = monkey.Node()
+    shape1 = monkey.segment(0, 0, w*16, 0)
+    node.set_position(x*16, y*16, 0)
+    node.add_component(monkey.collider(shape1, flags.platform_passthrough, 0, tags.platform))
+    return node
+
 
 
 def platform(w, h, tx, ty, x, y):
@@ -38,10 +90,11 @@ def platform(w, h, tx, ty, x, y):
 
 def platform_model(w, h, x, y, model):
     node2 = monkey.Node()
-    shape1 = monkey.rect(16*w, 16*h)
     node2.set_position(x*16, y*16, 0)
     node2.set_model(monkey.get_tiled(model))
-    node2.add_component(monkey.collider(shape1, flags.platform,0, tags.platform))
+    if w != 0 and h != 0:
+        shape1 = monkey.rect(16*w, 16*h)
+        node2.add_component(monkey.collider(shape1, flags.platform,0, tags.platform))
     return node2
 
 
@@ -114,6 +167,16 @@ def on_jump_koopa(koopa_id):
     return sid
 
 
+def coin(x, y):
+    def f(player):
+        print('ciao')
+    node = monkey.Node()
+    node.set_model(monkey.get_sprite('sprites/coin'))
+    node.set_position(16*x, 16*y, 0)
+    node.add_component(monkey.sprite_collider(flags.foe, flags.player, tags.powerup))
+    node.user_data = {'callback': f}
+    return node
+
 def goomba(x, y):
     node = monkey.Node()
     node.set_model(monkey.get_sprite('sprites/goomba'))
@@ -157,10 +220,21 @@ def make_nodes(l):
             main.add(a[0](*a[1:]))
     return f
 
-def enter_warp(warp_to):
+def enter_warp(warp_to, pos):
     def f():
-        state.warp = warp_to
+        state.warp = (warp_to, pos)
     return f
+
+def enter_warp_h(room, pos):
+    def f():
+        node = monkey.engine().get_node(state.player_id)
+        node.set_state('auto', events=[
+            {'t': 0, 'right': True},
+            {'t': 1, 'callback': change_room(room, pos)}])
+
+    return f
+
+
 
 
 def leave_warp():
@@ -180,8 +254,13 @@ def spawn(x, y, l):
     node.user_data = {'on_start': make_nodes(l)}
     return node
 
-def warp_down(x, y, warp_to):
+def warp_down(x, y, room, pos):
     node = hotspot(x - 8, y, 16, 2)
-    node.user_data = {'remove': False, 'on_start': enter_warp(warp_to), 'on_end': leave_warp}
+    node.user_data = {'remove': False, 'on_start': enter_warp(room, pos), 'on_end': leave_warp}
     #node.user_data = {'callback': make_nodes(l)}
+    return node
+
+def warp_right(x, y, room, pos):
+    node = hotspot(x - 8, y, 16, 2)
+    node.user_data = {'remove': False, 'on_start': enter_warp_h(room, pos), 'on_end': leave_warp}
     return node

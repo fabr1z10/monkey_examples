@@ -18,17 +18,19 @@ class tags:
     goomba = 6
     koopa = 7
     hotspot = 8
+    coin = 9
 
 
 
-def pippo():
+def restart():
     state.invincible = False
     monkey.engine().close_room()
 
-def change_room(room):
+def change_room(room, pos):
     def f():
         pippo.room = room
-        pippo()
+        state.start_position = pos
+        restart()
     return f
 
 
@@ -38,5 +40,5 @@ def check_warp():
         s = monkey.script()
         ii = s.add(monkey.set_state(id=state.player_id, state='warp'))
         ii = s.add(monkey.move_by(id=state.player_id, y=-64, t=1), ii)
-        s.add(monkey.callfunc(change_room(state.warp)), ii)
+        s.add(monkey.callfunc(change_room(state.warp[0], state.warp[1])), ii)
         monkey.play(s)

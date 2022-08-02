@@ -126,6 +126,23 @@ flying_coin:
           ticks: 5
         - quads: [[208, 16, 16, 16, 0, 0]]
           ticks: 5
+coin:
+  sheet: "assets/smb1.png"
+  boxes:
+    - [2, 14, 0, 16]
+  animations:
+    def:
+      box: 0
+      elements:
+        - ticks: 5
+          quads: [[128, 64, 16, 16]]
+        - ticks: 5
+          quads: [[144, 64, 16, 16]]
+        - ticks: 5
+          quads: [[160, 64, 16, 16]]
+        - ticks: 5
+          quads: [[144, 64, 16, 16]]
+
 brick:
   type: model.sprite
   sheet: "assets/smb1.png"
