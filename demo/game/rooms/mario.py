@@ -58,13 +58,20 @@ def w11():
     cam_node.add(factory.platform(4, 1, 15, 8, 186, 7))
     cam_node.add(factory.platform(3, 1, 15, 8, 187, 8))
     cam_node.add(factory.platform(2, 1, 15, 8, 188, 9))
+    cam_node.add(factory.platform(1, 1, 15, 8, 198, 2))
     cam_node.add(factory.platform_model(2, 2, 28, 2, 'tiles/pipe2'))
     cam_node.add(factory.platform_model(2, 3, 38, 2, 'tiles/pipe3'))
     cam_node.add(factory.platform_model(2, 4, 46, 2, 'tiles/pipe4'))
     cam_node.add(factory.platform_model(2, 4, 57, 2, 'tiles/pipe4'))
     cam_node.add(factory.platform_model(2, 2, 163, 2, 'tiles/pipe2'))
     cam_node.add(factory.platform_model(2, 2, 179, 2, 'tiles/pipe2'))
-
+    cam_node.add(factory.tiled(198, 3, 'tiles/flagpole'))
+    flag = factory.sprite(197.5, 11, 'sprites/flag')
+    state.room_details['flag'] = flag.id
+    cam_node.add(flag)
+    cam_node.add(factory.tiled(202, 2, 'tiles/castle'))
+    cam_node.add(factory.end_level(198, 3))
+    cam_node.add(factory.next_level(205, 2))
     a = (16, 5, 23, 5, 22, 9, 94, 9, 106, 5, 109, 5, 112, 5, 129, 9, 130, 9, 170, 5)
     for i in range(0, len(a), 2):
         cam_node.add(factory.brick(a[i], a[i+1], 'sprites/bonusbrick', 1, functions.make_coin))

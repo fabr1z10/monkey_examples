@@ -5,10 +5,10 @@ invincible = False
 invincible_duration = 5
 warp = 0
 player_id = -1
-start_position = 0
+start_position = 1
 cn = None
 main_cam = None
-
+room_details = dict()
 
 
 

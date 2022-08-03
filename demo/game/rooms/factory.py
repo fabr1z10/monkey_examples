@@ -8,6 +8,7 @@ cache = dict()
 
 
 def room(world_width):
+    state.room_details= dict()
     room = monkey.Room("mario")
     ce = monkey.collision_engine(80, 80)
     ce.add_response(tags.player, tags.sensor, on_start=functions.hit_sensor)
@@ -86,6 +87,21 @@ def platform(w, h, tx, ty, x, y):
     node2.set_model(cache[model_desc])
     node2.add_component(monkey.collider(shape1, flags.platform, 0, tags.platform))
     return node2
+
+
+def tiled(x, y, model):
+    node2 = monkey.Node()
+    node2.set_position(x*16, y*16, 0)
+    node2.set_model(monkey.get_tiled(model))
+    return node2
+
+
+def sprite(x, y, model):
+    node2 = monkey.Node()
+    node2.set_position(x*16, y*16, 0)
+    node2.set_model(monkey.get_sprite(model))
+    return node2
+
 
 
 def platform_model(w, h, x, y, model):
@@ -234,7 +250,20 @@ def enter_warp_h(room, pos):
 
     return f
 
+def hit_end_level():
+    node = monkey.engine().get_node(state.player_id)
+    flag_id = state.room_details['flag']
+    flag = monkey.engine().get_node(flag_id)
+    node.set_state('warp', anim='slide')
+    s = monkey.script()
+    s.add(monkey.move_by(id=flag_id, y=48-flag.y, speed=50))
+    ii = s.add(monkey.move_by(id=state.player_id, y=48-node.y, speed=50))
+    s.add(monkey.set_state(id=state.player_id, state='auto', events=[{'t': 0, 'right': True}]), ii)
+    monkey.play(s)
 
+def go_to_next():
+    node = monkey.engine().get_node(state.player_id)
+    node.remove()
 
 
 def leave_warp():
@@ -263,4 +292,14 @@ def warp_down(x, y, room, pos):
 def warp_right(x, y, room, pos):
     node = hotspot(x - 8, y, 16, 2)
     node.user_data = {'remove': False, 'on_start': enter_warp_h(room, pos), 'on_end': leave_warp}
+    return node
+
+def end_level(x, y):
+    node = hotspot(x*16 + 7, y*16, 2, 160)
+    node.user_data = {'remove': True, 'on_start': hit_end_level}
+    return node
+
+def next_level(x, y):
+    node = hotspot(x*16, y*16, 2, 160)
+    node.user_data = {'remove': True, 'on_start': go_to_next}
     return node
