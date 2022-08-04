@@ -66,6 +66,37 @@ supermario:
     slide:
       elements:
         - quads: [[192, 64, 16, 32, 8, 0]]
+fierymario:
+  sheet: "assets/smb1.png"
+  animations:
+    idle:
+      loop: true
+      box: 0
+      elements:
+        - quads: [[0, 112, 16, 32, 8, 0]]
+    walk:
+      box: 0
+      elements:
+        - ticks: 10
+          quads: [[16, 112, 16, 32, 8, 0]]
+        - ticks: 10
+          quads: [[32, 112, 16, 32, 8, 0]]
+        - ticks: 10
+          quads: [[16, 112, 16, 32, 8, 0]]
+        - ticks: 10
+          quads: [[48, 112, 16, 32, 8, 0]]
+    jump:
+      box: 0
+      elements:
+        - quads: [[64, 128, 16, 32, 8, 0]]
+    fire:
+      frames:
+        - quads: [[80,128,16,32,8,0]]
+    slide:
+      elements:
+        - quads: [[0, 144, 16, 32, 8, 0]]
+  boxes:
+    - [-6, 0, 6, 32]
 
 mushroom:
   type: model.boxed
@@ -80,6 +111,31 @@ mushroom:
       box: 0
       elements:
         - quads: [[48, 16, 16, 16, 8, 0]]
+starman:
+  sheet: "assets/smb1.png"
+  boxes:
+    - [-8, 8, 0, 16]
+  animations:
+    idle:
+      elements:
+        - quads: [[128, 48, 16, 16, 8, 0]]
+    walk:
+      box: 0
+      elements:
+        - quads: [[128, 48, 16, 16, 8, 0]]
+
+mushroom_1up:
+  sheet: "assets/smb1.png"
+  boxes:
+    - [-8, 0, 8, 16]
+  animations:
+    idle:
+      elements:
+        - quads: [[144, 48, 16, 16, 8, 0]]
+    walk:
+      elements: 0
+      elements:
+        - quads: [[144, 48, 16, 16, 8, 0]]
 pr1:
   sheet: "assets/prova1.png"
   type: "asset.boxed"
@@ -112,6 +168,18 @@ bonusbrick:
     taken:
       elements:
         - quads: [[224, 0, 16, 16]]
+hidden_brick:
+  type: model.sprite
+  sheet: "assets/smb1.png"
+  animations:
+    default:
+      elements:
+        - ticks: 5
+          quads: [[225, 225, 16, 16]]
+    taken:
+      elements:
+        - quads: [[224, 0, 16, 16]]
+
 flying_coin:
   type: model.sprite
   sheet: "assets/smb1.png"
@@ -226,3 +294,16 @@ flag:
     idle:
       elements:
         - quads: [[224,64,16,16]]
+coin_counter:
+  sheet: "assets/smb1.png"
+  animations:
+    def:
+      elements:
+        - quads: [[128,80,16,16]]
+          ticks: 5
+        - quads: [[144,80,16,16]]
+          ticks: 5
+        - quads: [[160,80,16,16]]
+          ticks: 5
+        - quads: [[144,80,16,16]]
+          ticks: 5

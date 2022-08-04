@@ -6,6 +6,12 @@ from . import state
 
 cache = dict()
 
+def text(what, x, y):
+    n1 = monkey.Node()
+    n1.set_model(monkey.text(font='font1', text=what, size=8))
+    n1.set_position(-128 + x, 120 - y, 2)
+    return n1
+
 
 def room(world_width):
     state.room_details= dict()
@@ -38,6 +44,23 @@ def room(world_width):
     cam_node.set_camera(cam)
     root.add(cam_node)
     state.main_cam = cam
+
+    score_node = monkey.Node()
+    score_cam = monkey.camera_ortho(device_width, device_height)
+    score_node.set_camera(score_cam)
+    score_node.add(text('MARIO', 24, 8))
+    score_node.add(text('{:06d}'.format(state.score), 24, 16))
+    score_node.add(text('*', 96, 16))
+    coin_counter = text('{:02d}'.format(state.coins), 104, 16)
+    state.coin_label = coin_counter.id
+    score_node.add(coin_counter)
+    score_node.add(text('WORLD', 144, 8))
+    score_node.add(text(state.world_name, 152, 16))
+    score_node.add(text('TIME', 200, 8))
+    score_node.add(text('{:03d}'.format(state.time), 208, 16))
+    score_node.add(sprite(-2.8, 6, 'sprites/coin_counter'))
+    root.add(score_node)
+
     return room, cam, cam_node
 
 
@@ -80,7 +103,7 @@ def line(w, x, y):
 def platform(w, h, tx, ty, x, y):
     node2 = monkey.Node()
     shape1 = monkey.rect(16*w, 16*h)
-    node2.set_position(x*16, y*16, 0)
+    node2.set_position(x*16, y*16, 1)
     model_desc = '0,W,' + str(w) + ',R,' + str(w*h) + ',' + str(tx) + ',' + str(ty) + ',E'
     if model_desc not in cache:
         cache[model_desc] = monkey.tiled(model_desc)
@@ -91,7 +114,7 @@ def platform(w, h, tx, ty, x, y):
 
 def tiled(x, y, model):
     node2 = monkey.Node()
-    node2.set_position(x*16, y*16, 0)
+    node2.set_position(x*16, y*16, -1)
     node2.set_model(monkey.get_tiled(model))
     return node2
 
@@ -106,7 +129,7 @@ def sprite(x, y, model):
 
 def platform_model(w, h, x, y, model):
     node2 = monkey.Node()
-    node2.set_position(x*16, y*16, 0)
+    node2.set_position(x*16, y*16, 1)
     node2.set_model(monkey.get_tiled(model))
     if w != 0 and h != 0:
         shape1 = monkey.rect(16*w, 16*h)
@@ -114,12 +137,13 @@ def platform_model(w, h, x, y, model):
     return node2
 
 
-def brick(x, y, sprite, hits, callback):
+def brick(x, y, sprite, hits, callback, hidden=False):
     node2 = monkey.Node()
     shape1 = monkey.rect(16, 16)
     node2.set_position(x*16, y*16, 0)
     node2.set_model(monkey.get_sprite(sprite))
-    node2.add_component(monkey.collider(shape1, flags.platform, 0, flags.platform))
+    brick_flag = 0 if hidden else flags.platform
+    node2.add_component(monkey.collider(shape1, brick_flag, 0, flags.platform))
     md = monkey.move_dynamics(1.)
     md.add_elastic_force(x*16, y*16, 0, 50)
     node2.user_data = {'hits': hits, 'callback': callback}
@@ -185,7 +209,8 @@ def on_jump_koopa(koopa_id):
 
 def coin(x, y):
     def f(player):
-        print('ciao')
+        state.coins += 1
+        functions.update_coin()
     node = monkey.Node()
     node.set_model(monkey.get_sprite('sprites/coin'))
     node.set_position(16*x, 16*y, 0)
@@ -252,6 +277,7 @@ def enter_warp_h(room, pos):
 
 def hit_end_level():
     node = monkey.engine().get_node(state.player_id)
+    node.get_dynamics().velocity.y = 0
     flag_id = state.room_details['flag']
     flag = monkey.engine().get_node(flag_id)
     node.set_state('warp', anim='slide')
@@ -302,4 +328,42 @@ def end_level(x, y):
 def next_level(x, y):
     node = hotspot(x*16, y*16, 2, 160)
     node.user_data = {'remove': True, 'on_start': go_to_next}
+    return node
+
+def on_collect_mushroom(player):
+    state.mario_state += 1
+    state.mario_state = min(state.mario_state, len(state.mario_states) - 1)
+    st = state.mario_states[state.mario_state]
+    player.set_model(monkey.get_sprite(st['model']))
+    player.get_controller().set_size(st['size'], st['center'])
+
+def on_collect_1up(player):
+    pass
+
+
+power_ups = [
+    lambda: (on_collect_mushroom, 'sprites/mushroom') if state.mario_state == 0 else (on_collect_mushroom, 'sprites/starman'),
+    lambda: (on_collect_1up, 'sprites/mushroom_1up')
+]
+
+
+def powerup(x, y, id):
+    pup = power_ups[id]()
+    print(pup)
+    node = monkey.Node()
+    node.set_model(monkey.get_sprite(pup[1]))
+    node.set_position(x, y, 1)
+    sm = monkey.state_machine()
+    sm.add(monkey.idle("idle", 'idle'))
+    sm.add(monkey.walk_2d_foe("pango", speed=20, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5, jump_anim='idle'))
+    sm.set_initial_state('idle')
+    node.add_component(sm)
+    node.add_component(monkey.sprite_collider(flags.foe, flags.player, tags.powerup))
+    node.add_component(monkey.controller_2d(size=(10, 10, 0), center=(5, 0, 0)))
+    node.add_component(monkey.dynamics())
+    node.user_data = {'callback': pup[0]}
+    s = monkey.script()
+    ii = s.add(monkey.move_by(node=node, y=16, t=1))
+    s.add(monkey.set_state(node=node, state='pango'), ii)
+    monkey.play(s)
     return node

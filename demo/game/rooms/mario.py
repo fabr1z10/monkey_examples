@@ -4,6 +4,8 @@ from .util import *
 from . import factory
 from . import functions
 from . import state
+import numpy as np
+
 
 def rise():
     s = monkey.script()
@@ -70,6 +72,17 @@ def w11():
     state.room_details['flag'] = flag.id
     cam_node.add(flag)
     cam_node.add(factory.tiled(202, 2, 'tiles/castle'))
+
+    [cam_node.add(factory.tiled(x, 2, 'tiles/hill')) for x in 48 * np.array(range(0,5))]
+    [cam_node.add(factory.tiled(x, 2, 'tiles/hillsmall')) for x in 16 + 48 * np.array(range(0, 5))]
+    [cam_node.add(factory.tiled(x, 2, 'tiles/bush3')) for x in 11 + 48 * np.array(range(0, 5))]
+    [cam_node.add(factory.tiled(x, 2, 'tiles/bush2')) for x in 41 + 48 * np.array(range(0, 5))]
+    [cam_node.add(factory.tiled(x, 2, 'tiles/bush1')) for x in 71 + 48 * np.array(range(0, 5))]
+    [cam_node.add(factory.tiled(x, 10, 'tiles/cloud1')) for x in 8 + 48 * np.array(range(0, 5))]
+    [cam_node.add(factory.tiled(x, 11, 'tiles/cloud1')) for x in 19 + 48 * np.array(range(0, 5))]
+    [cam_node.add(factory.tiled(x, 10, 'tiles/cloud3')) for x in 27 + 48 * np.array(range(0, 5))]
+    [cam_node.add(factory.tiled(x, 11, 'tiles/cloud2')) for x in 36 + 48 * np.array(range(0, 5))]
+
     cam_node.add(factory.end_level(198, 3))
     cam_node.add(factory.next_level(205, 2))
     a = (16, 5, 23, 5, 22, 9, 94, 9, 106, 5, 109, 5, 112, 5, 129, 9, 130, 9, 170, 5)
@@ -82,13 +95,15 @@ def w11():
         cam_node.add(factory.brick(b[i], b[i+1], 'sprites/brick', -1, None))
     c = (21, 5, 78, 5, 109, 9)
     for i in range(0, len(c), 2):
-        cam_node.add(factory.brick(c[i], c[i + 1], 'sprites/bonusbrick', 1, functions.make_powerup))
+        cam_node.add(factory.brick(c[i], c[i + 1], 'sprites/bonusbrick', 1, functions.make_powerup(0)))
     d = (94, 5)
     for i in range(0, len(d), 2):
         cam_node.add(factory.brick(d[i], d[i+1], 'sprites/brick', 5, functions.make_coin))
     e = (101, 5)
     for i in range(0, len(e), 2):
         cam_node.add(factory.brick(e[i], e[i + 1], 'sprites/brick', 1, functions.make_powerup)) # this must be star
+
+    cam_node.add(factory.brick(64, 6, 'sprites/hidden_brick', 1, functions.make_coin, True)) # this must be star
 
     return room
 

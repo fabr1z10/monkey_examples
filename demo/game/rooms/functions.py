@@ -52,42 +52,32 @@ def make_coin(b):
     mm.set_constant_force(0, -state.gravity, 0)
     mm.set_callback(f)
     node.add_component(mm)
+    state.coins += 1
+    update_coin()
     main = monkey.engine().get_node(state.cn)
     main.add(node)
 
 
-def on_collect_mushroom(player):
-    state.mario_state += 1
-    state.mario_state = min(state.mario_state, len(state.mario_states) - 1)
-    st = state.mario_states[state.mario_state]
-    player.set_model(monkey.get_sprite(st['model']))
-    player.get_controller().set_size(st['size'], st['center'])
+def make_powerup(id):
+    def f(b):
+        pos = b.get_parent().position
+        node = factory.powerup(pos[0] + 8, pos[1], id)
+        main = monkey.engine().get_node(state.cn)
+        main.add(node)
+    return f
 
 
-def make_powerup(b):
-    pos = b.get_parent().position
-    node = monkey.Node()
-    node.set_model(monkey.get_sprite('sprites/mushroom'))
-    node.set_position(pos[0] + 8, pos[1], 1)
-    sm = monkey.state_machine()
-    sm.add(monkey.idle("idle", 'idle'))
-    sm.add(monkey.walk_2d_foe("pango", speed=20, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5, jump_anim='idle'))
-    sm.set_initial_state('idle')
-    node.add_component(sm)
-    node.add_component(monkey.sprite_collider(util.flags.foe, util.flags.player, util.tags.powerup))
-    node.add_component(monkey.controller_2d(size=(10, 10, 0), center=(5, 0, 0)))
-    node.add_component(monkey.dynamics())
-    node.user_data = {'callback': on_collect_mushroom}
-    s = monkey.script()
-    ii = s.add(monkey.move_by(node=node, y=16, t=1))
-    s.add(monkey.set_state(node=node, state='pango'), ii)
-    monkey.play(s)
-    main = monkey.engine().get_node(state.cn)
-    main.add(node)
+def update_coin():
+    monkey.engine().get_node(state.coin_label).set_text('{:02d}'.format(state.coins))
 
 
 def hit_sensor(a, b, dist):
     pp = b.get_parent()
+    v = a.get_dynamics().velocity
+    if v.y < 0:
+        return
+    v.y = 0
+    pp.get_collider().set_collision_flag(util.flags.platform)
     if pp.user_data['hits'] > 0:
         if pp.user_data['hits'] == 1:
             pp.set_animation('taken')
