@@ -96,7 +96,7 @@ fierymario:
       elements:
         - quads: [[0, 144, 16, 32, 8, 0]]
   boxes:
-    - [-6, 0, 6, 32]
+    - [-6, 6, 0, 32]
 
 mushroom:
   type: model.boxed
@@ -306,4 +306,21 @@ coin_counter:
         - quads: [[160,80,16,16]]
           ticks: 5
         - quads: [[144,80,16,16]]
+          ticks: 5
+fire:
+  sheet: "assets/smb1.png"
+  boxes:
+    - [-4,4,-4,4]
+  animations:
+    default:
+      loop: true
+      box: 0
+      elements:
+        - quads: [[176,112,16,16,8,8]]
+          ticks: 5
+        - quads: [[192,112,16,16,8,8]]
+          ticks: 5
+        - quads: [[208,112,16,16,8,8]]
+          ticks: 5
+        - quads: [[224,112,16,16,8,8]]
           ticks: 5

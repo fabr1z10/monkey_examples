@@ -3,10 +3,12 @@ from . import state
 from .. import pippo
 
 
+
 class flags:
     player = 1
     platform = 2
     foe = 4
+    player_hit = 8
     platform_passthrough = 32
 
 class tags:
@@ -19,6 +21,9 @@ class tags:
     koopa = 7
     hotspot = 8
     coin = 9
+    fire = 10
+
+
 
 
 

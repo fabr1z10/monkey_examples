@@ -29,6 +29,7 @@ def room(world_width):
     kb = monkey.keyboard()
     kb.add(299, 1, 0, restart)
     kb.add(264, 1, 0, check_warp)
+    kb.add(341, 1, 0, functions.fire)
     root.add_component(kb)
 
     # create camera
@@ -218,6 +219,22 @@ def coin(x, y):
     node.user_data = {'callback': f}
     return node
 
+
+def fireball(x, y, dir):
+    node = monkey.Node()
+    node.set_model(monkey.get_sprite('sprites/fire'))
+    node.set_position(x, y, 1)
+    sm = monkey.state_machine()
+    sm.add(monkey.walk_2d_foe("pango", speed=200, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5, acc_time=0.0001,
+                              jump_anim='default', idle_anim='default', walk_anim='default', flip=False, up=True))
+    sm.set_initial_state('pango', dir=dir)
+    node.add_component(sm)
+    node.add_component(monkey.sprite_collider(flags.player_hit, flags.foe, tags.fire))
+    node.add_component(monkey.controller_2d(size=(4, 4, 0), center=(0,0, 0)))
+    node.add_component(monkey.dynamics())
+    return node
+
+
 def goomba(x, y):
     node = monkey.Node()
     node.set_model(monkey.get_sprite('sprites/goomba'))
@@ -342,8 +359,8 @@ def on_collect_1up(player):
 
 
 power_ups = [
-    lambda: (on_collect_mushroom, 'sprites/mushroom') if state.mario_state == 0 else (on_collect_mushroom, 'sprites/starman'),
-    lambda: (on_collect_1up, 'sprites/mushroom_1up')
+    lambda: (on_collect_mushroom, 'sprites/mushroom', False) if state.mario_state == 0 else (on_collect_mushroom, 'sprites/starman', True),
+    lambda: (on_collect_1up, 'sprites/mushroom_1up', False)
 ]
 
 
@@ -355,7 +372,7 @@ def powerup(x, y, id):
     node.set_position(x, y, 1)
     sm = monkey.state_machine()
     sm.add(monkey.idle("idle", 'idle'))
-    sm.add(monkey.walk_2d_foe("pango", speed=20, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5, jump_anim='idle'))
+    sm.add(monkey.walk_2d_foe("pango", speed=20, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5, jump_anim='idle', up=pup[2]))
     sm.set_initial_state('idle')
     node.add_component(sm)
     node.add_component(monkey.sprite_collider(flags.foe, flags.player, tags.powerup))
