@@ -225,13 +225,14 @@ def fireball(x, y, dir):
     node.set_model(monkey.get_sprite('sprites/fire'))
     node.set_position(x, y, 1)
     sm = monkey.state_machine()
-    sm.add(monkey.walk_2d_foe("pango", speed=200, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5, acc_time=0.0001,
+    sm.add(monkey.walk_2d_foe("pango", speed=200, gravity=state.gravity, jump_height=16, time_to_jump_apex=0.5, acc_time=0.0001,
                               jump_anim='default', idle_anim='default', walk_anim='default', flip=False, up=True))
     sm.set_initial_state('pango', dir=dir)
     node.add_component(sm)
     node.add_component(monkey.sprite_collider(flags.player_hit, flags.foe, tags.fire))
     node.add_component(monkey.controller_2d(size=(4, 4, 0), center=(0,0, 0)))
     node.add_component(monkey.dynamics())
+    node.add_component(monkey.self_destroy(timeout=1))
     return node
 
 
