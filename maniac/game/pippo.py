@@ -1,12 +1,12 @@
 import monkey
 
-window_size = (512, 512)
-device_size = (256, 240)
+window_size = (640, 400)
+device_size = (320, 200)
 title = 'ciao belo!'
-room = 'composition'
+room = 'start'
 shaders = (monkey.SHADER_COLOR, monkey.SHADER_TEXTURE)
 debug_collision = True
-
+enable_mouse = True
 
 
 tilesets = {

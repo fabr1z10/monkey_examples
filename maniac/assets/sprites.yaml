@@ -1,0 +1,15 @@
+dave:
+  sheet: "assets/sprites.png"
+  animations:
+    idle_s:
+      elements:
+        - quads: [[26,75,22,74,11,0]]
+          ticks: 5
+    idle_e:
+      elements:
+        - quads: [[1,74,23,73,13,0]]
+          ticks: 5
+    idle_n:
+      elements:
+        - quads: [[49,75,21,74,11,0]]
+          ticks: 5
