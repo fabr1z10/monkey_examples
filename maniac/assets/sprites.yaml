@@ -13,3 +13,49 @@ dave:
       elements:
         - quads: [[49,75,21,74,11,0]]
           ticks: 5
+    walk_e:
+      elements:
+        - quads: [[1,1,24,72,14,0]]
+          ticks: 5
+        - quads: [[26,1,23,73,13,0]]
+          ticks: 5
+        - quads: [[50, 1, 24, 72, 13, 0]]
+          ticks: 5
+        - quads: [[75,0,23,73,13,0]]
+          ticks: 5
+    walk_n:
+      elements:
+        - quads: [[101,1,22,76,11,0]]
+          ticks: 5
+        - quads: [[124,1,22,74,11,0]]
+          ticks: 5
+        - quads: [[148,1,22,76,11,0]]
+          ticks: 5
+        - quads: [[171,1,22,74,11,0]]
+          ticks: 5
+    walk_s:
+      elements:
+        - quads: [[196,1,22,74,11,0]]
+          ticks: 5
+        - quads: [[220,3,22,72,11,0]]
+          ticks: 5
+        - quads: [[244,1,22,74,11,0]]
+          ticks: 5
+        - quads: [[268,3,22,72,11,0]]
+          ticks: 5
+    talk_e:
+      elements:
+        - quads: [[1,74,23,73,13,0]]
+          ticks: 5
+        - quads: [[74,78,23,73,13,0]]
+          ticks: 5
+    talk_s:
+      elements:
+        - quads: [[26,75,22,74,11,0]]
+          ticks: 5
+        - quads: [[99,78,22,74,11,0]]
+          ticks: 5
+    talk_n:
+      elements:
+        - quads: [[49,75,21,74,11,0]]
+          ticks: 5
