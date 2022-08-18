@@ -1,3 +1,28 @@
+doormat:
+  sheet: "assets/sprites.png"
+  animations:
+    closed:
+      elements:
+        - quads: [[1,504,88,7]]
+    open:
+      elements:
+        - quads: [[1,495,70,8]]
+key:
+  sheet: "assets/sprites.png"
+  animations:
+    main:
+      elements:
+        - quads: [[73,497,11,4]]
+front_door:
+  sheet: "assets/sprites.png"
+  animations:
+    closed:
+      elements:
+        - quads: [[45,416,43,78]]
+    open:
+      elements:
+        - quads: [[1,416,43,78]]
+
 dave:
   sheet: "assets/sprites.png"
   animations:
