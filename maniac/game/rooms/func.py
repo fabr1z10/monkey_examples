@@ -17,6 +17,7 @@ def change_room(room, pos, dir):
         i['walkarea'] = 0
         i['pos'] = pos
         i['dir'] = dir
+        print(i)
         #state.start_position = pos
         restart()
     return f

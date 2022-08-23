@@ -171,7 +171,7 @@ def text(what, x, y, color):
     n1 = monkey.Node()
     t = monkey.text(font='font', text=what, size=8)
     n1.set_model(t)
-    n1.set_position(x-160, y-100+8, 0)
+    n1.set_position(x-160, y-100, 0)
     n1.set_mult_color(*color)
     return n1, t.size
 
@@ -185,7 +185,7 @@ def say(lines, char=None):
          id=state.ids[char],
          lines=ll,
          parent=state.ids['ui'],
-         pos=monkey.vec2(-160, 100),
+         pos=monkey.vec2(-160, 100-8),
          font='font',
          size=8, duration=1,
          color=items.items['dave']['text_color'])
@@ -236,7 +236,7 @@ def pane(node, pos):
 def verb(id, x, y, color):
     v = verbs[id]
     verb, size = text(v[0], x, y, color)
-    s = monkey.aabb(0, size.x, -8, -8+size.y)
+    s = monkey.aabb(0, size.x, 0, size.y)
     verb.add_component(monkey.hotspot(s, on_enter=on_enter(id), on_leave=on_exit(id), on_click=v[1]))
     r = monkey.Node()
     #r.set_position(0, -8, 0)
@@ -258,6 +258,16 @@ def main_hotspot(width, height):
     n.set_model(monkey.make_model(s))
 
     return n
+
+
+def sprite(model, x, y, **kwargs):
+    a = monkey.Node()
+    a.set_model(monkey.get_sprite('sprites/' + model))
+    if 'anim' in kwargs:
+        a.set_animation(kwargs['anim'])
+    z = kwargs.get('z', 0)
+    a.set_position(x, y, z)
+    return a
 
 
 def hotspot(width, height, id, x, y, **kwargs):

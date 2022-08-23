@@ -20,6 +20,9 @@ text = {
     101: 'door mat',
     102: 'key',
     103: 'front door',
+    104: 'grandfather clock',
+    105: 'vase',
+    106: 'door',
 ### ------------------------------- talk
     1000: 'WARNING!!',
     1001: 'Trespassers will be horribly mutilated.',
@@ -28,7 +31,8 @@ text = {
     1004: r"""That doesn't seem to work.""",
     1005: r"""I can't pick that up.""",
     1006: r"""There's nothing to read on it.""",
-    1007: "The door is locked."
+    1007: "The door is locked.",
+    1008: r"""It's the correct time."""
 
 }
 

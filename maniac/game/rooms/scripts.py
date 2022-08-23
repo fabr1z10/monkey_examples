@@ -46,6 +46,7 @@ pickup_ = h1(1005)
 turnon_ = h1(1004)
 turnoff_ = h1(1004)
 read_ = h1(1006)
+read_grandfather_clock = h1(1008)
 
 def update_hotspot(id, width, height):
     def f():
@@ -90,7 +91,19 @@ def update_door(id, open: bool):
         anim = 'open' if open else 'closed'
         s, ii = ws(id)
         ii = s.add(monkey.animate(id=items[id]['id'], anim=anim), ii)
-        ii = s.add(monkey.callfunc(update_item('front_door', 'anim', anim)))
+        master = items[id].get('master', id)
+        print('master is ',master)
+        ii = s.add(monkey.callfunc(update_item(master, 'anim', anim)))
+        monkey.play(s)
+    return f
+
+def walk_door(id):
+    def f():
+        s, ii = ws(id)
+        item = items[id]
+        master = item.get('master', id)
+        if items[master]['anim'] == 'open':
+            s.add(monkey.callfunc(func.change_room(item['room_id'], item['room_pos'], item['room_dir'])), ii)
         monkey.play(s)
     return f
 
@@ -101,5 +114,21 @@ def open_front_door():
     else:
         update_door('front_door', True)()
 
+
+
+open_front_door_in = update_door('front_door_in', True)
+close_front_door_in = update_door('front_door_in', False)
+walkto_front_door_in = walk_door('front_door_in')
+
+open_kitchen_door = update_door('kitchen_door', True)
+close_kitchen_door = update_door('kitchen_door', False)
+walkto_kitchen_door = walk_door('kitchen_door')
+
+open_sitting_room_door = update_door('sitting_room_door', True)
+close_sitting_room_door = update_door('sitting_room_door', False)
+walkto_sitting_room_door = walk_door('sitting_room_door')
+
+
 close_front_door = update_door('front_door', False)
+walkto_front_door = walk_door('front_door')
 
