@@ -71,7 +71,7 @@ def w11():
     flag = factory.sprite(197.5, 11, 'sprites/flag')
     state.room_details['flag'] = flag.id
     cam_node.add(flag)
-    cam_node.add(factory.tiled(202, 2, 'tiles/castle'))
+    cam_node.add(factory.tiled(202, 2, 'tiles/castle', z=-0.5))
 
     [cam_node.add(factory.tiled(x, 2, 'tiles/hill')) for x in 48 * np.array(range(0,5))]
     [cam_node.add(factory.tiled(x, 2, 'tiles/hillsmall')) for x in 16 + 48 * np.array(range(0, 5))]

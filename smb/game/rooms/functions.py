@@ -39,10 +39,11 @@ def jump_on_foe(player, foe, callback=None):
     foe.set_state('dead')
 
 def fire():
-    player = monkey.engine().get_node(state.player_id)
-    main = monkey.engine().get_node(state.cn)
-    aa = factory.fireball(player.x, player.y+20, -1 if player.flip_x else 1)
-    main.add(aa)
+    if state.mario_state == 2:
+        player = monkey.engine().get_node(state.player_id)
+        main = monkey.engine().get_node(state.cn)
+        aa = factory.fireball(player.x, player.y+20, -1 if player.flip_x else 1)
+        main.add(aa)
 
 
 def make_coin(b):

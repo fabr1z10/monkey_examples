@@ -15,6 +15,10 @@ def foyer():
     # kitchen door
     r.add(factory.hotspot(39, 87, 'kitchen_door', 161, 24, sprite='kitchen_door', anim=items['kitchen_door']['anim'], z=-1))
 
+    # basement door
+    r.add(factory.hotspot(43, 89, 'basement_door', 439, 24, sprite='basement_door', anim=items['basement_door']['anim'],
+                          z=-1))
+
     # door to sitting room
     r.add(factory.hotspot(19, 111, 'sitting_room_door', 591, 4, sprite='sitting_room_door', anim=items['sitting_room_door']['anim'], z=-1))
 
@@ -22,6 +26,7 @@ def foyer():
     r.add(factory.hotspot(26, 93, 'grandfather_clock', 109, 18))
     r.add(factory.hotspot(28, 45, 'vase_l', 222, 18))
     r.add(factory.hotspot(28, 45, 'vase_r', 374, 18))
+    r.add(factory.hotspot(25, 18, 'gargoyle_r', 329, 47))
     r.add_dynamic()
 
     return r.r

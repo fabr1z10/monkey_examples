@@ -2,16 +2,35 @@ import monkey
 from . import state
 from . import factory
 from . import scripts
-from .. import pippo
+from .. import settings
 from . import items
+
 
 def restart():
     monkey.engine().close_room()
 
 
+def darken():
+    for n in monkey.get_node(state.ids['bg']).get_children():
+        n.set_mult_color(monkey.vec4(0, 0, 0, 1.))
+    pl = monkey.get_node(state.player_id)
+    pl.set_mult_color(monkey.vec4(0.))
+    pl.set_add_color(state.character_dark_color)
+
+
+def brighten():
+    for n in monkey.get_node(state.ids['bg']).get_children():
+        n.set_mult_color(monkey.vec4(1.))
+
+
+
+def z(y):
+    return 1. - y / 144.
+
+
 def change_room(room, pos, dir):
     def f():
-        pippo.room = room
+        settings.room = room
         i = items.items[state.current_player]
         i['room'] = room
         i['walkarea'] = 0
@@ -58,6 +77,6 @@ def run_action(n,p):
 def add_to_inventory(item_id):
     def f():
         state.inventory[item_id]= [state.current_player, 1]
-        inv = monkey.engine().get_node(state.ids['inventory'])
+        inv = monkey.get_node(state.ids['inventory'])
         factory.update_inventory(inv)
     return f

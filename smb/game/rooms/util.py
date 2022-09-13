@@ -1,6 +1,6 @@
 import monkey
 from . import state
-from .. import pippo
+from .. import settings
 
 
 
@@ -33,7 +33,7 @@ def restart():
 
 def change_room(room, pos):
     def f():
-        pippo.room = room
+        settings.room = room
         state.start_position = pos
         restart()
     return f

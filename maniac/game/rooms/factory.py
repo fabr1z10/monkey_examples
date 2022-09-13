@@ -5,6 +5,7 @@ from . import state
 from . import data
 from . import items
 from . import factory
+from .. import settings
 
 def update_action():
     v = verbs[state.current_verb]
@@ -26,6 +27,35 @@ def on_click_verb(verb):
     return f
 
 
+def change_kid(name):
+    def f(a, b):
+        player = monkey.get_node(state.ids[state.current_player])
+        items.items[state.current_player]['pos'] = monkey.vec2(player.x, player.y)
+        anim = player.get_animation()
+        d = anim[-1]
+        if d == 'e' and player.flip_x:
+            d = 'w'
+        items.items[state.current_player]['dir'] = d
+
+        print(player.x,',,',player.y)
+        state.current_player = name
+        item = items.items[name]
+        settings.room = item['room']
+        func.restart()
+    return f
+
+
+def pippo(a):
+    def f(a, b):
+        node = monkey.get_node(state.ids['uia'])
+        nodeb = monkey.get_node(state.ids['uib'])
+        node.active = False
+        nodeb.active = True
+        nodeb.add(btn(items.items[state.players[0]]['text'], 64, 32, state.verb_color_unselected, change_kid(state.players[0])))
+        nodeb.add(btn(items.items[state.players[1]]['text'], 128, 32, state.verb_color_unselected, change_kid(state.players[1])))
+        nodeb.add(btn(items.items[state.players[2]]['text'], 208, 32, state.verb_color_unselected, change_kid(state.players[2])))
+    return f
+
 verbs = {
     'push': [data.text[0], on_click_verb('push')],
     'pull': [data.text[1], on_click_verb('pull')],
@@ -37,7 +67,7 @@ verbs = {
     'pickup': [data.text[7], on_click_verb('pickup')],
     'whatis': [data.text[8], on_click_verb('whatis')],
     'unlock': [data.text[9], on_click_verb('unlock')],
-    'newkid': [data.text[10], on_click_verb('newkid')],
+    'newkid': [data.text[10], pippo('newkid')],
     'use': [data.text[11], on_click_verb('use')],
     'turnon': [data.text[12], on_click_verb('turnon')],
     'turnoff': [data.text[13], on_click_verb('turnoff')],
@@ -54,19 +84,38 @@ def update_inventory(ui):
         x = 176 * (i % 2)
         ui.add(inventory_item(item, x, y, state.inventory_color_unselected))
 
+
 class ScummRoom:
     def add_dynamic(self):
         for item in list(items.items.keys()):
-            print('here is ' ,item)
-            print(items.items[item])
             if items.items[item].get('room', "") == self.room_id:
                 a = items.items[item]
-                print('here', item)
                 node = getattr(factory, a['type'])(item, **a)
                 a['id'] = node.id
                 state.ids[item] = node.id
                 self.add(node, parent=0)
-                print(a)
+        print('player id: ',state.player_id)
+
+    def add_item(self, item_id, **kwargs):
+        a = items.items[item_id]
+        tp = a.get('type', None)
+        if tp is None:
+            print('item ', item_id, ' does not have a valid type!')
+            exit(1)
+        fc = getattr(factory, tp, None)
+        if fc is None:
+            print('factory ', tp, ' does not exist!')
+            exit(1)
+        node = fc(item_id, **a)
+        x = kwargs.get('x', 0)
+        y = kwargs.get('y', 0)
+        z = kwargs.get('z', 0)
+        node.set_position(x, y, z)
+        self.add(node, parent=0)
+
+
+
+
 
     def __init__(self, room_id, width):
         self.room_id = room_id
@@ -95,35 +144,43 @@ class ScummRoom:
         self.cam = cam
 
         ui = monkey.Node()
+
         ui_cam = monkey.camera_ortho(device_width, 200)
         ui.add_component(monkey.hot_spot_manager())
         ui.set_camera(ui_cam)
 
-        ui.add(verb('push', 0, 40, state.verb_color_unselected))
-        ui.add(verb('pull', 0, 32, state.verb_color_unselected))
-        ui.add(verb('give', 0, 24, state.verb_color_unselected))
+        uia = monkey.Node()
+        uib = monkey.Node()
 
-        ui.add(verb('open', 56, 40, state.verb_color_unselected))
-        ui.add(verb('close', 56, 32, state.verb_color_unselected))
-        ui.add(verb('read', 56, 24, state.verb_color_unselected))
+        uia.add(verb('push', 0, 40, state.verb_color_unselected))
+        uia.add(verb('pull', 0, 32, state.verb_color_unselected))
+        uia.add(verb('give', 0, 24, state.verb_color_unselected))
 
-        ui.add(verb('walkto', 120, 40, state.verb_color_unselected))
-        ui.add(verb('pickup', 120, 32, state.verb_color_unselected))
-        ui.add(verb('whatis', 120, 24, state.verb_color_unselected))
+        uia.add(verb('open', 56, 40, state.verb_color_unselected))
+        uia.add(verb('close', 56, 32, state.verb_color_unselected))
+        uia.add(verb('read', 56, 24, state.verb_color_unselected))
 
-        ui.add(verb('unlock', 192, 40, state.verb_color_unselected))
-        ui.add(verb('newkid', 192, 32, state.verb_color_unselected))
-        ui.add(verb('use', 192, 24, state.verb_color_unselected))
+        uia.add(verb('walkto', 120, 40, state.verb_color_unselected))
+        uia.add(verb('pickup', 120, 32, state.verb_color_unselected))
+        uia.add(verb('whatis', 120, 24, state.verb_color_unselected))
 
-        ui.add(verb('turnon', 256, 40, state.verb_color_unselected))
-        ui.add(verb('turnoff', 256, 32, state.verb_color_unselected))
-        ui.add(verb('fix', 256, 24, state.verb_color_unselected))
+        uia.add(verb('unlock', 192, 40, state.verb_color_unselected))
+        uia.add(verb('newkid', 192, 32, state.verb_color_unselected))
+        uia.add(verb('use', 192, 24, state.verb_color_unselected))
+
+        uia.add(verb('turnon', 256, 40, state.verb_color_unselected))
+        uia.add(verb('turnoff', 256, 32, state.verb_color_unselected))
+        uia.add(verb('fix', 256, 24, state.verb_color_unselected))
 
         state.current_verb='walkto'
         cv = text(verbs[state.current_verb][0], 0, 48, state.current_verb_color)[0]
         state.ids['current_verb'] = cv.id
         state.ids['ui'] = ui.id
-        ui.add(cv)
+        state.ids['uia'] = uia.id
+        state.ids['uib'] = uib.id
+        uia.add(cv)
+        ui.add(uib)
+        ui.add(uia)
 
         # adding inventory
         inventory_node = monkey.Node()
@@ -172,12 +229,11 @@ def text(what, x, y, color):
     t = monkey.text(font='font', text=what, size=8)
     n1.set_model(t)
     n1.set_position(x-160, y-100, 0)
-    n1.set_mult_color(*color)
+    n1.set_mult_color(color)
     return n1, t.size
 
 
 def say(lines, char=None):
-    #return None
     if char is None:
         char = state.current_player
     ll = [data.text[i] for i in lines]
@@ -189,17 +245,17 @@ def say(lines, char=None):
          font='font',
          size=8, duration=1,
          color=items.items['dave']['text_color'])
-    print('cane')
+    print('cane',items.items['dave']['text_color'].x,items.items['dave']['text_color'].y,items.items['dave']['text_color'].z)
     return a
 
 def on_enter(a):
     def f(m):
-        m.set_mult_color(*state.verb_color_selected)
+        m.set_mult_color(state.verb_color_selected)
     return f
 
 def on_enter_inventory(a):
     def f(m):
-        m.set_mult_color(*state.inventory_color_selected)
+        m.set_mult_color(state.inventory_color_selected)
         state.current_item = a
         factory.update_action()
     return f
@@ -207,7 +263,7 @@ def on_enter_inventory(a):
 
 def on_exit(a):
     def f(m):
-        m.set_mult_color(*state.verb_color_unselected)
+        m.set_mult_color(state.verb_color_unselected)
     return f
 
 def on_exit_inventory(a):
@@ -226,8 +282,24 @@ def gigi(m):
 
 def pane(node, pos):
     s = monkey.script(id='cane')
-    s.add(monkey.walk(id=state.player_id, pos=pos, speed=100))
+    ii = -1
+    print (state.before_action_script.items())
+    for id, s1 in state.before_action_script.items():
+        ii = s1(s)
+    print('QUI SUCA?')
+    s.add(monkey.walk(id=state.player_id, pos=pos, speed=100), ii)
     monkey.play(s)
+
+
+
+def btn(t, x, y, color, click):
+    verb, size = text(t, x, y, color)
+    s = monkey.aabb(0, size.x, 0, size.y)
+    verb.add_component(monkey.hotspot(s, on_enter=on_enter(id), on_leave=on_exit(id), on_click=click))
+    r = monkey.Node()
+    r.set_model(monkey.make_model(s))
+    verb.add(r)
+    return verb
 
 
 
@@ -270,25 +342,33 @@ def sprite(model, x, y, **kwargs):
     return a
 
 
-def hotspot(width, height, id, x, y, **kwargs):
+def hot_spot(key, **kwargs):
     a = monkey.Node()
-    s = monkey.aabb(0, width, 0, height)
-    z = kwargs.get('z', 0)
-    prio = kwargs.get('priority', 1)
-    a.add_component(monkey.hotspot(s,
-        on_enter=func.enter_item(id),
-        on_leave=func.leave_item,
-        on_click=func.run_action,
-        priority=prio))
-    if 'sprite' in kwargs:
-        a.set_model(monkey.get_sprite('sprites/' + kwargs['sprite']))
-        if 'anim' in kwargs:
-            a.set_animation(kwargs['anim'])
-    a.set_position(x, y, z)
-    b = monkey.Node()
-    b.set_model(monkey.make_model(s, color=(1,0,0,1)))
-    a.add(b)
-    items.items[id]['id'] = a.id
+    size = items.get(kwargs, 'size', None)
+    if size:
+        offset = items.get(kwargs, 'offset', (0, 0))
+        s = monkey.aabb(offset[0], offset[0] + size[0], offset[1], offset[1] + size[1])
+        prio = items.get(kwargs, 'priority', 1)
+        a.add_component(monkey.hotspot(s,
+            on_enter=func.enter_item(key),
+            on_leave=func.leave_item,
+            on_click=func.run_action,
+            priority=prio))
+        b = monkey.Node()
+        b.set_model(monkey.make_model(s, color=(1, 0, 0, 1)))
+        a.add(b)
+    sprite = items.get(kwargs, 'sprite', None)
+    if sprite:
+        a.set_model(monkey.get_sprite('sprites/' + sprite))
+        anim = items.get(kwargs, 'anim', None)
+        if anim:
+            a.set_animation(anim)
+    items.items[key]['id'] = a.id
+    return a
+
+
+
+#def hotspot(width, height, id, x, y, **kwargs):
     return a
 
 
@@ -369,4 +449,5 @@ def character(key, **kwargs): #cam, model, x, y, is_player):
         node.add_component(monkey.follow(state.cam, (0, 0, 5), (0, 1, 0)))
         state.player_id = node.id
     #items.items['id'] = node.id
+    node.add_component(monkey.depth(depth=monkey.vec3(0, -1.0/144.0, 1.)))
     return node

@@ -1,6 +1,6 @@
 import monkey
 from .util import *
-from .. import pippo
+from .. import settings
 from . import functions
 from . import state
 
@@ -12,10 +12,23 @@ def text(what, x, y):
     n1.set_position(-128 + x, 120 - y, 2)
     return n1
 
+def cino():
+    state.time -= 1
+    monkey.get_node(state.time_label).set_text('{:03d}'.format(state.time))
+
+
+
+def pane():
+    s = monkey.script()
+    i =s.add(monkey.repeat(cino, 1))
+    monkey.play(s)
+
 
 def room(world_width):
     state.room_details= dict()
     room = monkey.Room("mario")
+    room.set_on_start(pane)
+
     ce = monkey.collision_engine(80, 80)
     ce.add_response(tags.player, tags.sensor, on_start=functions.hit_sensor)
     ce.add_response(tags.player, tags.powerup, on_start=functions.hit_powerup)
@@ -34,7 +47,7 @@ def room(world_width):
     root.add_component(kb)
 
     # create camera
-    device_size = pippo.device_size
+    device_size = settings.device_size
     device_width = device_size[0]
     device_height = device_size[1]
     device_half_width = device_width // 2
@@ -59,8 +72,10 @@ def room(world_width):
     score_node.add(text('WORLD', 144, 8))
     score_node.add(text(state.world_name, 152, 16))
     score_node.add(text('TIME', 200, 8))
-    score_node.add(text('{:03d}'.format(state.time), 208, 16))
-    score_node.add(sprite(-2.8, 6, 'sprites/coin_counter'))
+    time_label = text('{:03d}'.format(state.time), 208, 16)
+    score_node.add(time_label)
+    state.time_label = time_label.id
+    score_node.add(sprite(-2.8, 6.5, 'sprites/coin_counter'))
     root.add(score_node)
 
     return room, cam, cam_node
@@ -75,8 +90,8 @@ def mario(cam, x, y):
     node.set_position(x, y, 0)
     node.set_model(monkey.get_sprite(sta['model']))
     sm = monkey.state_machine()
-    sm.add(monkey.walk_2d_player("pango", speed=200, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5))
-    sm.add(monkey.walk_2d_auto("auto", speed=200, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5))
+    sm.add(monkey.walk_2d_player("pango", speed=state.mario_speed, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5))
+    sm.add(monkey.walk_2d_auto("auto", speed=state.mario_speed, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5))
     sm.add(monkey.idle("dead", "dead"))
     sm.add(monkey.idle("warp", "idle"))
     sm.set_initial_state("pango")
@@ -114,9 +129,9 @@ def platform(w, h, tx, ty, x, y):
     return node2
 
 
-def tiled(x, y, model):
+def tiled(x, y, model, z=-1):
     node2 = monkey.Node()
-    node2.set_position(x*16, y*16, -1)
+    node2.set_position(x*16, y*16, z)
     node2.set_model(monkey.get_tiled(model))
     return node2
 
@@ -250,7 +265,7 @@ def goomba(x, y):
     sm.set_initial_state('pango')
     node.add_component(sm)
     node.add_component(monkey.sprite_collider(flags.foe, flags.player, tags.goomba))
-    node.add_component(monkey.controller_2d(size=(10, 10, 0), center=(5, 0, 0)))
+    node.add_component(monkey.controller_2d(size=monkey.vec3(10, 10, 0), center=monkey.vec3(5, 0, 0)))
     node.add_component(monkey.dynamics())
     return node
 

@@ -1,2 +1,2 @@
-from . import pippo
+from . import settings
 from . import rooms
