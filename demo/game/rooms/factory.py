@@ -1,6 +1,6 @@
 import monkey
 from .util import *
-from .. import pippo
+from .. import settings
 from . import functions
 from . import state
 

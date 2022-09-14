@@ -1,6 +1,6 @@
 import monkey
 from . import state
-from .. import pippo
+from .. import settings
 
 
 

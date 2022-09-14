@@ -2,6 +2,7 @@ import monkey
 import numpy as np
 import math
 
+
 def w1_1():
     room = monkey.Room("test")
     a = monkey.RawModel(monkey.SHADER_COLOR, np.array([
@@ -46,13 +47,15 @@ def text():
     cam_node = monkey.Node()
     cam_node.set_camera(monkey.camera_ortho(256, 240))
     root.add(cam_node)
-    node = monkey.Node()
-    node.set_model(monkey.text(font='font1', text='CIAO\nBELO', size=8))
-    cam_node.add(node)
-    node.set_position(-128,120,0)
+    #node = monkey.Node()
+    #node.set_model(monkey.text(font='font1', text='CIAO\nBELO', size=8))
+    #cam_node.add(node)
+    #node.set_position(-128,120,0)
 
     node1 = monkey.Node()
-    node1.set_model(monkey.get_sprite('sprites/pr1'))
+    #node1.set_model(monkey.get_sprite('sprites/pr1'))
+    node1.set_model(monkey.get_sprite('mario/mario'))
+    node1.add_component(monkey.sprite_collider(0,0,0))
     cam_node.add(node1)
     return room
 

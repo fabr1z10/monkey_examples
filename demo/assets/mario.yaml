@@ -1,33 +1,34 @@
 sheet:
-  file: "assets/prova1.png"
+  file: "assets/smb1.png"
   #ppu: 1
   items:
     # each item has 4-6 components: the first 4 are mandatory (x, y, width, height)
     # where x, y are the coordinates of the top left corner
     # the last 2 numbers, if present, are the coordinates of the center (0, 0) means the center is the bottom left point
     # of the texture
-    - [2, 8, 41, 47, -20, 0]       # skeleton walk 1
-    - [48,5, 36, 50, -12, 0]       # skeleton walk 2
-    - [89, 8, 46,47, -26, 0]       # skeleton walk 3
+    - [16, 0, 16, 16, -8, 0]       # skeleton walk 1
+    - [32, 0, 16, 16, -8, 0]       # skeleton walk 2
+    - [48, 0, 16, 16, -8, 0]       # skeleton walk 3
 sprites:
-#  mario:
-#    sheet: "assets/smb1.png"
-#    thickness: 1
-#    frame_time: 2
-#    type: "asset.boxed"
-#    boxes:
-#      - [-6, 6, 0, 16]
-#    # casts
-#    animations:
-#      walk:
-#        box: 0
-#        elements:
-#          - quads: [[16, 0, 16, 16, 8, 0]]
-#            ticks: 5
-#          - quads: [[32, 0, 16, 16, 8, 0]]
-#            ticks: 5
-#          - quads: [[48, 0, 16, 16, 8, 0]]
-#            ticks: 5
+  mario:
+    boxes:
+      - [-6, 6, 0, 16]
+    animations:
+      walk:
+        box: 0
+        frames:
+          - items:
+              - id: 0
+            ticks: 15
+          - items:
+              - id: 1
+            ticks: 15
+          - items:
+              - id: 2
+            ticks: 15
+          - items:
+              - id: 1
+            ticks: 15
 #      idle:
 #        loop: true
 #        box: 0
@@ -150,27 +151,7 @@ sprites:
 #        elements: 0
 #        elements:
 #          - quads: [[144, 48, 16, 16, 8, 0]]
-  pr1:
-    boxes:
-      # xmin, xmax, ymin, ymax
-      - [-8, 8, 0, 50]
-      - [-8, 8, 0, 46]
-    animations:
-      walk:
-        box: 0
-        frames:
-          - items:
-              - id: 0
-            box: 1
-          - items:
-              - id: 1
-            box: 0
-          - items:
-              - id: 2
-            box: 1
-          - items:
-              - id: 1
-            box: 0
+
 
 #  bonusbrick:
 #    type: model.sprite
