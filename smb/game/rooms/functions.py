@@ -14,12 +14,12 @@ def mario_is_hit(player, foe):
     if state.mario_state == 0:
         player.set_state('dead')
         s = monkey.script()
-        ii = s.add(monkey.delay(1))
-        ii = s.add(monkey.move_accelerated(id=player.id,
+        ii = s.add(monkey.actions.delay(1))
+        ii = s.add(monkey.actions.move_accelerated(id=player.id,
                                            timeout=1,
                                            velocity=monkey.vec3(0, 100, 0),
                                            acceleration=monkey.vec3(0, -state.gravity, 0)), ii)
-        s.add(monkey.callfunc(util.restart), ii)
+        s.add(monkey.actions.callfunc(util.restart), ii)
         monkey.play(s)
     else:
         state.mario_state -= 1
@@ -28,8 +28,8 @@ def mario_is_hit(player, foe):
         player.set_model(monkey.get_sprite(st['model']))
         player.get_controller().set_size(st['size'], st['center'])
         s = monkey.script()
-        ii = s.add(monkey.blink(id=player.id, duration=state.invincible_duration, period=0.2))
-        s.add(monkey.callfunc(reset_invincibility), ii)
+        ii = s.add(monkey.actions.blink(id=player.id, duration=state.invincible_duration, period=0.2))
+        s.add(monkey.actions.callfunc(reset_invincibility), ii)
         monkey.play(s)
 
 
@@ -153,6 +153,23 @@ def foe_killed(foe, vx):
 def fire_hit_foe(foe, fire, dist):
     fire.remove()
     foe_killed(foe, -50 if fire.x > foe.x else 50)
+
+def enable_pickup(player, foe, dist):
+    state.pickup_item = foe.id
+
+def disable_pickup(player, foe):
+    state.pickup_item = None
+
+def pickup():
+    if state.pickup_item:
+        monkey.get_node(state.pickup_item).remove()
+        state.pickup_item = None
+        player = monkey.get_node(state.player_id)
+        player.set_state('lift')
+        a = monkey.Node()
+        a.set_model(monkey.get_sprite('sprites2/veggie_item'))
+        a.set_position(0, 0, 0.1)
+        player.add(a)
 
 
 

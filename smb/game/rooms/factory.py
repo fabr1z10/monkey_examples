@@ -8,7 +8,7 @@ cache = dict()
 
 def text(what, x, y):
     n1 = monkey.Node()
-    n1.set_model(monkey.text(font='font1', text=what, size=8))
+    n1.set_model(monkey.models.text(font='font1', text=what, size=8))
     n1.set_position(-128 + x, 120 - y, 2)
     return n1
 
@@ -20,16 +20,16 @@ def cino():
 
 def pane():
     s = monkey.script()
-    i =s.add(monkey.repeat(cino, 1))
+    i =s.add(monkey.actions.repeat(cino, 1))
     monkey.play(s)
 
 
-def room(world_width):
+def room(world_width, world_height):
     state.room_details= dict()
     room = monkey.Room("mario")
-    room.set_on_start(pane)
 
-    ce = monkey.collision_engine(80, 80)
+
+    ce = monkey.collision_engine(80, 80, 0)
     ce.add_response(tags.player, tags.sensor, on_start=functions.hit_sensor)
     ce.add_response(tags.player, tags.powerup, on_start=functions.hit_powerup)
     ce.add_response(tags.player, tags.goomba, on_start=functions.hit_goomba)
@@ -37,6 +37,8 @@ def room(world_width):
     ce.add_response(tags.player, tags.hotspot, on_start=functions.hit_hotspot, on_end=functions.leave_hotspot)
     ce.add_response(tags.goomba, tags.koopa, on_start=functions.hit_gk)
     ce.add_response(tags.goomba, tags.fire, on_start=functions.fire_hit_foe)
+    # only for smb2
+    ce.add_response(tags.player, tags.pickup_sensor, on_start=functions.enable_pickup, on_end=functions.disable_pickup)
     room.add_runner(ce)
     room.add_runner(monkey.scheduler())
     root = room.root()
@@ -55,31 +57,57 @@ def room(world_width):
     cam_node = monkey.Node()
     state.cn = cam_node.id
     cam = monkey.camera_ortho(device_width, device_height)
-    cam.set_bounds(device_half_width, world_width - device_half_width, device_half_height, device_half_height, -100, 100)
+    cam.set_bounds(device_half_width, world_width - device_half_width, device_half_height, world_height - device_half_height, -100, 100)
     cam_node.set_camera(cam)
     root.add(cam_node)
     state.main_cam = cam
 
-    score_node = monkey.Node()
-    score_cam = monkey.camera_ortho(device_width, device_height)
-    score_node.set_camera(score_cam)
-    score_node.add(text('MARIO', 24, 8))
-    score_node.add(text('{:06d}'.format(state.score), 24, 16))
-    score_node.add(text('*', 96, 16))
-    coin_counter = text('{:02d}'.format(state.coins), 104, 16)
-    state.coin_label = coin_counter.id
-    score_node.add(coin_counter)
-    score_node.add(text('WORLD', 144, 8))
-    score_node.add(text(state.world_name, 152, 16))
-    score_node.add(text('TIME', 200, 8))
-    time_label = text('{:03d}'.format(state.time), 208, 16)
-    score_node.add(time_label)
-    state.time_label = time_label.id
-    score_node.add(sprite(-2.8, 6.5, 'sprites/coin_counter'))
-    root.add(score_node)
-
+    # score_node = monkey.Node()
+    # score_cam = monkey.camera_ortho(device_width, device_height)
+    # score_node.set_camera(score_cam)
+    # score_node.add(text('MARIO', 24, 8))
+    # score_node.add(text('{:06d}'.format(state.score), 24, 16))
+    # score_node.add(text('*', 96, 16))
+    # coin_counter = text('{:02d}'.format(state.coins), 104, 16)
+    # state.coin_label = coin_counter.id
+    # score_node.add(coin_counter)
+    # score_node.add(text('WORLD', 144, 8))
+    # score_node.add(text(state.world_name, 152, 16))
+    # score_node.add(text('TIME', 200, 8))
+    # time_label = text('{:03d}'.format(state.time), 208, 16)
+    # score_node.add(time_label)
+    # state.time_label = time_label.id
+    # score_node.add(sprite(-2.8, 6.5, 'sprites/coin_counter'))
+    # root.add(score_node)
+    # room.set_on_start(pane)
     return room, cam, cam_node
 
+def veggie(x, y):
+    node = monkey.Node()
+    node.set_model(monkey.get_sprite('sprites2/veggie'))
+    node.add_component(monkey.sprite_collider(flags.foe, flags.player, tags.pickup_sensor))
+    node.set_position(x*16,y*16,0)
+    return node
+
+
+def mario2(cam, x, y):
+    node = monkey.Node()
+    character_info = state.characters[state.player_character]
+    node.set_model(monkey.get_sprite(character_info['model']))
+    node.add_component(monkey.sprite_collider(flags.player, flags.foe, tags.player))
+    node.add_component(monkey.controller_2d(size=character_info['size'], center=character_info['center']))
+    node.add_component(monkey.dynamics())
+    sm = monkey.state_machine()
+    sm.add(monkey.walk_2d_player("pango", speed=state.mario_speed, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5,
+                                 keys={68: functions.pickup}))
+    sm.add(monkey.walk_2d_player("walk_item", speed=state.mario_speed, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5,
+                                 walk_anim='walk_item', idle_anim='idle_item', keys={68: functions.pickup}))
+    sm.add(monkey.idle("lift", "lift", exit_on_complete=True, exit_state='walk_item'))
+    sm.set_initial_state("pango")
+    node.add_component(sm)
+    node.add_component(monkey.follow(cam, (0, 0, 5), (0, 1, 0)))
+    node.set_position(x * 16, y * 16, 0.1)
+    return node
 
 def mario(cam, x, y):
     node = monkey.Node()
@@ -123,10 +151,26 @@ def platform(w, h, tx, ty, x, y):
     node2.set_position(x*16, y*16, 1)
     model_desc = '0,W,' + str(w) + ',R,' + str(w*h) + ',' + str(tx) + ',' + str(ty) + ',E'
     if model_desc not in cache:
-        cache[model_desc] = monkey.tiled(model_desc)
+        cache[model_desc] = monkey.models.tiled(desc=model_desc)
     node2.set_model(cache[model_desc])
     node2.add_component(monkey.collider(shape1, flags.platform, 0, tags.platform))
     return node2
+
+def rounded_platform(x, y, w, h, pal=None, z=0):
+    if w > 2:
+        dstring = '2,W,' + str(w) + ',R,' + str(h-1)+ ',0,3,R,' + str(w-2) + ',1,3,E,2,3,E,0,2,R,' + str(w-2) + ',1,2,E,2,2'
+    else:
+        dstring = '2,W,' + str(w) + ',R,' + str(h-1) + ',0,3,2,3,E,0,2,2,2'
+    return tiled1(x, y, dstring, pal=pal, z=z)
+
+
+
+def tiled1(x, y, model_desc, pal=None, z = 0):
+    node = monkey.Node()
+    #model_desc = '1,W,1,0,0'
+    node.set_model(monkey.models.tiled(desc=model_desc, palette=pal))#'pal/0'))
+    node.set_position(x * 16, y * 16, z)
+    return node
 
 
 def tiled(x, y, model, z=-1):
@@ -209,9 +253,10 @@ def foe(x, y, model, walk, dead, flip, tag):
 
 
 def on_jump_goomba(goomba_id):
+    print('goomba id: ' ,goomba_id)
     s = monkey.script()
-    ii = s.add(monkey.delay(1))
-    sid = s.add(monkey.remove(id=goomba_id), ii)
+    ii = s.add(monkey.actions.delay(1))
+    sid = s.add(monkey.actions.remove(id=goomba_id), ii)
     monkey.play(s)
     return sid
 
@@ -249,6 +294,26 @@ def fireball(x, y, dir):
     node.add_component(monkey.controller_2d(size=(4, 4, 0), center=(0,0, 0)))
     node.add_component(monkey.dynamics())
     node.add_component(monkey.self_destroy(timeout=1))
+    return node
+
+
+def bigshoe(x, y):
+    node = monkey.Node()
+    node.set_model(monkey.image('assets/shoe1.png', anchor = monkey.vec2(273, 47)))
+    node.add_component(monkey.movequat(
+        z =2,
+        key_frames = [
+            {'t': 0, 'angle': 20, 'pos': monkey.vec2(100, 160), 'dir': monkey.vec2(0, 1)},
+            {'t': 2, 'angle': 0, 'pos': monkey.vec2(160, 0), 'dir': monkey.vec2(0, 1)},
+            {'t': 4, 'angle': 0, 'pos': monkey.vec2(160, 0), 'dir': monkey.vec2(0, 1)},
+            {'t': 6, 'angle': -20, 'pos': monkey.vec2(220, 160), 'dir': monkey.vec2(0, 1)}
+        ]
+    ))
+    return node
+
+def p1(x, y):
+    node = monkey.Node()
+    node.set_model(monkey.get_mesh('grl3/torso'))
     return node
 
 
@@ -316,9 +381,9 @@ def hit_end_level():
     flag = monkey.engine().get_node(flag_id)
     node.set_state('warp', anim='slide')
     s = monkey.script()
-    s.add(monkey.move_by(id=flag_id, y=48-flag.y, speed=50))
-    ii = s.add(monkey.move_by(id=state.player_id, y=48-node.y, speed=50))
-    s.add(monkey.set_state(id=state.player_id, state='auto', events=[{'t': 0, 'right': True}]), ii)
+    s.add(monkey.actions.move_by(id=flag_id, y=48-flag.y, speed=50))
+    ii = s.add(monkey.actions.move_by(id=state.player_id, y=48-node.y, speed=50))
+    s.add(monkey.actions.set_state(id=state.player_id, state='auto', events=[{'t': 0, 'right': True}]), ii)
     monkey.play(s)
 
 def go_to_next():

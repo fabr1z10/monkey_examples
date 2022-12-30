@@ -22,6 +22,7 @@ class tags:
     hotspot = 8
     coin = 9
     fire = 10
+    pickup_sensor =11
 
 
 
@@ -29,7 +30,7 @@ class tags:
 
 def restart():
     state.invincible = False
-    monkey.engine().close_room()
+    monkey.close_room()
 
 def change_room(room, pos):
     def f():

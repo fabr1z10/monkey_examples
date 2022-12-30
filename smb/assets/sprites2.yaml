@@ -1,0 +1,73 @@
+sheet: "assets/smb2i.png"
+sprites:
+  veggie:
+    boxes:
+      - [-6, 6, 0, 8]
+    animations:
+      idle:
+        box: 0
+        frames:
+          - quads: [48,32,16,8,-8,0]
+          - quads: [48,40,16,8,-8,0]
+          - quads: [64,32,16,8,-8,0]
+          - quads: [64,40,16,8,-8,0]
+  veggie_item:
+    boxes:
+      - [-8,8,0,16]
+    animations:
+      up:
+        box: 0
+        loop: false
+        frames:
+          - quads: [48,48,16,6,-8,0]
+            ticks: 6
+          - quads: [48,48,16,8,-8,0]
+            ticks: 7
+          - quads: [48,48,16,16,-8,4]
+            ticks: 4
+          - quads: [48,48,16,14,-8,0]
+            ticks: 1
+          - quads: [48,48,16,16,-8,6]
+            ticks: 2
+          - quads: [48,48,16,16,-8,7]
+            ticks: 4
+          - quads: [48,48,16,16,-8,12]
+            ticks: 3
+          - quads: [48,48,16,16,-8,22]
+
+
+  mario:
+    boxes:
+      - [-6, 6, 0, 16]
+    animations:
+      walk:
+        box: 0
+        frames:
+          - quads: [64, 0, 16, 32, -8, 0]
+          - quads: [80, 0, 16, 32, -8, 0]
+      idle:
+        box: 0
+        frames:
+          - quads: [64, 0, 16, 32, -8, 0]
+      jump:
+        box: 0
+        frames:
+          - quads: [96, 0, 16, 32, -8, 0]
+      walk_item:
+        box: 0
+        frames:
+          - quads: [112, 0, 16, 32, -8, 0]
+          - quads: [96, 0, 16, 32, -8, 0]
+      idle_item:
+        box: 0
+        frames:
+          - quads: [112, 0, 16, 32, -8, 0]
+      lift:
+        box: 0
+        frames:
+          - quads: [128, 0, 16, 32, -8, 0]
+            ticks: 16
+          - quads: [144,0,16,16,-8,0]
+            ticks: 3
+          - quads: [160,0,16,16,-8,0]
+            ticks: 7
