@@ -18,6 +18,9 @@ world_name = '1-1'
 time = 400
 coin_label = 0
 pickup_item = None
+pickup_platform_item = dict()
+held_item = None
+shoot_speed = 200
 
 mario_states = [
     {'model': 'sprites/mario', 'size': monkey.vec3(10, 14, 0), 'center': monkey.vec3(5, 0, 0)},

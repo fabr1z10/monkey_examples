@@ -157,21 +157,63 @@ def fire_hit_foe(foe, fire, dist):
 def enable_pickup(player, foe, dist):
     state.pickup_item = foe.id
 
+def enable_pickup_platform(player, foe, dist):
+    state.pickup_item = foe.get_parent().get_parent().id
+    state.pickup_platform_item[state.pickup_item] = foe.get_parent().id
+
+
 def disable_pickup(player, foe):
     state.pickup_item = None
 
+def disable_pickup_platform(player, foe):
+    state.pickup_item = None
+    #state.pickup_platform_item = None
+
+
+def bounce(item, n):
+    print('bounce=',n)
+    if n == 2:
+        item.get_dynamics().velocity = monkey.vec3(0,0,0)
+        item.set_state('pango')
+        if item.id in state.pickup_platform_item:
+            monkey.get_node(state.pickup_platform_item[item.id]).active = True#()# = False
+            del state.pickup_platform_item[item.id]
+
+
 def pickup():
-    if state.pickup_item:
-        monkey.get_node(state.pickup_item).remove()
+    # this function throws the item
+    if state.held_item:
+        player = monkey.get_node(state.player_id)
+        item = monkey.get_node(state.held_item)  # .remove()
+        player.get_parent().move_to(item)
+        item.set_position(player.x, player.y + 22, 0.1)
+        #item.remove()
+        player.set_state('pango')
+        item.set_state('bounce', velocity=monkey.vec2(-state.shoot_speed if player.flip_x else state.shoot_speed, 0))
+        state.held_item = None
+
+
+    elif state.pickup_item:
+        if state.pickup_item in state.pickup_platform_item:
+            monkey.get_node(state.pickup_platform_item[state.pickup_item]).active = False#()# = False
+        item = monkey.get_node(state.pickup_item)#.remove()
+        state.held_item = state.pickup_item
         state.pickup_item = None
         player = monkey.get_node(state.player_id)
         player.set_state('lift')
-        a = monkey.Node()
-        a.set_model(monkey.get_sprite('sprites2/veggie_item'))
-        a.set_position(0, 0, 0.1)
-        player.add(a)
+        item.set_state('lifted')
+
+        player.move_to(item)
+        item.set_position(0,22,0.1)
+
+        #a = monkey.Node()
+        #a.set_model(monkey.get_sprite('sprites2/veggie_item'))
+        #a.set_position(0, 22, 0.1)
+        #player.add(a)
 
 
+def bomba(player, foe, dist):
+    foe.set_state('dead', velocity = monkey.vec2(0, 100))
 
 def hit_hotspot(player, hotspot, dist):
     on_start = hotspot.user_data.get('on_start')

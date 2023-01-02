@@ -11,6 +11,26 @@ sprites:
           - quads: [48,40,16,8,-8,0]
           - quads: [64,32,16,8,-8,0]
           - quads: [64,40,16,8,-8,0]
+      up:
+        box: 0
+        loop: false
+        frames:
+          - quads: [48,48,16,6,-8,-22]
+            ticks: 6
+          - quads: [48,48,16,8,-8,-22]
+            ticks: 7
+          - quads: [48,48,16,16,-8,-18]
+            ticks: 4
+          - quads: [48,48,16,14,-8,-22]
+            ticks: 1
+          - quads: [48,48,16,16,-8,-16]
+            ticks: 2
+          - quads: [48,48,16,16,-8,-15]
+            ticks: 4
+          - quads: [48,48,16,16,-8,-10]
+            ticks: 3
+          - quads: [48,48,16,16,-8,0]
+
   veggie_item:
     boxes:
       - [-8,8,0,16]
@@ -19,21 +39,21 @@ sprites:
         box: 0
         loop: false
         frames:
-          - quads: [48,48,16,6,-8,0]
+          - quads: [48,48,16,6,-8,-22]
             ticks: 6
-          - quads: [48,48,16,8,-8,0]
+          - quads: [48,48,16,8,-8,-22]
             ticks: 7
-          - quads: [48,48,16,16,-8,4]
+          - quads: [48,48,16,16,-8,-18]
             ticks: 4
-          - quads: [48,48,16,14,-8,0]
+          - quads: [48,48,16,14,-8,-22]
             ticks: 1
-          - quads: [48,48,16,16,-8,6]
+          - quads: [48,48,16,16,-8,-16]
             ticks: 2
-          - quads: [48,48,16,16,-8,7]
+          - quads: [48,48,16,16,-8,-15]
             ticks: 4
-          - quads: [48,48,16,16,-8,12]
+          - quads: [48,48,16,16,-8,-10]
             ticks: 3
-          - quads: [48,48,16,16,-8,22]
+          - quads: [48,48,16,16,-8,0]
 
 
   mario:
@@ -71,3 +91,43 @@ sprites:
             ticks: 3
           - quads: [160,0,16,16,-8,0]
             ticks: 7
+  foe:
+    boxes:
+      - [ -6, 6, 0, 16 ]
+    animations:
+      walk:
+        box: 0
+        frames:
+          - quads: [16, 0, 16, 16, -8, 0]
+          - quads: [32, 0, 16, 16, -8, 0]
+      dead:
+        frames:
+          - quads: [16, 0, 16, 16, -8, 0]
+            flipv: true
+      up:
+        box: 0
+        loop: true
+        frames:
+          - quads: [16,0,16,16,-8,-22]
+            ticks: 6
+          - quads: [32,0,16,16,-8,-22]
+            ticks: 7
+          - quads: [16,0,16,16,-8,-18]
+            ticks: 4
+          - quads: [32,0,16,16,-8,-22]
+            ticks: 1
+            flipv: true
+          - quads: [16,0,16,16,-8,-16]
+            ticks: 2
+            flipv: true
+          - quads: [32,0,16,16,-8,-15]
+            ticks: 4
+            flipv: true
+          - quads: [16,0,16,16,-8,-10]
+            ticks: 3
+            flipv: true
+          - quads: [32,0,16,16,-8,0]
+            loop_frame: true
+            flipv: true
+          - quads: [16,0,16,16,-8,0]
+            flipv: true

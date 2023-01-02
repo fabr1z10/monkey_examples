@@ -23,6 +23,8 @@ class tags:
     coin = 9
     fire = 10
     pickup_sensor =11
+    player_attack = 12
+    pickup_sensor_platform = 13
 
 
 
@@ -30,6 +32,9 @@ class tags:
 
 def restart():
     state.invincible = False
+    state.held_item = None
+    state.pickup_item = None
+    state.pickup_platform_item = None
     monkey.close_room()
 
 def change_room(room, pos):

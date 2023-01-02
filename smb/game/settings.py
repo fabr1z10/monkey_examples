@@ -10,6 +10,8 @@ shaders = {
     monkey.SHADER_TEXTURE: 0,
     monkey.SHADER_TEXTURE_PALETTE: 0}
 
+fire_button = 68        # GLFW_KEY_D
+
 debug_collision = True
 
 

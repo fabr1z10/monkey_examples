@@ -33,6 +33,7 @@ def w11i():
     cam_node.add(factory.line(16, 0, 2))
     cam_node.add(factory.line(8, 5, 8))
     cam_node.add(factory.veggie(7,30))
+    cam_node.add(factory.foe2(7,28,'sprites2/foe', 10,tags.foe))
     return room
 
 def w11():

@@ -35,10 +35,12 @@ def room(world_width, world_height):
     ce.add_response(tags.player, tags.goomba, on_start=functions.hit_goomba)
     ce.add_response(tags.player, tags.koopa, on_start=functions.hit_koopa)
     ce.add_response(tags.player, tags.hotspot, on_start=functions.hit_hotspot, on_end=functions.leave_hotspot)
+    ce.add_response(tags.player_attack, tags.foe, on_start = functions.bomba)
     ce.add_response(tags.goomba, tags.koopa, on_start=functions.hit_gk)
     ce.add_response(tags.goomba, tags.fire, on_start=functions.fire_hit_foe)
     # only for smb2
     ce.add_response(tags.player, tags.pickup_sensor, on_start=functions.enable_pickup, on_end=functions.disable_pickup)
+    ce.add_response(tags.player, tags.pickup_sensor_platform, on_start=functions.enable_pickup_platform, on_end=functions.disable_pickup_platform)
     room.add_runner(ce)
     room.add_runner(monkey.scheduler())
     root = room.root()
@@ -87,6 +89,17 @@ def veggie(x, y):
     node.set_model(monkey.get_sprite('sprites2/veggie'))
     node.add_component(monkey.sprite_collider(flags.foe, flags.player, tags.pickup_sensor))
     node.set_position(x*16,y*16,0)
+    sm = monkey.state_machine()
+    sm.add(monkey.walk_2d_foe("pango", speed=0, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5,
+                                 walk_anim='idle', jump_anim='idle'))
+    sm.add(monkey.idle("lifted", "up"))
+    sm.add(monkey.bounce("bounce", gravity=state.gravity, check_walls=False, bounce_velocity=150,
+                         collision_mask = flags.foe, collision_flag=flags.player_hit, collision_tag=tags.player_attack))
+
+    sm.set_initial_state("pango")
+    node.add_component(sm)
+    node.add_component(monkey.controller_2d(size=monkey.vec3(10, 14, 0), center=monkey.vec3(5,0,0)))
+    node.add_component(monkey.dynamics())
     return node
 
 
@@ -99,7 +112,7 @@ def mario2(cam, x, y):
     node.add_component(monkey.dynamics())
     sm = monkey.state_machine()
     sm.add(monkey.walk_2d_player("pango", speed=state.mario_speed, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5,
-                                 keys={68: functions.pickup}))
+                                 keys={settings.fire_button: functions.pickup}))
     sm.add(monkey.walk_2d_player("walk_item", speed=state.mario_speed, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5,
                                  walk_anim='walk_item', idle_anim='idle_item', keys={68: functions.pickup}))
     sm.add(monkey.idle("lift", "lift", exit_on_complete=True, exit_state='walk_item'))
@@ -238,7 +251,7 @@ def brick_piece(y0, x, y, vx, vy):
 def foe(x, y, model, walk, dead, flip, tag):
     node = monkey.Node()
     node.set_model(monkey.get_sprite(model))
-    node.set_position(x, y, 0)
+    node.set_position(x, y, 1)
     sm = monkey.state_machine()
     #sm.add(monkey.idle("idle", 'idle'))
     sm.add(monkey.walk_2d_foe("pango", speed=20, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5, jump_anim=walk, flip=flip))
@@ -250,6 +263,36 @@ def foe(x, y, model, walk, dead, flip, tag):
     node.add_component(monkey.controller_2d(size=(10, 10, 0), center=(5, 0, 0)))
     node.add_component(monkey.dynamics())
     return node
+
+def foe2(x, y, model, speed, tag):
+    node = monkey.Node()
+    node.set_model(monkey.get_sprite(model))
+    node.set_position(16* x, 16* y, 1)
+    sm = monkey.state_machine()
+    sm.add(monkey.walk_2d_foe("pango", speed=speed, flip=True, flip_on_edge=True, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5, jump_anim='walk', idle_anim='walk'))
+    sm.add(monkey.bounce("dead", gravity=state.gravity, check_walls=False, animation='dead'))
+    sm.add(monkey.idle("lifted", "up"))
+    sm.add(monkey.bounce("bounce", gravity=state.gravity, check_walls=True, on_bounce_y=functions.bounce, bounce_velocity=150,
+                         collision_mask = flags.foe, collision_flag=flags.player_hit, collision_tag=tags.player_attack))
+    sm.set_initial_state('pango')
+    node.add_component(sm)
+    node.add_component(monkey.sprite_collider(flags.foe, flags.player, tag))
+    node.add_component(monkey.controller_2d(size=monkey.vec3(10, 10, 0), center=monkey.vec3(5, 0, 0)))
+    node.add_component(monkey.dynamics())
+    platform = monkey.Node()
+    shape1 = monkey.segment(-8, 16, 8, 16)
+    #node.set_position(0, 0, 0)
+    platform.add_component(monkey.collider(shape1, flags.platform_passthrough, 0, tags.platform))
+    #pl = line(1,-0.5,1.2)
+    platform.add_component(monkey.platform())
+    psensor = monkey.Node()
+    psensor.set_position(0, 16, 0)
+    sh =  monkey.aabb(0, 2, 0, 16)
+    psensor.add_component(monkey.collider(sh, flags.foe, flags.player, tags.pickup_sensor_platform))
+    platform.add(psensor)
+    node.add(platform)
+    return node
+
 
 
 def on_jump_goomba(goomba_id):
