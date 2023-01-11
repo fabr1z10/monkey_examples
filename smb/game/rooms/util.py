@@ -25,6 +25,8 @@ class tags:
     pickup_sensor =11
     player_attack = 12
     pickup_sensor_platform = 13
+    door = 14
+    stairs = 15
 
 
 
@@ -34,7 +36,8 @@ def restart():
     state.invincible = False
     state.held_item = None
     state.pickup_item = None
-    state.pickup_platform_item = None
+    state.pickup_platform_item = dict()
+    state.active_door=None
     monkey.close_room()
 
 def change_room(room, pos):

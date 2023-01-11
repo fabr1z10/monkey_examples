@@ -2,6 +2,7 @@ import monkey
 
 gravity = 500
 mario_speed = 200
+climb_speed = 50
 mario_state = 1
 player_character = 'mario'
 invincible = False
@@ -17,7 +18,9 @@ coins = 0
 world_name = '1-1'
 time = 400
 coin_label = 0
+active_door = None
 pickup_item = None
+on_stairs = False
 pickup_platform_item = dict()
 held_item = None
 shoot_speed = 200

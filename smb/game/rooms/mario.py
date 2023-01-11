@@ -14,12 +14,36 @@ def rise():
     s.add(monkey.set_state(id=state.player_id, state='pango'), ii)
     monkey.play(s)
 
+def w11ia():
+    room, cam, cam_node = factory.room(2802, 256)
+    cam_node.add(factory.tiled1(0, 0, 2, 'W,54,R,54,6,2,E,R,54,4,3,E'))
+    cam_node.add(factory.animtiled(32, 2, 2, [{'desc': 'W,1,R,9,6,3,E,5,2', 'ticks': 10}, {'desc': 'W,1,R,9,7,3,E,5,2', 'ticks': 10}]))
+
+    cam_node.add(factory.rect(54, 2, 0, 0))
+    player = factory.mario2(cam, 2, 4)
+    cam_node.add(player)
+    state.player_id = player.id
+
+    # veggies
+    veggies = [(5, 2), (8, 2), (15, 2), (19, 2)]
+    for pos in veggies:
+        cam_node.add(factory.veggie(pos[0], pos[1]))
+    cam_node.add(factory.rounded_platform(0, 2, 3, 5))
+    cam_node.add(factory.rounded_platform(51, 2, 3, 5, z=-0.2))
+    cam_node.add(factory.rounded_platform(53, 0, 4, 5, z=-0.1))
+    cam_node.add(factory.rounded_platform(53, 2, 3, 7, z=-0.3))
+    cam_node.add(factory.rounded_platform(26, 2, 6, 7, z=-0.3))
+
+    cam_node.add(factory.stairs(32, 2, 9))
+
+    return room
+
 def w11i():
     room, cam, cam_node = factory.room(256, 640)
-    cam_node.add(factory.tiled1(0, 0, '2,W,16,0,3,R,14,1,3,E,2,3,0,2,R,14,1,2,E,2,2'))
-    cam_node.add(factory.tiled1(2, 2, '2,W,10,R,12,0,3,R,8,1,3,E,2,3,E,0,2,R,8,1,2,E,2,2'))
-    cam_node.add(factory.tiled1(5, 15, '2,W,5,R,5,0,3,1,3,1,3,1,3,2,3,E,0,2,1,2,1,2,1,2,2,2'))
-    cam_node.add(factory.tiled1(6, 21, '2,W,3,R,8,0,3,1,3,2,3,E,0,2,1,2,2,2'))
+    cam_node.add(factory.tiled1(0, 0, 2, 'W,16,0,3,R,14,1,3,E,2,3,0,2,R,14,1,2,E,2,2'))
+    cam_node.add(factory.tiled1(2, 2, 2, 'W,10,R,12,0,3,R,8,1,3,E,2,3,E,0,2,R,8,1,2,E,2,2'))
+    cam_node.add(factory.tiled1(5, 15, 2, 'W,5,R,5,0,3,1,3,1,3,1,3,2,3,E,0,2,1,2,1,2,1,2,2,2'))
+    cam_node.add(factory.tiled1(6, 21, 2, 'W,3,R,8,0,3,1,3,2,3,E,0,2,1,2,2,2'))
     cam_node.add(factory.rounded_platform(5, 2, 8, 6, z=0.01))
     cam_node.add(factory.rounded_platform(14, 2, 2, 5))
 #    cam_node.add(factory.tiled2())
@@ -31,9 +55,11 @@ def w11i():
     cam_node.add(factory.line(5, 5, 21))
     cam_node.add(factory.line(10, 2, 15))
     cam_node.add(factory.line(16, 0, 2))
-    cam_node.add(factory.line(8, 5, 8))
+    #cam_node.add(factory.line(8, 5, 8))
     cam_node.add(factory.veggie(7,30))
-    cam_node.add(factory.foe2(7,28,'sprites2/foe', 10,tags.foe))
+    cam_node.add(factory.foe2(7,22,'sprites2/foe', 10,tags.foe))
+    cam_node.add(factory.foe2(7,16, 'sprites2/foe', 10, tags.foe))
+    cam_node.add(factory.door(14,2, ['w11ia', 0]))
     return room
 
 def w11():

@@ -1,5 +1,10 @@
 sheet: "assets/smb2i.png"
 sprites:
+  door:
+    animations:
+      closed:
+        frames:
+          - quads: [0,0,16,32,0,0]
   veggie:
     boxes:
       - [-6, 6, 0, 8]
@@ -82,6 +87,16 @@ sprites:
         box: 0
         frames:
           - quads: [112, 0, 16, 32, -8, 0]
+      climb_idle:
+        box: 0
+        frames:
+          - quads: [176, 0, 16, 32, -8, 0]
+      climb:
+        box: 0
+        frames:
+          - quads: [176, 0, 16, 32, -8, 0]
+          - quads: [176, 0, 16, 32, -8, 0]
+            fliph: true
       lift:
         box: 0
         frames:

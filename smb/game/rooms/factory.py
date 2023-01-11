@@ -39,8 +39,10 @@ def room(world_width, world_height):
     ce.add_response(tags.goomba, tags.koopa, on_start=functions.hit_gk)
     ce.add_response(tags.goomba, tags.fire, on_start=functions.fire_hit_foe)
     # only for smb2
+    ce.add_response(tags.player, tags.door, on_start=functions.enable_door, on_end=functions.disable_door)
     ce.add_response(tags.player, tags.pickup_sensor, on_start=functions.enable_pickup, on_end=functions.disable_pickup)
     ce.add_response(tags.player, tags.pickup_sensor_platform, on_start=functions.enable_pickup_platform, on_end=functions.disable_pickup_platform)
+    ce.add_response(tags.player, tags.stairs, on_start=functions.enable_stairs, on_end=functions.disable_stairs)
     room.add_runner(ce)
     room.add_runner(monkey.scheduler())
     root = room.root()
@@ -84,6 +86,21 @@ def room(world_width, world_height):
     # room.set_on_start(pane)
     return room, cam, cam_node
 
+def door(x, y, world_to):
+    node = monkey.Node()
+    node.set_model(monkey.get_sprite('sprites2/door'))
+    node.set_position(x*16, y*16, 0.5)
+    node.add_component(monkey.collider(monkey.aabb(0,16,0,2), flags.foe, flags.player, tags.door))
+    node.user_data = {'world_to': world_to}
+    return node
+
+def stairs(x, y, height):
+    node = monkey.Node()
+    shape = monkey.aabb(0, 16, 0, height*16)
+    node.add_component(monkey.collider(shape, flags.foe, flags.player, tags.stairs))
+    node.set_position(x*16,y*16,0)
+    return node
+
 def veggie(x, y):
     node = monkey.Node()
     node.set_model(monkey.get_sprite('sprites2/veggie'))
@@ -112,14 +129,16 @@ def mario2(cam, x, y):
     node.add_component(monkey.dynamics())
     sm = monkey.state_machine()
     sm.add(monkey.walk_2d_player("pango", speed=state.mario_speed, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5,
-                                 keys={settings.fire_button: functions.pickup}))
+                                 keys={settings.fire_button: functions.pickup, settings.door_button: functions.enter_door}))
     sm.add(monkey.walk_2d_player("walk_item", speed=state.mario_speed, gravity=state.gravity, jump_height=80, time_to_jump_apex=0.5,
                                  walk_anim='walk_item', idle_anim='idle_item', keys={68: functions.pickup}))
+    sm.add(monkey.climb("climb", speed=state.climb_speed, anim='climb', anim_idle='climb_idle'))
     sm.add(monkey.idle("lift", "lift", exit_on_complete=True, exit_state='walk_item'))
+
     sm.set_initial_state("pango")
     node.add_component(sm)
     node.add_component(monkey.follow(cam, (0, 0, 5), (0, 1, 0)))
-    node.set_position(x * 16, y * 16, 0.1)
+    node.set_position(x * 16, y * 16, 1)
     return node
 
 def mario(cam, x, y):
@@ -171,17 +190,28 @@ def platform(w, h, tx, ty, x, y):
 
 def rounded_platform(x, y, w, h, pal=None, z=0):
     if w > 2:
-        dstring = '2,W,' + str(w) + ',R,' + str(h-1)+ ',0,3,R,' + str(w-2) + ',1,3,E,2,3,E,0,2,R,' + str(w-2) + ',1,2,E,2,2'
+        dstring = 'W,' + str(w) + ',R,' + str(h-1)+ ',0,3,R,' + str(w-2) + ',1,3,E,2,3,E,0,2,R,' + str(w-2) + ',1,2,E,2,2'
     else:
-        dstring = '2,W,' + str(w) + ',R,' + str(h-1) + ',0,3,2,3,E,0,2,2,2'
-    return tiled1(x, y, dstring, pal=pal, z=z)
+        dstring = 'W,' + str(w) + ',R,' + str(h-1) + ',0,3,2,3,E,0,2,2,2'
+    a = tiled1(x, y, 2, dstring, pal=pal, z=z)
+    shape1 = monkey.segment(0, h*16, w*16, h*16)
+    #node.set_position(x*16, y*16, 0)
+    a.add_component(monkey.collider(shape1, flags.platform_passthrough, 0, tags.platform))
+    return a
 
 
 
-def tiled1(x, y, model_desc, pal=None, z = 0):
+def animtiled(x, y, sheet, frames, pal=None, z=0):
+    node = monkey.Node()
+    node.set_model(monkey.models.tiled_animated(sheet=sheet, frames=frames, palette=pal))#'pal/0'))
+    node.set_position(x * 16, y * 16, z)
+    return node
+
+
+def tiled1(x, y, sheet, model_desc, pal=None, z = 0):
     node = monkey.Node()
     #model_desc = '1,W,1,0,0'
-    node.set_model(monkey.models.tiled(desc=model_desc, palette=pal))#'pal/0'))
+    node.set_model(monkey.models.tiled(sheet=sheet, desc=model_desc, palette=pal))#'pal/0'))
     node.set_position(x * 16, y * 16, z)
     return node
 

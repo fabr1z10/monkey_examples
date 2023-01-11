@@ -1,8 +1,9 @@
 import monkey
-from . import settings
+from .. import settings
+
 
 def change_room(room_id):
     def f():
         settings.room = room_id
         monkey.close_room()
-    return f
+    return monkey.actions.callfunc(f)

@@ -154,6 +154,21 @@ def fire_hit_foe(foe, fire, dist):
     fire.remove()
     foe_killed(foe, -50 if fire.x > foe.x else 50)
 
+def enable_door(player, foe, dist):
+    state.active_door = foe.id
+
+def disable_door(player, foe):
+    state.active_door = None
+
+def enable_stairs(player, foe, dist):
+    state.on_stairs = True
+
+def disable_stairs(player, foe):
+    state.on_stairs = False
+    if player.state == 'climb':
+        player.set_state('pango')
+
+
 def enable_pickup(player, foe, dist):
     state.pickup_item = foe.id
 
@@ -178,6 +193,16 @@ def bounce(item, n):
         if item.id in state.pickup_platform_item:
             monkey.get_node(state.pickup_platform_item[item.id]).active = True#()# = False
             del state.pickup_platform_item[item.id]
+
+
+def enter_door():
+    if state.on_stairs:
+        player = monkey.get_node(state.player_id)
+        player.set_state('climb')
+    elif state.active_door:
+        print(state.active_door)
+        wt = monkey.get_node(state.active_door).user_data['world_to']
+        util.change_room(wt[0], wt[1])()
 
 
 def pickup():

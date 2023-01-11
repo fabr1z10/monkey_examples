@@ -3,7 +3,7 @@ import monkey
 window_size = (256, 240)
 device_size = (256, 240)
 title = 'ciao belo!'
-room = 'w11i'
+room = 'w11ia'
 #shaders = (monkey.SHADER_COLOR, monkey.SHADER_TEXTURE)
 shaders = {
     monkey.SHADER_COLOR: 0,
@@ -11,6 +11,7 @@ shaders = {
     monkey.SHADER_TEXTURE_PALETTE: 0}
 
 fire_button = 68        # GLFW_KEY_D
+door_button = 265
 
 debug_collision = True
 

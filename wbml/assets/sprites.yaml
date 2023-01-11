@@ -1,62 +1,113 @@
-sheet: "assets/smb1.png"
+sheet: "assets/wbml2.png"
 sprites:
-  mario:
+  snake:
+    boxes:
+      - [-6,6,0,16]
+    animations:
+      walk:
+        box: 0
+        frames:
+          - quads: [40,28,14,20,-9,0]
+          - quads: [56,28,16,20,-11,0]
+      dead:
+        frames:
+          - quads: [72,29,18,19,-9,0]
+          - quads: [96,28,17,20,-9,0]
+  snake2:
+    boxes:
+      - [-6,6,0,16]
+    animations:
+      walk:
+        box: 0
+        frames:
+          - quads: [17,226,22,23,-14,0]
+          - quads: [40,226,21,23,-13,0]
+          - quads: [62,226,20,23,-12,0]
+      hit:
+        frames:
+          - quads: [83,226,22,23,-14,0]
+          - quads: [17,250,22,23,-14,0]
+          - quads: [40,250,22,23,-14,0]
+          - quads: [63,250,22,23,-14,0]
+      dead:
+        frames:
+          - quads: [107,226,31,15,-22,0]
+          - quads: [107,242,30,15,-21,0]
+  wb0:
     boxes:
       - [-6, 6, 0, 16]
     animations:
       walk:
         box: 0
         frames:
-          - quads: [16, 0, 16, 16, -8, 0]
-          - quads: [32, 0, 16, 16, -8, 0]
-          - quads: [48, 0, 16, 16, -8, 0]
-          - quads: [32, 0, 16, 16, -8, 0]
+          - quads: [0, 0, 21, 24, -10, 0]
+          - quads: [24, 0, 21, 24, -10, 0]
+          - quads: [48, 0, 22, 24, -10, 0]
+          - quads: [0, 0, 21, 24, -10, 0]
+          - quads: [72, 0, 21, 24, -10, 0]
+          - quads: [96, 0, 21, 24, -10, 0]
       idle:
         box: 0
         frames:
-          - quads: [0, 0, 16, 16, -8, 0]
-      pipe:
+          - quads: [0, 0, 21, 24, -10, 0]
+      enter:
         frames:
-          - quads: [0, 0, 16, 16, -8, 0]
+          - quads: [179,0,16,26,-9,0]
+
       jump:
         box: 0
         frames:
-          - quads: [80, 0, 16, 16, -8, 0]
-      dead:
-        box: 0
-        frames:
-          - quads: [96, 0, 16, 16, -8, 0]
-      slide:
-        box: 0
-        frames:
-          - quads: [176, 64, 16, 16, -8, 0]
-  supermario:
-    boxes:
-      - [ -6,36, 0, 32 ]
-    animations:
-      idle:
+          - quads: [120, 0, 21, 22, -10, 0]
+      knock:
         loop: true
-        box: 0
         frames:
-          - quads: [80, 16, 16, 32, -8, 0]
+          - ticks: 10
+            quads: [144,0,17,26,-8,0]
+          - ticks: 10
+            quads: [162,0,16,26,-8,0]
+  wb1:
+    boxes:
+      - [-6, 6, 0, 16]
+      - [10,20,10,50]
+    animations:
       walk:
         box: 0
         frames:
-          - ticks: 10
-            quads: [96, 16, 16, 32, -8, 0]
-          - ticks: 10
-            quads: [112, 16, 16, 32, -8, 0]
-          - ticks: 10
-            quads: [96, 16, 16, 32, -8, 0]
-          - ticks: 10
-            quads: [128, 16, 16, 32, -8, 0]
+          - quads: [0, 200, 21, 24, -10, 0]
+          - quads: [24, 200, 21, 24, -10, 0]
+          - quads: [48, 200, 22, 24, -10, 0]
+          - quads: [0, 200, 21, 24, -10, 0]
+          - quads: [72, 200, 21, 24, -10, 0]
+          - quads: [96, 200, 21, 24, -10, 0]
+      idle:
+        box: 0
+        frames:
+          - quads: [0, 200, 21, 24, -10, 0]
+      enter:
+        frames:
+          - quads: [179,0,16,26,-9,0]
       jump:
         box: 0
         frames:
-          - quads: [144, 16, 16, 32, -8, 0]
-      slide:
+          - quads: [120, 200, 21, 22, -10, 0]
+      attack1:
+        box: 0
         frames:
-          - quads: [192, 64, 16, 32, -8, 0]
+          - quads: [144,200,18,24,-10,0]
+          - quads: [168,200,26,24,-8,0]
+            attack: 1
+          - quads: [144,200,18,24,-10,0]
+      knock:
+        loop: false
+        frames:
+          - ticks: 10
+            quads: [144,0,17,26,-8,0]
+          - ticks: 10
+            quads: [162,0,16,26,-8,0]
+          - ticks: 10
+            quads: [144,0,17,26,-8,0]
+          - ticks: 10
+            quads: [162,0,16,26,-8,0]
   goomba:
     boxes:
       - [-8,8,0,16]
@@ -77,6 +128,120 @@ sprites:
       dead2:
         frames:
           - quads: [112, 0, 16, 16, -8, 0]
+  portcullis:
+    animations:
+      default:
+        frames:
+          - quads: [288, 160, 32, 32, 0, 0]
+  door:
+    animations:
+      closed:
+        loop: false
+        frames:
+          - quads: [128, 96, 32, 32,0,0]
+      open:
+        loop: false
+        frames:
+          - quads: [160, 96, 32, 32, 0,0]
+      bar:
+        loop: false
+        frames:
+          - quads: [128, 128, 32, 32,0,0]
+      barred:
+        frames:
+          - quads: [160, 128, 32, 32,0,0]
+  creature1:
+    animations:
+      default:
+        frames:
+          - quads: [216, 36, 56, 60, 0, 0]
+  creature2:
+    animations:
+      default:
+        frames:
+          - quads: [272, 33, 64, 63, 0, 0]
+  sword:
+    animations:
+      default:
+        frames:
+          - quads: [144, 167, 38, 25, 0, 0]
+  cocktail:
+    animations:
+      default:
+        frames:
+          - quads: [184, 168, 32, 24, 0, 0]
+  beermug:
+    animations:
+      default:
+        frames:
+          - quads: [257, 167, 23, 24, 0, 0]
+  exit:
+    animations:
+      default:
+        frames:
+          - quads: [216, 180, 40, 12, 0, 0]
+  hand:
+    animations:
+      default:
+        frames:
+          - quads: [200, 142, 24, 26, 0, 0]
+  coin:
+    boxes:
+      - [ -4,4,0,14 ]
+    animations:
+      default:
+        box: 0
+        loop: true
+        frames:
+          - ticks: 5
+            quads: [120,34,13,14,-7,0]
+          - ticks: 5
+            quads: [120,49,11,14,-6,0]
+          - ticks: 5
+            quads: [121,64,4,14,-2,0]
+          - ticks: 5
+            quads: [120,49,11,14,-6,0]
+            fliph: true
+      fall:
+        box: 0
+        loop: false
+        frames:
+          - ticks: 5
+            quads: [120,34,13,14,-7,0]
+          - ticks: 5
+            quads: [120,49,11,14,-6,0]
+          - ticks: 5
+            quads: [121,64,4,14,-2,0]
+          - ticks: 5
+            quads: [120,49,11,14,-6,0]
+            fliph: true
+          - ticks: 10
+            quads: [120,34,13,14,-7,0]
+          - ticks: 10
+            quads: [120,49,11,14,-6,0]
+          - ticks: 10
+            quads: [121,64,4,14,-2,0]
+          - ticks: 10
+            quads: [120,49,11,14,-6,0]
+            fliph: true
+          - ticks: 5
+            quads: [134, 34, 11, 9, -6, 0]
+          - ticks: 5
+            quads: [134, 34, 11, 9, -6, 0]
+            fliph: true
+          - ticks: 3
+            quads: [134, 34, 11, 9, -6, 0]
+          - ticks: 3
+            quads: [134, 34, 11, 9, -6, 0]
+            fliph: true
+          - ticks: 1
+            quads: [134, 34, 11, 9, -6, 0]
+          - ticks: 1
+            quads: [134, 34, 11, 9, -6, 0]
+            fliph: true
+          - ticks: 1
+            quads: [134, 44, 12, 5, -6, 0]
+
 #  boxes:
 #    - [-6, 6, 0, 16]
 #koopa:
