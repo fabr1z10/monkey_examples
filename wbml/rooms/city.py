@@ -1,11 +1,10 @@
 ################## city of wonderland
 
 import monkey
-from .. import settings
+import settings
 from . import actions
-from .factory import *
 from . import gamestate
-import math
+
 
 def create_hand():
     game_node = monkey.get_node(settings.ids.game_node)

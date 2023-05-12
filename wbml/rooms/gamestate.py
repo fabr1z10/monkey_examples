@@ -1,5 +1,4 @@
-import monkey
-from .. import settings
+from ... import settings
 
 # shared by all rooms
 player_position = (2, 14)

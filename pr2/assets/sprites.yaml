@@ -1,0 +1,166 @@
+sheet: "smb1.png"
+sprites:
+#  mario:
+#    boxes:
+#      - [-6, 6, 0, 16]
+#    animations:
+#      walk:
+#        box: 0
+#        frames:
+#          - tex: [16, 0, 16, 16]
+#            anchor: [8, 0]
+#          - tex: [32, 0, 16, 16]
+#            anchor: [8, 0]
+#          - tex: [48, 0, 16, 16]
+#            anchor: [8, 0]
+#          - tex: [32, 0, 16, 16]
+#            anchor: [8, 0]
+#          - quads: [16, 0, 16, 16, -8, 0]
+#          - quads: [32, 0, 16, 16, -8, 0]
+#          - quads: [48, 0, 16, 16, -8, 0]
+#          - quads: [32, 0, 16, 16, -8, 0]
+#      idle:
+#        box: 0
+#        frames:
+#          - quads: [0, 0, 16, 16, -8, 0]
+#      pipe:
+#        frames:
+#          - quads: [0, 0, 16, 16, -8, 0]
+#      jump:
+#        box: 0
+#        frames:
+#          - quads: [80, 0, 16, 16, -8, 0]
+#      dead:
+#        box: 0
+#        frames:
+#          - quads: [96, 0, 16, 16, -8, 0]
+#      slide:
+#        box: 0
+#        frames:
+#          - quads: [176, 64, 16, 16, -8, 0]
+  supermario:
+    boxes:
+      - [ -6,36, 0, 32 ]
+    animations:
+      idle:
+        loop: true
+        box: 0
+        frames:
+          - quads: [80, 16, 16, 32, -8, 0]
+      walk:
+        box: 0
+        frames:
+          - ticks: 10
+            quads: [96, 16, 16, 32, -8, 0]
+          - ticks: 10
+            quads: [112, 16, 16, 32, -8, 0]
+          - ticks: 10
+            quads: [96, 16, 16, 32, -8, 0]
+          - ticks: 10
+            quads: [128, 16, 16, 32, -8, 0]
+      jump:
+        box: 0
+        frames:
+          - quads: [144, 16, 16, 32, -8, 0]
+      slide:
+        frames:
+          - quads: [192, 64, 16, 32, -8, 0]
+  goomba:
+    boxes:
+      - [-8,8,0,16]
+    animations:
+      walk:
+        box: 0
+        loop: true
+        frames:
+          - quads: [112, 0, 16, 16, -8, 0]
+          - quads: [128, 0, 16, 16, -8, 0]
+      idle:
+        box: 0
+        frames:
+          - quads: [112, 0, 16, 16, -8, 0]
+      dead:
+        frames:
+          - quads: [144, 0, 16, 16, -8, 0]
+      dead2:
+        frames:
+          - quads: [112, 0, 16, 16, -8, 0]
+#  boxes:
+#    - [-6, 6, 0, 16]
+#koopa:
+#  sheet: "assets/smb1.png"
+#  boxes:
+#    - [-8, 8, 0, 24]
+#    - [-8, 8, 0, 16]
+#  animations:
+#    idle:
+#      box: 0
+#      elements:
+#        - quads: [[0, 16, 16, 32, 8, 0]]
+#          ticks: 5
+#        - quads: [[16, 16, 16, 32, 8, 0]]
+#          ticks: 5
+#    walk:
+#      box: 0
+#      elements:
+#        - quads: [[0, 16, 16, 32, 8, 0]]
+#          ticks: 5
+#        - quads: [[16, 16, 16, 32, 8, 0]]
+#          ticks: 5
+#    hide:
+#      box: 1
+#      elements:
+#        - quads: [[32, 32, 16, 16, 8, 0]]
+#          ticks: 5
+#
+#    hide_blink:
+#      box: 1
+#      elements:
+#        - quads: [[32, 32, 16, 16, 8, 0]]
+#        - quads: [[32, 16, 16, 16, 8, 0]]
+  flag:
+    animations:
+      idle:
+        frames:
+          - quads: [224,64,16,16,0,0]
+  coin_counter:
+    animations:
+      walk:
+        box: 0
+        frames:
+          - quads: [128, 80, 16, 16,0,0]
+          - quads: [144, 80, 16, 16,0,0]
+          - quads: [160, 80, 16, 16,0,0]
+          - quads: [144, 80, 16, 16,0,0]
+#  items:
+#    - [128,80,16,16]
+#    - [144,80,16,16]
+#    - [160,80,16,16]
+#  animations:
+#    def:
+#      elements: [0, 1, 2]
+##        - quads: [[128,80,16,16]]
+##          ticks: 5
+##        - quads: [[144,80,16,16]]
+##          ticks: 5
+##        - quads: [[160,80,16,16]]
+##          ticks: 5
+##        - quads: [[144,80,16,16]]
+##          ticks: 5
+#fire:
+#  sheet: "assets/smb1.png"
+#  boxes:
+#    - [-4,4,-4,4]
+#  animations:
+#    default:
+#      loop: true
+#      box: 0
+#      elements:
+#        - quads: [[176,112,16,16,8,8]]
+#          ticks: 5
+#        - quads: [[192,112,16,16,8,8]]
+#          ticks: 5
+#        - quads: [[208,112,16,16,8,8]]
+#          ticks: 5
+#        - quads: [[224,112,16,16,8,8]]
+#          ticks: 5

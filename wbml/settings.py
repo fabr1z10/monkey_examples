@@ -43,11 +43,11 @@ class tags:
     gate = 14
 
 
-mario_states = [
-    {'model': 'sprites/wb0', 'size': monkey.vec3(10, 14, 0), 'center': monkey.vec3(5, 0, 0)},
-    {'model': 'sprites/wb1', 'size': monkey.vec3(10, 30, 0), 'center': monkey.vec3(5, 0, 0)},
-    {'model': 'sprites/fierymario', 'size': monkey.vec3(10, 30, 0), 'center': monkey.vec3(5, 0, 0)}
-]
+# mario_states = [
+#     {'model': 'sprites/wb0', 'size': monkey.vec3(10, 14, 0), 'center': monkey.vec3(5, 0, 0)},
+#     {'model': 'sprites/wb1', 'size': monkey.vec3(10, 30, 0), 'center': monkey.vec3(5, 0, 0)},
+#     {'model': 'sprites/fierymario', 'size': monkey.vec3(10, 30, 0), 'center': monkey.vec3(5, 0, 0)}
+# ]
 
 class ids:
     game_node = None

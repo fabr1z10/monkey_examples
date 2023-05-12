@@ -1,5 +1,5 @@
 import monkey
-from .. import settings
+from ... import settings
 from . import gamestate
 from . import actions
 from . import factory
@@ -47,13 +47,13 @@ def move_hand_right():
     if gamestate.hand_pos == 1:
         return
     gamestate.hand_pos += 1
-    monkey.get_node(settings.ids.hand).set_position(hand_pos_x[gamestate.hand_pos+1] * 8, hand_pos_y * 8, 1)
+    monkey.get_node(settings.ids.hand).set_position(hand_pos_x[gamestate.hand_pos + 1] * 8, hand_pos_y * 8, 1)
 
 def move_hand_left():
     if gamestate.hand_pos == -1:
         return
     gamestate.hand_pos -= 1
-    monkey.get_node(settings.ids.hand).set_position(hand_pos_x[gamestate.hand_pos+1] * 8, hand_pos_y * 8, 1)
+    monkey.get_node(settings.ids.hand).set_position(hand_pos_x[gamestate.hand_pos + 1] * 8, hand_pos_y * 8, 1)
 
 def select():
     monkey.get_node(settings.ids.hand).active=False

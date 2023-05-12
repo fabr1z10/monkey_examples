@@ -1,5 +1,5 @@
 import monkey
-from .. import settings
+from ... import settings
 
 
 def change_room(room_id):

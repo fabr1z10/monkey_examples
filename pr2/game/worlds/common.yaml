@@ -1,0 +1,13 @@
+tiles:
+  grass: [64, 48, 16, 16]
+  ground: [96, 32, 16, 16]
+multi_tiles:
+  a:
+    top_left: [0, 32, 16, 16]
+    top: [16, 32, 16, 16]
+    top_right: [32, 32, 16, 16]
+    left: [0, 48, 16, 16]
+    center: [16, 48, 16, 16]
+    right: [32, 48, 16, 16]
+  trunk_vert:
+    top_

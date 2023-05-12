@@ -1,0 +1,437 @@
+sprites:
+#  mario:
+#    batch: 0
+#    sheet: "smb2i.png"
+#    boxes:
+#      - [-6, 6, 0, 16]
+#    animations:
+#      walk:
+#        box: 0
+#        frames:
+#          - quads: [192,13,16,19,-8,0]
+#          - quads: [208,12,16,20,-8,0]
+#      idle:
+#        box: 0
+#        frames:
+#          - quads: [192,13,16,19,-8,0]
+#      jump:
+#        box: 0
+#        frames:
+#          - quads: [224,12,16,20,-8,0]
+#      walk_item:
+#        box: 0
+#        frames:
+#          - quads: [192, 45, 16, 19, -8, 0]
+#          - quads: [224,12,16,20,-8,0]
+#      idle_item:
+#        box: 0
+#        frames:
+#          - quads: [192, 45, 16, 19, -8, 0]
+#      lift:
+#        box: 0
+#        frames:
+#          - quads: [240, 13, 16, 19, -8, 0]
+#            ticks: 16
+#          - quads: [224,32,16,16,-8,0]
+#            ticks: 3
+#          - quads: [240,32,16,16,-8,0]
+#            ticks: 7
+#      dead:
+#        frames:
+#          - quads: [208, 40, 16, 24, -8, 0]
+#      climb_idle:
+#        box: 0
+#        frames:
+#          - quads: [240, 61, 16, 19, -8, 0]
+#      climb:
+#        box: 0
+#        frames:
+#          - quads: [240, 61, 16, 19, -8, 0]
+#          - quads: [240, 61, 16, 19, -8, 0]
+#            fliph: true
+  supermario:
+    batch: 0
+    sheet: "smb2i.png"
+    boxes:
+      - [-6, 6, 0, 16]
+    animations:
+      walk:
+        box: 0
+        frames:
+          - tex: [64, 0, 16, 32]
+            anchor: [8, 0]
+          - tex: [80, 0, 16, 32]
+            anchor: [8, 0]
+      idle:
+        box: 0
+        frames:
+          - tex: [64, 0, 16, 32]
+            anchor: [8, 0]
+      jump:
+        box: 0
+        frames:
+          - tex: [96, 0, 16, 32]
+            anchor: [8, 0]
+      walk_item:
+        box: 0
+        frames:
+          - tex: [112, 0, 16, 32]
+            anchor: [8, 0]
+          - tex: [96, 0, 16, 32]
+            anchor: [8, 0]
+      idle_item:
+        box: 0
+        frames:
+          - tex: [112, 0, 16, 32]
+            anchor: [8, 0]
+      climb_idle:
+        box: 0
+        frames:
+          - tex: [176, 0, 16, 32]
+            anchor: [8, 0]
+      climb:
+        box: 0
+        frames:
+          - tex: [176, 0, 16, 32]
+            anchor: [8, 0]
+          - tex: [176, 0, 16, 32]
+            anchor: [8, 0]
+            fliph: True
+      lift:
+        box: 0
+        frames:
+          - tex: [128, 0, 16, 32]
+            anchor: [8, 0]
+            ticks: 16
+          - tex: [144, 0, 16, 16]
+            anchor: [8, 0]
+            ticks: 3
+          - tex: [160,0,16,16]
+            anchor: [8, 0]
+            ticks: 7
+  veg1:
+    boxes:
+      - [-6,6,0,8]
+    animations:
+      idle:
+        box: 0
+        frames:
+          - tex: [48,48,16,16]
+            anchor: [8, 0]
+#  veg1a:
+#    batch: 0
+#    sheet: "smb2i.png"
+#    boxes:
+#      - [-6,6,0,8]
+#    animations:
+#      idle:
+#        box: 0
+#        frames:
+#          - quads: [64,64,16,16,-8,0]
+  veg2:
+    boxes:
+      - [-6,6,0,8]
+    animations:
+      idle:
+        box: 0
+        frames:
+          - tex: [48,64,16,16]
+            anchor: [8, 0]
+  potion:
+    boxes:
+      - [-6,6,0,8]
+    animations:
+      idle:
+        box: 0
+        frames:
+          - tex: [96,96,16,16]
+            anchor: [8, 0]
+          - tex: [112,96,16,16]
+            anchor: [8, 0]
+          - tex: [128,96,16,16]
+            anchor: [8, 0]
+          - tex: [144,96,16,16]
+            anchor: [8, 0]
+
+  veggie:
+    batch: 0
+#    sheet: "smb2i.png"
+    boxes:
+      - [-6, 6, 0, 8]
+    animations:
+      idle:
+        box: 0
+        frames:
+          - tex: [48,32,16,8]
+            anchor: [8, 0]
+          - tex: [48,40,16,8]
+            anchor: [8, 0]
+          - tex: [64,32,16,8]
+            anchor: [8, 0]
+          - tex: [64,40,16,8]
+            anchor: [8, 0]
+      up:
+        box: 0
+        loop: false
+        frames:
+          - tex: [48,48,16,6]
+            anchor: [8, 22]
+            ticks: 6
+          - tex: [48,48,16,8]
+            anchor: [8, 22]
+            ticks: 7
+          - tex: [48,48,16,16]
+            anchor: [8, 18]
+            ticks: 4
+          - tex: [48,48,16,14]
+            anchor: [8,22]
+            ticks: 1
+          - tex: [48,48,16,16]
+            anchor: [8, 16]
+            ticks: 2
+          - tex: [48,48,16,16]
+            anchor: [8, 15]
+            ticks: 4
+          - tex: [48,48,16,16]
+            anchor: [8, 10]
+            ticks: 3
+          - tex: [48,48,16,16]
+            anchor: [8, 0]
+#  cherry:
+#    batch: 0
+#    sheet: "smb2i.png"
+#    boxes:
+#      - [-6,6,0,16]
+#    animations:
+#      idle:
+#        box: 0
+#        loop: true
+#        frames:
+#          - quads: [144, 80, 16, 16, -8, 0]
+#          - quads: [160, 80, 16, 16, -8, 0]
+#          - quads: [176, 80, 16, 16, -8, 0]
+#          - quads: [160, 80, 16, 16, -8, 0]
+#
+#  explosion:
+#    batch: 0
+#    sheet: "smb2i.png"
+#    animations:
+#      idle:
+#        loop: false
+#        frames:
+#          - quads: [112, 80, 16, 16, -8, 0]
+#            ticks: 5
+#          - quads: [112, 80, 16, 16, -8, 0]
+#            ticks: 5
+#            fliph: true
+#          - quads: [128, 80, 16, 16, -8, 0]
+#            ticks: 5
+#          - quads: [128, 80, 16, 16, -8, 0]
+#            ticks: 5
+#            fliph: true
+#
+#  pow:
+#    batch: 0
+#    sheet: "smb2i.png"
+#    boxes:
+#      - [-8, 8, 0, 16]
+#    animations:
+#      idle:
+#        box: 0
+#        frames:
+#          - quads: [112, 64, 16, 16, -8, 0]
+#          - quads: [128, 64, 16, 16, -8, 0]
+#          - quads: [144, 64, 16, 16, -8, 0]
+#          - quads: [160, 64, 16, 16, -8, 0]
+#          - quads: [176, 64, 16, 16, -8, 0]
+#          - quads: [192, 64, 16, 16, -8, 0]
+#          - quads: [208, 64, 16, 16, -8, 0]
+#  ninji:
+#    batch: 0
+#    sheet: "ninji.png"
+#    boxes:
+#      - [-6,6,0,16]
+#    animations:
+#      jump:
+#        box: 0
+#        frames:
+#          - quads: [0, 0, 16, 16, -8, 0]
+#      idle:
+#        box: 0
+#        frames:
+#          - quads: [16, 0, 16, 16, -8, 0]
+#  ninji_item:
+#    batch: 0
+#    sheet: "ninji.png"
+#    boxes:
+#      - [ -6, 6, 0, 16 ]
+#    animations:
+#      walk:
+#        box: 0
+#        frames:
+#          - quads: [0, 0, 16, 16, -8, 0]
+#            flipv: true
+#  hoopster:
+#    batch: 0
+#    sheet: "hoopster.png"
+#    boxes:
+#      - [-6, 6, 0, 16]
+#    animations:
+#      up:
+#        box: 0
+#        frames:
+#          - quads: [0, 0, 16, 16, -8, 0]
+#            flipv: true
+#          - quads: [16, 0, 16, 16, -8, 0]
+#            flipv: true
+#      down:
+#        box: 0
+#        frames:
+#          - quads: [0, 0, 16, 16, -8, 0]
+#          - quads: [16, 0, 16, 16, -8, 0]
+#
+#  tweeter:
+#    batch: 0
+#    sheet: "tweeter.png"
+#    boxes:
+#      - [ -6, 6, 0, 16 ]
+#    animations:
+#      walk:
+#        box: 0
+#        frames:
+#          - quads: [0, 0, 16, 16, -8, 0]
+#      dead:
+#        frames:
+#          - quads: [0, 0, 16, 16, -8, 0]
+#            flipv: true
+#  tweeter_item:
+#    batch: 0
+#    sheet: "tweeter.png"
+#    boxes:
+#      - [ -6, 6, 0, 16 ]
+#    animations:
+#      walk:
+#        box: 0
+#        frames:
+#          - quads: [0, 0, 16, 16, -8, 0]
+#            flipv: true
+#  shyguy_item:
+#    batch: 0
+#    sheet: "shyguy.png"
+#    boxes:
+#      - [ -6, 6, 0, 16 ]
+#    animations:
+#      walk:
+#        box: 0
+#        loop: true
+#        frames:
+#          - quads: [0, 0, 16, 16, -8, 0]
+#            ticks: 6
+#            flipv: true
+#          - quads: [16, 0, 16, 16, -8, 0]
+#            ticks: 7
+#            flipv: true
+#  door_black:
+#    batch: 0
+#    sheet: "smb2i.png"
+#    animations:
+#      closed:
+#        frames:
+#          - quads: [0, 80, 16, 32, 0, 0]
+#      open:
+#        loop: false
+#        frames:
+#          - quads: [0, 80, 16, 32, 0, 0]
+#          - quads: [16, 80, 16, 32, 0, 0]
+#          - quads: [32, 80, 16, 32, 0, 0]
+#          - quads: [48, 80, 16, 32, 0, 0]
+#          - quads: [64, 80, 16, 32, 0, 0]
+#          - quads: [80, 80, 16, 32, 0, 0]
+  shyguy:
+    batch: 0
+#    sheet: "shyguy.png"
+    boxes:
+      - [ -6, 6, 0, 16 ]
+    animations:
+      walk:
+        box: 0
+        frames:
+          - tex: [16, 0, 16, 16]
+            anchor: [8, 0]
+          - tex: [32, 0, 16, 16]
+            anchor: [8, 0]
+      dead:
+        frames:
+          - tex: [0, 0, 16, 16]
+            anchor: [8, 0]
+            flipv: true
+      up:
+        box: 0
+        loop: true
+        frames:
+          - tex: [0,0,16,16]
+            anchor: [8, 22]
+            ticks: 6
+          - tex: [16,0,16,16]
+            anchor: [8, 22]
+            ticks: 7
+          - tex: [0,0,16,16]
+            anchor: [8, 18]
+            ticks: 4
+          - tex: [16,0,16,16]
+            anchor: [8, 22]
+            ticks: 1
+            flipv: true
+          - tex: [0,0,16,16]
+            anchor: [8,16]
+            ticks: 2
+            flipv: true
+          - tex: [16,0,16,16]
+            anchor: [8,15]
+            ticks: 4
+            flipv: true
+          - tex: [0,0,16,16]
+            anchor: [8, 10]
+            ticks: 3
+            flipv: true
+          - tex: [16,0,16,16]
+            anchor: [8,0]
+            loop_frame: true
+            flipv: true
+          - tex: [0,0,16,16]
+            anchor: [8, 0]
+            flipv: true
+#
+#
+##  door:
+##    animations:
+##      closed:
+##        frames:
+##          - quads: [0,0,16,32,0,0]
+##
+##  veggie_item:
+##    boxes:
+##      - [-8,8,0,16]
+##    animations:
+##      up:
+##        box: 0
+##        loop: false
+##        frames:
+##          - quads: [48,48,16,6,-8,-22]
+##            ticks: 6
+##          - quads: [48,48,16,8,-8,-22]
+##            ticks: 7
+##          - quads: [48,48,16,16,-8,-18]
+##            ticks: 4
+##          - quads: [48,48,16,14,-8,-22]
+##            ticks: 1
+##          - quads: [48,48,16,16,-8,-16]
+##            ticks: 2
+##          - quads: [48,48,16,16,-8,-15]
+##            ticks: 4
+##          - quads: [48,48,16,16,-8,-10]
+##            ticks: 3
+##          - quads: [48,48,16,16,-8,0]
+##
+#
+#
