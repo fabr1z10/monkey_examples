@@ -163,13 +163,13 @@ sprites:
         box: 0
         frames:
           - tex: [48,32,16,8]
-            anchor: [8, 0]
+            anchor: [0, 0]
           - tex: [48,40,16,8]
-            anchor: [8, 0]
+            anchor: [0, 0]
           - tex: [64,32,16,8]
-            anchor: [8, 0]
+            anchor: [0, 0]
           - tex: [64,40,16,8]
-            anchor: [8, 0]
+            anchor: [0, 0]
       up:
         box: 0
         loop: false
@@ -362,7 +362,7 @@ sprites:
             anchor: [8, 0]
       dead:
         frames:
-          - tex: [0, 0, 16, 16]
+          - tex: [16, 0, 16, 16]
             anchor: [8, 0]
             flipv: true
       up:

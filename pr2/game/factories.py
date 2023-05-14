@@ -132,7 +132,96 @@ def platform_border(**kwargs):
     return monkey_toolkit.platformer.platform_border(settings.main_batch, pos[0], pos[1], size[0], size[1], tile, pal=pal, z=z, platform_type=platform_type)
 
 
+def _column(**kwargs):
+    height = kwargs.get('height')
+    pos = kwargs.get('pos')
+    ts = settings.tile_size[0]
+    z = kwargs.get('z', 0)
+    b = monkey.models.quad(settings.main_batch, frames=[
+        {
+            'quads': [
+                {
+                    'size': (ts, (height - 1) * ts),
+                    'tex_coords': kwargs['tile_0'],
+                    'repeat': (1, height - 1),
+                    'palette': 0
+                },
+                {
+                    'size': (ts, ts),
+                    'tex_coords': kwargs['tile_1'],
+                    'repeat': (1, 1),
+                    'palette': 0,
+                    'pos': [0, (height - 1) * ts]
+                }
+            ]
+        }
+    ])
+    node = monkey.Node()
+    node.set_model(b)
+    node.set_position(pos[0] * ts, pos[1] * ts, z)
+    return node
 
+
+def tree(**kwargs):
+    return _column(**dict(kwargs, tile_0=[80, 48, 16, 16], tile_1=[80,32, 16, 16], z=-0.05))
+
+
+
+
+
+
+
+def stairs(**kwargs):
+    pos = kwargs.get('pos')
+    h = kwargs.get('height')
+    ts = settings.tile_size[0]
+    b = monkey.models.quad(settings.main_batch, frames=[
+        {
+            'ticks': 5,
+            'quads': [
+                {
+
+                    'size': (ts, (h - 1) * ts),
+                    'tex_coords': [96, 48, 16, 16],
+                    'repeat': (1, h-1),
+                    'palette': 0
+                },
+                {
+
+                    'size': (ts, ts),
+                    'tex_coords': [80, 32, 16, 16],
+                    'repeat': (1, 1),
+                    'palette': 0,
+                    'pos': [0, (h-1) * ts]
+                }
+            ]
+        },
+        {
+            'ticks': 5,
+            'quads': [
+                {
+                    'size': (ts, (h - 1) * ts),
+                    'tex_coords': [112, 48, 16, 16],
+                    'repeat': (1, h - 1),
+                    'palette': 0
+                },
+                {
+                    'size': (ts, ts),
+                    'tex_coords': [80, 32, 16, 16],
+                    'repeat': (1, 1),
+                    'palette': 0,
+                    'pos': [0, (h - 1) * ts]
+                }
+            ]
+        },
+
+    ])
+    node = monkey.Node()
+    node.set_model(b)
+    shape = monkey.aabb(0, ts, 0, h * ts)
+    node.add_component(monkey.collider(shape, settings.Flags.foe, settings.Flags.player, settings.Tags.ladder))
+    node.set_position(pos[0] * ts, pos[1] * ts, 0)
+    return node
 
 
 
@@ -281,7 +370,7 @@ def ninji(x, y, args, **kwargs):
 
 def veg(**kwargs):
     pos = kwargs['pos']
-    return smb2_item(pos[0], pos[1], **dict(kwargs, tag=settings.Tags.collectible_item, speed=0, size=[8,8,0], walk_anim='idle', jump_anim='idle'))
+    return smb2_item(pos[0], pos[1], **dict(kwargs, tag=settings.Tags.collectible_item, speed=0, size=[8,8,0], walk_anim='idle', jump_anim='idle', flip=False))
 
 
 
@@ -334,6 +423,8 @@ factory_map = {
     'waterfalls': wfalls,
     'shyguy': smb2_foe,
     'veg': veg,
-    'trunk_vert': trunk_vert
+    'trunk_vert': trunk_vert,
+    'vine': stairs,
+    'tree': tree
 
 }

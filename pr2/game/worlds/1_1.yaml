@@ -77,6 +77,16 @@ world:
           pos: [41, 2]
         - height: 3
           pos: [46, 2]
+    - class: vine
+      items:
+        - height: 10
+          pos: [32, 2]
+    - class: tree
+      items:
+        - height: 5
+          pos: [7, 2]
+        - height: 6
+          pos: [9, 2]
 #                 'model': 'sprites2/veggie',
 #                 'size': (8, 8, 0),
 #                 'speed': 0,

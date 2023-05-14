@@ -8,7 +8,9 @@ from . import factories
 
 collision_response = [
     monkey_toolkit.globals.CollisionResponse(monkey_toolkit.tags.player, settings.Tags.collectible_item,
-        on_start=actions.enable_pickup, on_end=actions.disable_pickup)
+        on_start=actions.enable_pickup, on_end=actions.disable_pickup),
+    monkey_toolkit.globals.CollisionResponse(monkey_toolkit.tags.player_attack, settings.Tags.generic_foe,
+        on_start=actions.foe_is_hit)
 
 ]
 

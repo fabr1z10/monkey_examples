@@ -29,14 +29,19 @@ tilesets = {
 }
 
 class Flags:
+    player = 1
+    platform = 2
+    foe = 4
     foe_platform = 1 << 9
 
 class Tags:
+    ladder = 10
     shyguy = 100
     foe_platform_sensor = 101
     collectible_item = 102
     generic_foe = 200
     generic_collectible = 201
+
 
 start_positions = {
     'smb2_world_1_1b': [
