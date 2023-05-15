@@ -5,13 +5,15 @@ import monkey_toolkit.platformer
 from . import settings
 from . import actions
 from . import factories
+from . import facmap
 
 collision_response = [
     monkey_toolkit.globals.CollisionResponse(monkey_toolkit.tags.player, settings.Tags.collectible_item,
         on_start=actions.enable_pickup, on_end=actions.disable_pickup),
     monkey_toolkit.globals.CollisionResponse(monkey_toolkit.tags.player_attack, settings.Tags.generic_foe,
-        on_start=actions.foe_is_hit)
-
+        on_start=actions.foe_is_hit),
+    monkey_toolkit.globals.CollisionResponse(monkey_toolkit.tags.player, settings.Tags.foe_platform_sensor,
+        on_start=actions.enable_pickup_platform, on_end=actions.disable_pickup_platform)
 ]
 
 
@@ -27,16 +29,6 @@ def world_1_1a():
 
 
 
-def enable_pickup_platform(player, foe, dist):
-    settings.pickup_item = foe.get_parent().get_parent().id
-    settings.pickup_platform_item[settings.pickup_item] = foe.get_parent().id
-
-
-
-
-def disable_pickup_platform(player, foe):
-    settings.pickup_item = None
-    #state.pickup_platform_item = None
 
 def smb2_world_1_1c():
     settings.on_restart = actions.on_restart
@@ -113,7 +105,7 @@ def ciao():
             root = room.root()
             for d in world['desc']:
                 cl = d['class']
-                factory = factories.factory_map[cl]
+                factory = facmap.factory_map[cl]
                 for item in d['items']:
                     clones = len(item['pos']) // 2
                     for i in range(0, clones):
@@ -126,7 +118,7 @@ def ciao():
                 start_pos = start_positions[settings.start_position]
                 p0 = start_pos['pos']
                 right = start_pos.get('right', True)
-                player = factories.player(p0[0], p0[1])
+                player = factories.player(pos=p0)
                 settings.player_id = player.id
                 if not right:
                     player.flip_x = True

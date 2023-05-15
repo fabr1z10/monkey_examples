@@ -21,16 +21,27 @@ def enable_pickup(player, foe, dist):
     settings.pickup_item = foe.id
     print('pickup item is now', settings.pickup_item)
 
+
 # this is called when player leaves a foe platform sensor or a collectible hotspot
 def disable_pickup(player, foe):
     settings.pickup_item = None
     print('pickup item cleared')
 
 
+def enable_pickup_platform(player, foe, dist):
+    settings.pickup_item = foe.get_parent().get_parent().id
+    settings.pickup_platform_item[settings.pickup_item] = foe.get_parent().id
+
+
+def disable_pickup_platform(player, foe):
+    settings.pickup_item = None
+    #state.pickup_platform_item = None
+
+
 def create_shoot_item(x, y, z, id):
     #sitem =get_shoot_item(id)
     node = monkey.Node()
-    pal = id.get('palette', 0)
+    pal = id.get('pal', 0)
     node.set_model(monkey.get_sprite(settings.main_batch, id['model']), pal=pal)
     #if pal:
     #    node.set_palette(pal)
@@ -110,19 +121,28 @@ def pow_bounce(item, n):
         monkey.play(s)
         item.remove()
 
+def cippo(item, n):
+    if n == 1:
+        item.remove()
+
 
 def bounce(item, n):
     print('bounce=',n)
     if n == 2:
         id = item.user_data.get('foe_item')
         print('foe item is ', id)
-        from rooms.factories import make_character
+        #from rooms.factories import make_character
         par = item.get_parent()
         item.active = False
         item.remove()
-        if id:
-            node = make_character(item.x / 16, item.y /16, id)
-            par.add(node)
+
+        new_pos = [item.x/16, item.y/16]
+        id[1].update(pos=new_pos, z=item.z)
+        node = id[0](**id[1])
+        par.add(node)
+        #if id:
+        #    node = make_character(item.x / 16, item.y /16, id)
+        #    par.add(node)
 
         # item.get_dynamics().set_velocity(0, 0, 0)
         # item.set_state('walk')

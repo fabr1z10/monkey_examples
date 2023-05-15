@@ -36,6 +36,7 @@ world:
         - size: [22, 12]
           pos: [5, 2]
           z: -0.1
+
     - class: shyguy
       items:
         - model: 'sprites2/shyguy'
@@ -44,14 +45,20 @@ world:
           tag: 200
           pal: 1
           idle_anim: walk
-          pos: [14, 2, 17, 2]
+          pos: [14, 2, 17, 2, 38, 2, 44, 2]
         - model: 'sprites2/shyguy'
           size: [10, 14, 0]
           speed: 10
           tag: 200
           pal: 0
           idle_anim: walk
-          pos: [30, 9]
+          pos: [30, 9, 55, 5]
+    - class: tweeter
+      items:
+        - model: 'sprites2/tweeter'
+          speed: 10
+          tag: 200
+          pos: [21, 2, 40, 2]
     - class: veg
       items:
         - model: 'sprites2/veggie'
@@ -63,12 +70,20 @@ world:
           shoot_item:
             model: 'sprites2/veg2'
             bounce_on_walls: False
-          pos: [8, 2, 15, 2, 27, 9, 28, 9, 29, 9]
+          pos: [8, 2, 15, 2, 27, 9, 28, 9, 29, 9, 49, 2, 52, 7]
         - model: 'sprites2/veggie'
           shoot_item:
             model: 'sprites2/potion'
             bounce_on_walls: False
           pos: [30,9]
+    - class: boulder
+      items:
+        - model: 'sprites2/pow'
+          pos: [41.5, 3]
+    - class: bonus
+      items:
+        - model: 'sprites2/cherry'
+          pos: [36, 7, 48, 6]
     - class: trunk_vert
       items:
         - height: 2

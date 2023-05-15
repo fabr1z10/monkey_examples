@@ -197,20 +197,18 @@ sprites:
             ticks: 3
           - tex: [48,48,16,16]
             anchor: [8, 0]
-#  cherry:
-#    batch: 0
-#    sheet: "smb2i.png"
-#    boxes:
-#      - [-6,6,0,16]
-#    animations:
-#      idle:
-#        box: 0
-#        loop: true
-#        frames:
-#          - quads: [144, 80, 16, 16, -8, 0]
-#          - quads: [160, 80, 16, 16, -8, 0]
-#          - quads: [176, 80, 16, 16, -8, 0]
-#          - quads: [160, 80, 16, 16, -8, 0]
+  cherry:
+    boxes:
+      - [-6,6,0,16]
+    animations:
+      idle:
+        box: 0
+        loop: true
+        frames:
+          - tex: [144, 80, 16, 16]
+          - tex: [160, 80, 16, 16]
+          - tex: [176, 80, 16, 16]
+          - tex: [160, 80, 16, 16]
 #
 #  explosion:
 #    batch: 0
@@ -230,22 +228,27 @@ sprites:
 #            ticks: 5
 #            fliph: true
 #
-#  pow:
-#    batch: 0
-#    sheet: "smb2i.png"
-#    boxes:
-#      - [-8, 8, 0, 16]
-#    animations:
-#      idle:
-#        box: 0
-#        frames:
-#          - quads: [112, 64, 16, 16, -8, 0]
-#          - quads: [128, 64, 16, 16, -8, 0]
-#          - quads: [144, 64, 16, 16, -8, 0]
-#          - quads: [160, 64, 16, 16, -8, 0]
-#          - quads: [176, 64, 16, 16, -8, 0]
-#          - quads: [192, 64, 16, 16, -8, 0]
-#          - quads: [208, 64, 16, 16, -8, 0]
+  pow:
+    boxes:
+      - [-8, 8, 0, 16]
+    animations:
+      idle:
+        box: 0
+        frames:
+          - tex: [112, 64, 16, 16]
+            anchor: [8, 0]
+          - tex: [128, 64, 16, 16]
+            anchor: [8, 0]
+          - tex: [144, 64, 16, 16]
+            anchor: [8, 0]
+          - tex: [160, 64, 16, 16]
+            anchor: [8, 0]
+          - tex: [176, 64, 16, 16]
+            anchor: [8, 0]
+          - tex: [192, 64, 16, 16]
+            anchor: [8, 0]
+          - tex: [208, 64, 16, 16]
+            anchor: [8, 0]
 #  ninji:
 #    batch: 0
 #    sheet: "ninji.png"
@@ -290,47 +293,46 @@ sprites:
 #          - quads: [0, 0, 16, 16, -8, 0]
 #          - quads: [16, 0, 16, 16, -8, 0]
 #
-#  tweeter:
-#    batch: 0
-#    sheet: "tweeter.png"
-#    boxes:
-#      - [ -6, 6, 0, 16 ]
-#    animations:
-#      walk:
-#        box: 0
-#        frames:
-#          - quads: [0, 0, 16, 16, -8, 0]
-#      dead:
-#        frames:
-#          - quads: [0, 0, 16, 16, -8, 0]
-#            flipv: true
-#  tweeter_item:
-#    batch: 0
-#    sheet: "tweeter.png"
-#    boxes:
-#      - [ -6, 6, 0, 16 ]
-#    animations:
-#      walk:
-#        box: 0
-#        frames:
-#          - quads: [0, 0, 16, 16, -8, 0]
-#            flipv: true
-#  shyguy_item:
-#    batch: 0
-#    sheet: "shyguy.png"
-#    boxes:
-#      - [ -6, 6, 0, 16 ]
-#    animations:
-#      walk:
-#        box: 0
-#        loop: true
-#        frames:
-#          - quads: [0, 0, 16, 16, -8, 0]
-#            ticks: 6
-#            flipv: true
-#          - quads: [16, 0, 16, 16, -8, 0]
-#            ticks: 7
-#            flipv: true
+  tweeter:
+    boxes:
+      - [ -6, 6, 0, 16 ]
+    animations:
+      walk:
+        box: 0
+        frames:
+          - tex: [144, 48, 16, 16]
+            anchor: [8, 0]
+      dead:
+        frames:
+          - tex: [144, 48, 16, 16]
+            anchor: [8, 0]
+            flipv: true
+  tweeter_item:
+    boxes:
+      - [ -6, 6, 0, 16 ]
+    animations:
+      walk:
+        box: 0
+        frames:
+          - tex: [144, 48, 16, 16]
+            anchor: [8, 0]
+            flipv: true
+  shyguy_item:
+    boxes:
+      - [ -6, 6, 0, 16 ]
+    animations:
+      walk:
+        box: 0
+        loop: true
+        frames:
+          - tex: [16, 0, 16, 16]
+            anchor: [8, 0]
+            ticks: 6
+            flipv: true
+          - tex: [32, 0, 16, 16]
+            anchor: [8, 0]
+            ticks: 7
+            flipv: true
 #  door_black:
 #    batch: 0
 #    sheet: "smb2i.png"

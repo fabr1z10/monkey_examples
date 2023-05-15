@@ -245,19 +245,19 @@ def make_character(x, y, id, **kwargs):
     return func(x, y, args, **kwargs)
 
 
-def player(x, y):
+def player(**kwargs):
     id = settings.mario_states[settings.mario_state]
     wkeys = [
         (settings.Keys.FIRE, pickup_shoot)]
         #(settings.Keys.UP, monkey_toolkit.Action.climb),
         #(settings.Keys.UP, monkey_toolkit.Action.enter_door)]
-    return smb2(x, y, model='sprites2/supermario', size=(10, 14, 0), speed=300, walk_keys=wkeys, pal=0, jump_height=160)
+    return smb2(**dict(kwargs, model='sprites2/supermario', size=(10, 14, 0), speed=300, walk_keys=wkeys, pal=0, jump_height=80))
     #return make_character(x, y, id, walk_keys=wkeys, climb=True, player=True)
 
 
 
-def smb2(x, y, **kwargs):
-    player = monkey_toolkit.character(settings.main_batch, x, y, **dict(kwargs, player=True, controller_mask_down=monkey_toolkit.flags.platform |
+def smb2(**kwargs):
+    player = monkey_toolkit.character(settings.main_batch, **dict(kwargs, player=True, controller_mask_down=monkey_toolkit.flags.platform |
         monkey_toolkit.flags.platform_passthrough | settings.Flags.foe_platform)) # walk_keys=wkeys, climb=True)
     sm = player.get_state_machine()
     sm.add(monkey.idle("lift", "lift", exit_on_complete=True, exit_state='walk_item'))
@@ -269,8 +269,8 @@ def smb2(x, y, **kwargs):
     return player
 
 
-def smb2_item(x, y, **kwargs):
-    foe = monkey_toolkit.character(settings.main_batch, x, y, **kwargs)  # 5, 2, 'shyguy')
+def smb2_item(**kwargs):
+    foe = monkey_toolkit.character(settings.main_batch, **kwargs)  # 5, 2, 'shyguy')
     foe.user_data = {'shoot_item': kwargs['shoot_item'], 'bounce': False}
     #sm = foe.get_state_machine()
     #sm.add(monkey.idle("lifted", "up"))
@@ -282,25 +282,62 @@ def smb2_item(x, y, **kwargs):
 #def make_foe(x, y, id):
 
 
+def bonus(**kwargs):
+    node = monkey_toolkit.sprite(settings.main_batch, **kwargs)
+    return node
 
-def tweeter(x, y, args, **kwargs):
+
+def boulder(**kwargs):
+    ts = settings.tile_size
+    node = monkey_toolkit.sprite(settings.main_batch, **kwargs)
+    shape = monkey.rect(ts[0], ts[1], ox=-ts[0]*0.5)
+    node.add_component(monkey.collider(shape, settings.Flags.platform, 0, 0))
+
+    sensor = monkey.Node()
+    sensor.set_position(2, 15, 0)
+    sh = monkey.aabb(-6, 6, 0, 2)
+    sensor.add_component(monkey.collider(sh, monkey_toolkit.flags.foe, monkey_toolkit.flags.player, settings.Tags.foe_platform_sensor))
+    node2 = monkey.Node()
+    node2.add(sensor)
+    node.add(node2)
+    node.user_data = {
+        'shoot_item': {
+            'model': kwargs.get('model'),
+            'bounce_on_walls': True,
+            'bounce_callback': cippo,
+            'pal': kwargs.get('pal', 0)
+        },
+        'bounce': True,
+
+    }
+    return node
+
+
+def tweeter(**kwargs):
     left = kwargs.get('left', True)
-    node = monkey_toolkit.sprite(x, y, args['model'], args.get('palette', None))
-    node.user_data = {'shoot_item': 'sprites2/tweeter_item', 'bounce': True}
-
+    size = kwargs.get('size', [10, 14, 0])
+    node = monkey_toolkit.sprite(settings.main_batch, **kwargs)
+    node.user_data = {
+        'shoot_item': {
+            'model': kwargs.get('model') + '_item',
+            'bounce_on_walls': True,
+            'bounce_callback': bounce,
+            'pal': kwargs.get('pal', 0)
+        },
+        'bounce': True,
+        'foe_item': [tweeter, dict(**kwargs)]
+    }
     sm = monkey.state_machine()
-    flip = args.get('flip', True)
-    flip_on_edge = args.get('flip_on_edge', True)
-    sm.add(monkey.bounce("walk", gravity=settings.gravity, check_walls = True, bounce_velocity=[50, 50, 50, 100], left=left,
-                         speed=args['speed'], flip=flip, flip_on_edge=flip_on_edge))
+    flip = kwargs.get('flip', True)
+    flip_on_edge = kwargs.get('flip_on_edge', True)
+    sm.add(monkey.bounce("walk", gravity=settings.gravity, check_walls=True, bounce_velocity=[50, 50, 50, 100], left=left,
+        speed=kwargs['speed'], flip=flip, flip_on_edge=flip_on_edge))
     sm.add(monkey.idle("dead", "dead"))
-
     sm.set_initial_state('walk')#, velocity=(50, 0, 0))
     node.add_component(sm)
-    node.add_component(monkey.sprite_collider(monkey_toolkit.flags.foe, monkey_toolkit.flags.player, args['tag']))
-    node.add_component(monkey.controller_2d(size=args['size'], center=args.get('center', None)))
+    node.add_component(monkey.sprite_collider(monkey_toolkit.flags.foe, monkey_toolkit.flags.player, kwargs['tag']))
+    node.add_component(monkey.controller_2d(size=size, center=kwargs.get('center', None)))
     node.add_component(monkey.dynamics())
-
     add_platform_to_foe(node)
 
     # platform = monkey.Node()
@@ -369,16 +406,22 @@ def ninji(x, y, args, **kwargs):
 
 
 def veg(**kwargs):
-    pos = kwargs['pos']
-    return smb2_item(pos[0], pos[1], **dict(kwargs, tag=settings.Tags.collectible_item, speed=0, size=[8,8,0], walk_anim='idle', jump_anim='idle', flip=False))
-
+    return smb2_item(**dict(kwargs, tag=settings.Tags.collectible_item, speed=0, size=[8,8,0], walk_anim='idle',
+                                            jump_anim='idle', flip=False))
 
 
 def smb2_foe(**kwargs):
-    pos = kwargs['pos']
-    foe = monkey_toolkit.character(settings.main_batch, pos[0], pos[1], **kwargs)
-    # ADD BACK
-    #foe.user_data = {'shoot_item': args['shoot_item'], 'bounce': True, 'foe_item': args.get('foe_item')}
+    foe = monkey_toolkit.character(settings.main_batch, **kwargs)
+    foe.user_data = {
+        'shoot_item': {
+            'model': kwargs.get('model') + '_item',
+            'bounce_on_walls': True,
+            'bounce_callback': bounce,
+            'pal': kwargs.get('pal', 0)
+        },
+        'bounce': True,
+        'foe_item': [smb2_foe, dict(**kwargs)]
+    }
 
     #collider = foe.get_sprite_collider()
     #collider.set_override('up', 0, 0, 0)
@@ -397,7 +440,7 @@ def smb2_foe(**kwargs):
     # platform.add(psensor)
     # foe.add(platform)
     # ADD BACK!!!
-    #add_platform_to_foe(foe)
+    add_platform_to_foe(foe)
     return foe
 
 
@@ -417,14 +460,3 @@ def waterfalls(x, y, w, h, pal=None, z=-1):
     return monkey_toolkit.tiled(x, y, monkey_toolkit.anim_tiled_model('wfalls', desc, pal), z=z)
 
 
-factory_map = {
-    'platform': platform,
-    'platform_border': platform_border,
-    'waterfalls': wfalls,
-    'shyguy': smb2_foe,
-    'veg': veg,
-    'trunk_vert': trunk_vert,
-    'vine': stairs,
-    'tree': tree
-
-}
