@@ -13,7 +13,10 @@ collision_response = [
     monkey_toolkit.globals.CollisionResponse(monkey_toolkit.tags.player_attack, settings.Tags.generic_foe,
         on_start=actions.foe_is_hit),
     monkey_toolkit.globals.CollisionResponse(monkey_toolkit.tags.player, settings.Tags.foe_platform_sensor,
-        on_start=actions.enable_pickup_platform, on_end=actions.disable_pickup_platform)
+        on_start=actions.enable_pickup_platform, on_end=actions.disable_pickup_platform),
+    monkey_toolkit.globals.CollisionResponse(monkey_toolkit.tags.player, settings.Tags.ladder,
+        on_start=actions.enable_stairs, on_end=actions.disable_stairs)
+
 ]
 
 

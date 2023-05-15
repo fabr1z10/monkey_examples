@@ -174,6 +174,7 @@ def tree(**kwargs):
 def stairs(**kwargs):
     pos = kwargs.get('pos')
     h = kwargs.get('height')
+    z = kwargs.get('z', 0)
     ts = settings.tile_size[0]
     b = monkey.models.quad(settings.main_batch, frames=[
         {
@@ -220,7 +221,12 @@ def stairs(**kwargs):
     node.set_model(b)
     shape = monkey.aabb(0, ts, 0, h * ts)
     node.add_component(monkey.collider(shape, settings.Flags.foe, settings.Flags.player, settings.Tags.ladder))
-    node.set_position(pos[0] * ts, pos[1] * ts, 0)
+    node.set_position(pos[0] * ts, pos[1] * ts, z)
+
+    ls = monkey.Node()
+    shape2 = monkey.segment(0, (h-1) * ts, ts, (h-1)*ts)
+    ls.add_component(monkey.collider(shape2, 1 << 6, settings.Flags.player, 0))
+    node.add(ls)
     return node
 
 
@@ -248,8 +254,8 @@ def make_character(x, y, id, **kwargs):
 def player(**kwargs):
     id = settings.mario_states[settings.mario_state]
     wkeys = [
-        (settings.Keys.FIRE, pickup_shoot)]
-        #(settings.Keys.UP, monkey_toolkit.Action.climb),
+        (settings.Keys.FIRE, pickup_shoot),
+        (settings.Keys.UP, climb)]
         #(settings.Keys.UP, monkey_toolkit.Action.enter_door)]
     return smb2(**dict(kwargs, model='sprites2/supermario', size=(10, 14, 0), speed=300, walk_keys=wkeys, pal=0, jump_height=80))
     #return make_character(x, y, id, walk_keys=wkeys, climb=True, player=True)
@@ -258,7 +264,7 @@ def player(**kwargs):
 
 def smb2(**kwargs):
     player = monkey_toolkit.character(settings.main_batch, **dict(kwargs, player=True, controller_mask_down=monkey_toolkit.flags.platform |
-        monkey_toolkit.flags.platform_passthrough | settings.Flags.foe_platform)) # walk_keys=wkeys, climb=True)
+        monkey_toolkit.flags.platform_passthrough | settings.Flags.foe_platform, climb=True)) # walk_keys=wkeys, climb=True)
     sm = player.get_state_machine()
     sm.add(monkey.idle("lift", "lift", exit_on_complete=True, exit_state='walk_item'))
     sm.add(monkey.idle("enter_door", "idle"))

@@ -57,7 +57,7 @@ start_positions = {
 }
 
 current_door =None
-on_stairs = False
+on_stairs = None
 held_item = None
 pickup_item = None
 pickup_platform_item = dict()

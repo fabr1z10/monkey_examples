@@ -16,6 +16,19 @@ def on_restart():
     settings.active_door=None
 
 
+def enable_stairs(player, stairs, dist):
+    print('entering stairs')
+    settings.on_stairs = stairs.id
+
+
+def disable_stairs(player, stairs):
+    print('exiting stairs')
+    settings.on_stairs = False
+    if player.state == 'climb':
+        player.set_state('walk')
+
+
+
 # this is called when player enters a foe platform sensor or a collectible hotspot
 def enable_pickup(player, foe, dist):
     settings.pickup_item = foe.id
@@ -193,3 +206,9 @@ def collision_player_foe(player, foe, dist):
         s.add(monkey.actions.blink(id=player.id, duration=settings.invincible_duration, period=0.2))
         s.add(monkey.actions.callfunc(reset_invincibility))
         monkey.play(s)
+
+
+def climb():
+    if settings.on_stairs:
+        player = monkey.get_node(settings.player_id)
+        player.set_state('climb')

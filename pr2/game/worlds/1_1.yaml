@@ -95,6 +95,7 @@ world:
     - class: vine
       items:
         - height: 10
+          z: -0.1
           pos: [32, 2]
     - class: tree
       items:
