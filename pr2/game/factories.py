@@ -15,6 +15,28 @@ platform_types = {
     'none': monkey_toolkit.platformer.PlatformType.NONE
 }
 
+def trunk_hor(**kwargs):
+    w = kwargs['width']
+    ts = settings.tile_size[0]
+    z = kwargs.get('z', 0)
+    pal =kwargs.get('pal', 0)
+    node = monkey.Node()
+    b = monkey.models.quad(settings.main_batch, frames=[
+        {
+            'quads': [
+                {'size': (ts, ts), 'tex_coords': [144,32,16,16], 'repeat': [1, 1], 'palette': pal},
+                {'size': ((w-2)*ts, ts), 'tex_coords': [160, 32, 16, 16], 'repeat': [w-2, 1], 'palette': pal, 'pos': [ts, 0]},
+                {'size': (ts, ts), 'tex_coords': [176, 32, 16, 16], 'repeat': [1, 1], 'palette': pal, 'pos': [(w-1)*ts, 0]}
+            ]
+        }])
+    node.set_model(b)
+    pos = kwargs['pos']
+    node.set_position(pos[0]*ts, pos[1]*ts, z)
+    shape = monkey.rect(w * ts, ts)
+    node.add_component(monkey.collider(shape, 2, 0, 2))
+    return node
+
+
 def trunk_vert(**kwargs):
     h = kwargs['height']
     ts = settings.tile_size[0]
@@ -47,6 +69,27 @@ def trunk_vert(**kwargs):
     return node
 
 
+def wfalls_frame(w, h, pal, tbody0, tbody1, ttop0, ttop1):
+    return {
+        'ticks': 10,
+        'quads': [
+            {
+                'size': [w * 8, (h-1) * 8],
+                'tex_coords': [tbody0, tbody1, 8, 8],
+                'repeat': [w, h-1],
+                'palette': pal,
+            },
+            {
+                'size': [w * 8, 8],
+                'tex_coords': [ttop0, ttop1, 8, 8],
+                'repeat': [w, 1],
+                'palette': pal,
+                'pos': [0, (h-1) * 8]
+            }
+        ]
+    }
+
+
 def wfalls(**kwargs):
     node = monkey.Node()
     size = kwargs['size']
@@ -56,68 +99,106 @@ def wfalls(**kwargs):
     pos = kwargs['pos']
     pal = 0
     tpf = 10
+    ts = settings.tile_size[0]
     b = monkey.models.quad(settings.main_batch, frames=[
-        {
-            'ticks': tpf,
-            'quads': [
-                {
-                    'size': (w * 8, (h-1) * 8),
-                    'tex_coords': [0, 120, 8, 8],
-                    'repeat': (w, h-1),
-                    'palette': pal,
-                }
-            ]
-        },
-        {
-            'ticks': tpf,
-            'quads': [
-                {
-                    'size': (w * 8, (h-1) * 8),
-                    'tex_coords': [8, 120, 8, 8],
-                    'repeat': (w, h - 1),
-                    'palette': pal,
-
-                }
-            ]
-        },
-        {
-            'ticks': tpf,
-            'quads': [
-                {
-                    'size': (w * 8, (h - 1) * 8),
-                    'tex_coords': [16, 120, 8, 8],
-                    'repeat': (w, h - 1),
-                    'palette': pal,
-
-                }
-            ]
-        },
-        {
-            'ticks': tpf,
-            'quads': [
-                {
-                    'size': (w * 8, (h - 1) * 8),
-                    'tex_coords': [24, 120, 8, 8],
-                    'repeat': (w, h - 1),
-                    'palette': pal,
-
-                }
-            ]
-        },
-
+        wfalls_frame(w, h, pal, 0, 120, 0, 112),
+        wfalls_frame(w, h, pal, 8, 120, 8, 112),
+        wfalls_frame(w, h, pal, 16, 120, 16, 112),
+        wfalls_frame(w, h, pal, 24, 120, 24, 112),
+        wfalls_frame(w, h, pal, 0, 120, 0, 128),
+        wfalls_frame(w, h, pal, 8, 120, 8, 128),
+        wfalls_frame(w, h, pal, 16, 120, 16, 128),
+        wfalls_frame(w, h, pal, 24, 120, 16, 128)
     ])
-    node.set_position(pos[0], pos[1], z)
+
+    #     {
+    #         'ticks': tpf,
+    #         'quads': [
+    #             {
+    #                 'size': (w * 8, (h-1) * 8),
+    #                 'tex_coords': [0, 120, 8, 8],
+    #                 'repeat': (w, h-1),
+    #                 'palette': pal,
+    #             }
+    #         ]
+    #     },
+    #     {
+    #         'ticks': tpf,
+    #         'quads': [
+    #             {
+    #                 'size': (w * 8, (h-1) * 8),
+    #                 'tex_coords': [8, 120, 8, 8],
+    #                 'repeat': (w, h - 1),
+    #                 'palette': pal,
+    #
+    #             }
+    #         ]
+    #     },
+    #     {
+    #         'ticks': tpf,
+    #         'quads': [
+    #             {
+    #                 'size': (w * 8, (h - 1) * 8),
+    #                 'tex_coords': [16, 120, 8, 8],
+    #                 'repeat': (w, h - 1),
+    #                 'palette': pal,
+    #
+    #             }
+    #         ]
+    #     },
+    #     {
+    #         'ticks': tpf,
+    #         'quads': [
+    #             {
+    #                 'size': (w * 8, (h - 1) * 8),
+    #                 'tex_coords': [24, 120, 8, 8],
+    #                 'repeat': (w, h - 1),
+    #                 'palette': pal,
+    #
+    #             }
+    #         ]
+    #     },
+    #
+    # ])
+    node.set_position(pos[0] * ts, pos[1] * ts, z)
     node.set_model(b)
     return node
 
+def moving_platform(**kwargs):
+    quads0 = []
+    quads1 = []
+    w = kwargs['width']
+    pal = kwargs.get('pal', 0)
+    ts = settings.tile_size[0]
+    if w == 1:
+        quads0.append({'size': (ts, ts), 'tex_coords': kwargs.get('mid'), 'repeat': (1, 1), 'palette': pal})
+        quads1.append({'size': (ts, ts), 'tex_coords': kwargs.get('mid'), 'repeat': (1, 1), 'palette': pal, 'flipv': True})
+    else:
+        if w > 1:
+            quads0.append({'size': (ts, ts), 'tex_coords': kwargs.get('left'), 'repeat': (1, 1), 'palette': pal})
+            quads0.append({'size': (ts, ts), 'tex_coords': kwargs.get('right'), 'repeat': (1, 1), 'palette': pal, 'pos': ((w-1)*ts, 0)})
+            quads1.append({'size': (ts, ts), 'tex_coords': kwargs.get('left'), 'repeat': (1, 1), 'palette': pal,'flipv': True})
+            quads1.append({'size': (ts, ts), 'tex_coords': kwargs.get('right'), 'repeat': (1, 1), 'palette': pal,'flipv': True, 'pos': ((w - 1) * ts, 0)})
+        if w > 2:
+            quads0.append({'size': ((w-2)*ts, ts), 'tex_coords': kwargs.get('mid'), 'repeat': (w-2, 1), 'palette': pal})
+            quads1.append({'size': ((w - 2) * ts, ts), 'tex_coords': kwargs.get('mid'), 'repeat': (w - 2, 1), 'palette': pal, 'flipv': True})
+
+    model = monkey.models.quad(settings.main_batch, frames=[
+        {'quads': quads0, 'ticks': 10},
+        {'quads': quads1, 'ticks': 10}
+    ])
+    return monkey_toolkit.platformer.moving_platform(settings.main_batch, **dict(kwargs, model=model))
+
 
 def platform(**kwargs):
-    pos = kwargs['pos']
-    size = kwargs['size']
-    tile = settings.tiles[kwargs['tile']]
-    pal = kwargs.get('pal', 0)
-    z = kwargs.get('z', 0)
-    return monkey_toolkit.platformer.platform(settings.main_batch, pos[0], pos[1], size[0], size[1], tile, z)
+    #pos = kwargs['pos']
+    #size = kwargs['size']
+    tile = kwargs.get('tile')
+    if tile is not None:
+        tile = settings.tiles[tile]
+    #pal = kwargs.get('pal', 0)
+    #z = kwargs.get('z', 0)
+    return monkey_toolkit.platformer.platform(settings.main_batch, **dict(kwargs, tile=tile))# pos[0], pos[1], size[0], size[1], tile, z)
 
 
 def platform_border(**kwargs):
@@ -255,7 +336,7 @@ def player(**kwargs):
     id = settings.mario_states[settings.mario_state]
     wkeys = [
         (settings.Keys.FIRE, pickup_shoot),
-        (settings.Keys.UP, climb)]
+        (settings.Keys.UP, on_key_up)]
         #(settings.Keys.UP, monkey_toolkit.Action.enter_door)]
     return smb2(**dict(kwargs, model='sprites2/supermario', size=(10, 14, 0), speed=300, walk_keys=wkeys, pal=0, jump_height=80))
     #return make_character(x, y, id, walk_keys=wkeys, climb=True, player=True)
@@ -450,19 +531,38 @@ def smb2_foe(**kwargs):
     return foe
 
 
-def waterfalls(x, y, w, h, pal=None, z=-1):
-    t = 5
-    fmt = "W," + str(w) + ",R," + str(w*(h-1)) + ",{0},1,E,R," + str(w) +",{1},{2},E"
-    desc = [
-        (fmt.format(0, 0, 0), t),
-        (fmt.format(1, 1, 0), t),
-        (fmt.format(2, 2, 0), t),
-        (fmt.format(3, 3, 0), t),
-        (fmt.format(0, 0, 2), t),
-        (fmt.format(1, 1, 2), t),
-        (fmt.format(2, 2, 2), t),
-        (fmt.format(3, 2, 2), t)
-    ]
-    return monkey_toolkit.tiled(x, y, monkey_toolkit.anim_tiled_model('wfalls', desc, pal), z=z)
+# def waterfalls(x, y, w, h, pal=None, z=-1):
+#     t = 5
+#     fmt = "W," + str(w) + ",R," + str(w*(h-1)) + ",{0},1,E,R," + str(w) +",{1},{2},E"
+#     desc = [
+#         (fmt.format(0, 0, 0), t),
+#         (fmt.format(1, 1, 0), t),
+#         (fmt.format(2, 2, 0), t),
+#         (fmt.format(3, 3, 0), t),
+#         (fmt.format(0, 0, 2), t),
+#         (fmt.format(1, 1, 2), t),
+#         (fmt.format(2, 2, 2), t),
+#         (fmt.format(3, 2, 2), t)
+#     ]
+#     return monkey_toolkit.tiled(x, y, monkey_toolkit.anim_tiled_model('wfalls', desc, pal), z=z)
 
+
+def door(**kwargs): #x, y, width, height, world, **kwargs):
+    pos = kwargs['pos']
+    # destination world
+    world = kwargs['world']
+    start_pos = kwargs['start_position']
+    # door might have a model
+    model = kwargs.get('model', None)
+    z = kwargs.get('z', 0)
+    ts = settings.tile_size[0]
+    node = monkey.Node()
+    shape = monkey.aabb(0, ts, 0, 2 * ts)
+    node.add_component(monkey.collider(shape, settings.Flags.foe, settings.Flags.player, settings.Tags.door))
+    node.set_position(pos[0] * ts, pos[1] * ts, z)
+    node.user_data = {'world': world, 'start_position': start_pos, 'has_sprite': model is not None}
+    if model:
+        m = monkey.get_sprite(settings.main_batch, model)
+        node.set_model(m)
+    return node
 

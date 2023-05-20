@@ -1,0 +1,15 @@
+world:
+  size: [2560, 224]
+  start:
+    0:
+      pos: [3, 3]
+      right: True
+    1:
+      pos: [10, 3]
+      right: False
+  desc:
+    - class: platform
+      items:
+        - size: [27, 1]
+          tile: [0,160,16,16]
+          pos: [0, 1]

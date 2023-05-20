@@ -4,15 +4,63 @@ world:
     0:
       pos: [0, 3]
       right: True
+    1:
+      pos: [10, 3]
+      right: False
   desc:
     - class: platform
       items:
+        - size: [1, 16]
+          pos: [-1, 0]
+
         - size: [54, 1]
           tile: grass
           pos: [0, 1]
         - size: [54, 1]
           tile: ground
           pos: [0, 0]
+        - size: [31, 1]
+          tile: grass
+          pos: [87, 1]
+        - size: [31, 1]
+          tile: ground
+          pos: [87, 0]
+        - size: [53, 1]
+          tile: grass
+          pos: [122, 1]
+        - size: [53, 1]
+          tile: ground
+          pos: [122, 0]
+    - class: moving_platform
+      items:
+        - pos: [0, 0]
+          left: [144,32,16,16]
+          mid: [160,32,16,16]
+          right: [176,32,16,16]
+          width: 2
+          points:
+            - pos: [72, 7]
+              t: 0
+            - pos: [72, 7.5]
+              t: 1
+              z: -1.2
+            - pos: [72, -1]
+              t: 5
+              z: 1
+        - pos: [0, 0]
+          left: [144,32,16,16]
+          mid: [160,32,16,16]
+          right: [176,32,16,16]
+          width: 2
+          points:
+            - pos: [76, 7]
+              t: 0
+            - pos: [76, 7.5]
+              t: 1
+              z: -1.2
+            - pos: [76, -1]
+              t: 5
+              z: 1
     - class: platform_border
       items:
         - size: [3, 5]
@@ -21,22 +69,96 @@ world:
           z: -0.1
           platform: line
         - size: [4, 5]
-          pos: [53, 0]
+          pos: [53, 0, 82, -1]
           multi_tile: a
           z: -0.05
           platform: line
-
         - size: [6, 7]
           pos: [26, 2]
           multi_tile: a
           z: -0.1
           platform: line
+        - size: [3, 9]
+          pos: [67, 0, 80, 0]
+          multi_tile: a
+          z: -0.1
+          platform: line
+        - size: [6, 2]
+          pos: [79, 0]
+          multi_tile: a
+          z: 0
+          platform: line
+        - size: [4, 9]
+          pos: [87, 2]
+          multi_tile: a
+          z: -0.1
+          platform: line
+        - size: [6, 6]
+          pos: [87, 2]
+          multi_tile: a
+          z: -0.05
+          platform: line
+        - size: [7, 3]
+          pos: [87, 2]
+          multi_tile: a
+          z: -0.02
+          platform: line
+        - size: [2, 4]
+          pos: [99, 2]
+          multi_tile: a
+          z: -0.02
+          platform: line
+        - size: [9, 7]
+          pos: [109, 2]
+          multi_tile: a
+          z: -0.02
+          platform: line
+        - size: [5, 4]
+          pos: [113, 9]
+          multi_tile: a
+          z: -0.05
+          platform: line
+        - size: [16, 7]
+          pos: [122, 2]
+          multi_tile: a
+          z: -0.05
+          platform: line
+        - size: [7, 11]
+          pos: [122, 2]
+          multi_tile: a
+          z: -0.06
+          platform: line
+        - size: [14, 7]
+          pos: [138, 2]
+          multi_tile: a
+          z: -0.05
+          platform: line
+        - size: [7, 7]
+          pos: [152, 2]
+          multi_tile: a
+          z: -0.05
+          platform: line
+        - size: [5, 13]
+          pos: [159, 2]
+          multi_tile: a
+          z: -0.05
+          platform: line
+        - size: [12, 4]
+          pos: [129, 9]
+          multi_tile: a
+          z: -0.05
+          platform: line
     - class: waterfalls
       items:
         - size: [22, 12]
-          pos: [5, 2]
+          pos: [56, 0]
           z: -0.1
-
+        - size: [20, 16]
+          pos: [70, 0]
+          z: -0.1
+        - size: [8, 26]
+          pos: [118, 0]
+          z: -0.1
     - class: shyguy
       items:
         - model: 'sprites2/shyguy'
@@ -58,6 +180,7 @@ world:
         - model: 'sprites2/tweeter'
           speed: 10
           tag: 200
+          flip_on_edge: false
           pos: [21, 2, 40, 2]
     - class: veg
       items:
@@ -65,25 +188,30 @@ world:
           shoot_item:
             model: 'sprites2/veg1'
             bounce_on_walls: False
-          pos: [5, 2, 19, 2]
+          pos: [5, 2, 19, 2, 102, 2]
         - model: 'sprites2/veggie'
           shoot_item:
             model: 'sprites2/veg2'
             bounce_on_walls: False
-          pos: [8, 2, 15, 2, 27, 9, 28, 9, 29, 9, 49, 2, 52, 7]
+          pos: [8, 2, 15, 2, 27, 9, 28, 9, 29, 9, 49, 2, 52, 7, 56, 10, 57, 10, 81, 9, 83, 4, 106, 2, 107, 2]
         - model: 'sprites2/veggie'
           shoot_item:
             model: 'sprites2/potion'
             bounce_on_walls: False
           pos: [30,9]
+        - model: 'sprites2/veggie'
+          shoot_item:
+            model: 'sprites2/1up'
+            bounce_on_walls: False
+          pos: [88,11]
     - class: boulder
       items:
         - model: 'sprites2/pow'
-          pos: [41.5, 3]
+          pos: [41.5, 3, 90.5, 11]
     - class: bonus
       items:
         - model: 'sprites2/cherry'
-          pos: [36, 7, 48, 6]
+          pos: [36, 7, 48, 6, 95, 9, 102, 5, 106, 5]
     - class: trunk_vert
       items:
         - height: 2
@@ -92,6 +220,12 @@ world:
           pos: [41, 2]
         - height: 3
           pos: [46, 2]
+    - class: trunk_hor
+      items:
+        - width: 13
+          pos: [55, 9]
+        - width: 6
+          pos: [117, 2]
     - class: vine
       items:
         - height: 10
@@ -99,14 +233,18 @@ world:
           pos: [32, 2]
     - class: tree
       items:
+        - height: 4
+          pos: [110, 9]
         - height: 5
           pos: [7, 2]
         - height: 6
           pos: [9, 2]
-#                 'model': 'sprites2/veggie',
-#                 'size': (8, 8, 0),
-#                 'speed': 0,
-#                 'tag': settings.Tags.veggie,
-#                 'walk_anim': 'idle',
-#                 'jump_anim': 'idle'
+    - class: door
+      items:
+        - pos: [1, 2]
+          model: 'sprites2/door'
+          world: w1_1a
+          start_position: 0
+          z: -0.04
 
+ #cam_node.add(monkey_toolkit.door(1, 2, 1, 2, 'smb2_world_1_1b', model='sprites2/door_black', z=-0.05))

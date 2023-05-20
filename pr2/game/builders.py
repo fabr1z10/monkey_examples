@@ -15,7 +15,9 @@ collision_response = [
     monkey_toolkit.globals.CollisionResponse(monkey_toolkit.tags.player, settings.Tags.foe_platform_sensor,
         on_start=actions.enable_pickup_platform, on_end=actions.disable_pickup_platform),
     monkey_toolkit.globals.CollisionResponse(monkey_toolkit.tags.player, settings.Tags.ladder,
-        on_start=actions.enable_stairs, on_end=actions.disable_stairs)
+        on_start=actions.enable_stairs, on_end=actions.disable_stairs),
+    monkey_toolkit.globals.CollisionResponse(monkey_toolkit.tags.player, settings.Tags.door,
+        on_start=actions.enter_door, on_end=actions.leave_door)
 
 ]
 
@@ -88,21 +90,20 @@ def prova_sprite():
     return room
 
 
-
-
-
-
-def ciao():
-    with open("game/worlds/1_1.yaml", "r") as stream:
+def generic_room_loader(room_id):
+    cx = settings.device_size[0] * 0.5
+    cy = settings.device_size[1] * 0.5
+    with open("game/worlds/" + room_id + ".yaml", "r") as stream:
         monkey_toolkit.globals.tile_size = (16, 16)
         monkey_toolkit.globals.device_size = settings.device_size
         monkey_toolkit.globals.gravity = settings.gravity
         monkey_toolkit.globals.reference_cam = settings.main_cam
-        settings.on_restart = actions.on_restart
+        monkey_toolkit.globals.on_restart = actions.on_restart
         try:
             data = yaml.safe_load(stream)
             world = data['world']
             world_size = world['size']
+            settings.main_cam.set_bounds(cx, world_size[0] - cx, cy, world_size[1]-cy, -10, 10)
             room = monkey_toolkit.platformer_room(world_size[0], world_size[1], collision=collision_response)
             room.set_main_cam(settings.main_cam)
             root = room.root()
@@ -126,76 +127,18 @@ def ciao():
                 if not right:
                     player.flip_x = True
                 root.add(player)
-        #
-            #for i in range(0, 500):
-            #    cam_node.add(monkey_toolkit.sprite(settings.main_batch, 3+i*0.1, 2, 'sprites2/shyguy'))
-        #
-        #     #cam_node.add(waterfalls(56, 0, 22, 12))
-        #     #cam_node.add(factories.wfalls(size=[22,12], pos=[5,2], z=-0.1))
             return room
-        #
-        #
-        #
         except yaml.YAMLError as exc:
             print(exc)
 
-    # #monkey_toolkit.initialize(settings)
-    # #b = monkey_toolkit.platformer_toolkit(settings, on_restart=on_restart)
-    # monkey_toolkit.tags.shyguy = 100
-    # #monkey_toolkit.flags.platform = 2
-    # desc = {'sheet': 'smb2', 'left': (0, 3), 'bottom': (1, 3), 'right': (2, 3), 'top_left': (0, 2), 'top': (1, 2), 'top_right': (2, 2)}
-    # start_pos = settings.start_positions[settings.room][settings.start_position]
-    #
-    #
-    # qq = {
-    #     'top_left': (0, 32, 16, 16),
-    #     'top': (16, 32, 16, 16),
-    #     'top_right': (32, 32, 16, 16),
-    #     'left': (0, 48, 16, 16),
-    #     'center': (16, 48, 16, 16),
-    #     'right': (32, 48, 16, 16)
-    # }
-    # cam_node.add(monkey_toolkit.platformer.platform(0, 0, 54, 1, (96, 32, 16, 16), 0))
-    # cam_node.add(monkey_toolkit.platformer.platform(0, 1, 54, 1, (64, 48, 16, 16), 0))
-    # cam_node.add(monkey_toolkit.platformer.platform_border(0, 2, 3, 5, qq, 0, platform_type=monkey_toolkit.platformer.PlatformType.LINE,z=-0.1))
-    # cam_node.add(monkey_toolkit.platformer.platform_border(26, 2, 6, 7, qq, 0,
-    #                                                        platform_type=monkey_toolkit.platformer.PlatformType.LINE))
-    # # a = monkey.Node()
-    # # b = monkey.models.quad(batch=0, frames=[{'quads':[
-    # #      {'size': (54 * 16, 16), 'tex_coords': (96, 32, 16, 16), 'repeat': (54, 1), 'palette': 0}
-    # # ]}])
-    # # shape = monkey.rect(54*16,16)
-    # # a.add_component(monkey.collider(shape, 2, 0, 2))
-    # # a.set_model(b)
-    # # cam_node.add(a)
-    #
-    # a2 = monkey.Node()
-    # b2 = monkey.models.quad(batch=0, frames=[{'quads':[
-    #      {'size': (60 * 16, 16), 'tex_coords': (96, 32, 16, 16), 'repeat': (60, 1), 'palette': 0}
-    # ]}])
-    # shape2 = monkey.rect(60*16,16)
-    # a2.set_position(-3*16,-16, 0)
-    # a2.add_component(monkey.collider(shape2, 2, 0, 2))
-    # a2.set_model(b2)
-    # cam_node.add(a2)
-    #
-    #
-    #
-    # a1 = monkey.Node()
-    # b1 = monkey.models.lines(batch=1, points=[0,0,0,64,64,64,64,0,16,0,16,48,48,48,48,16,32,16,32,32], color=[255,1,1,1])
-    # #a1.set_position(0,16,0)
-    # a1.set_model(b1)
-    # cam_node.add(a1)
-    #
-    # veg1 = [(5, 2), (19, 2), (102, 2)]
-    # #veg2 = [(8, 2), (15, 2), (27, 9), (28, 9), (29, 9)]
-    # #cherries = [(36, 7), (48, 6), (95, 9), (102, 5), (106, 5)]
-    # #for p in veg1:
-    # #    cam_node.add(make_character(p[0] + 0.5, p[1], 'veggie', shoot_item='veg1'))
-    # #for p in veg2:
-    # #    cam_node.add(make_character(p[0] + 0.5, p[1], 'veggie', shoot_item='veg2'))
-    #
-    # return room
+
+
+def w1_1():
+    return generic_room_loader("1_1")
+
+def w1_1a():
+    return generic_room_loader("1_1a")
+
 
 
 def smb2_world_1_1b():

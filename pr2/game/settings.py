@@ -13,7 +13,7 @@ class Keys:
 window_size = (256, 240)
 device_size = (256, 240)
 title = 'ciao belo!'
-room = 'ciao'
+room = 'w1_1'
 start_position = 0
 tile_size = (16, 16)
 gravity = 500
@@ -41,6 +41,7 @@ class Tags:
     collectible_item = 102
     generic_foe = 200
     generic_collectible = 201
+    door = 202
 
 
 start_positions = {

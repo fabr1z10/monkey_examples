@@ -7,7 +7,6 @@ offset = [16,22]
 
 
 def on_restart():
-    print('current pickup item=',settings.pickup_item)
     settings.invincible = False
     settings.current_door =None
     settings.held_item = None
@@ -208,7 +207,37 @@ def collision_player_foe(player, foe, dist):
         monkey.play(s)
 
 
+def on_key_up():
+    if not climb():
+        door_in()
+
+
+
 def climb():
     if settings.on_stairs:
         player = monkey.get_node(settings.player_id)
         player.set_state('climb')
+        return True
+    return False
+
+
+def door_in():
+    if settings.current_door:
+        player = monkey.get_node(settings.player_id)
+        door = monkey.get_node(settings.current_door)
+        settings.room = door.user_data['world']
+        settings.start_position = door.user_data['start_position']
+        player.set_state('enter_door')
+        s = monkey.script()
+        s.add(monkey.actions.animate(id=settings.current_door, anim='open', sync=True))
+        s.add(monkey.actions.callfunc(monkey_toolkit.actions.restart))
+        monkey.play(s)
+
+
+def enter_door(player, door, dist):
+    print('entering door')
+    settings.current_door = door.id
+
+def leave_door(player, door):
+    print('leaving door')
+    settings.current_door = None

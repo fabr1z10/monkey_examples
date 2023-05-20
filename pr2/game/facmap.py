@@ -7,9 +7,12 @@ factory_map = {
     'shyguy': smb2_foe,
     'veg': veg,
     'trunk_vert': trunk_vert,
+    'trunk_hor': trunk_hor,
     'vine': stairs,
     'tree': tree,
     'tweeter': tweeter,
     'bonus': bonus,
-    'boulder': boulder
+    'boulder': boulder,
+    'moving_platform': moving_platform,
+    'door': door
 }

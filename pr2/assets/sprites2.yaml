@@ -137,6 +137,15 @@ sprites:
         frames:
           - tex: [48,64,16,16]
             anchor: [8, 0]
+  1up:
+    boxes:
+      - [-6,6,0,8]
+    animations:
+      idle:
+        box: 0
+        frames:
+          - tex: [80,64,16,16]
+            anchor: [8, 0]
   potion:
     boxes:
       - [-6,6,0,8]
@@ -333,17 +342,15 @@ sprites:
             anchor: [8, 0]
             ticks: 7
             flipv: true
-#  door_black:
-#    batch: 0
-#    sheet: "smb2i.png"
-#    animations:
-#      closed:
-#        frames:
-#          - quads: [0, 80, 16, 32, 0, 0]
-#      open:
-#        loop: false
-#        frames:
-#          - quads: [0, 80, 16, 32, 0, 0]
+  door_black:
+    animations:
+      closed:
+        frames:
+          - tex: [224, 96, 16, 32]
+      open:
+        loop: false
+        frames:
+          - tex: [224, 96, 16, 32]
 #          - quads: [16, 80, 16, 32, 0, 0]
 #          - quads: [32, 80, 16, 32, 0, 0]
 #          - quads: [48, 80, 16, 32, 0, 0]
@@ -403,13 +410,19 @@ sprites:
           - tex: [0,0,16,16]
             anchor: [8, 0]
             flipv: true
-#
-#
-##  door:
-##    animations:
-##      closed:
-##        frames:
-##          - quads: [0,0,16,32,0,0]
+  door:
+    animations:
+      closed:
+        frames:
+          - tex: [0, 80, 16, 32]
+      open:
+        loop: false
+        frames:
+          - tex: [0, 80, 16, 32]
+          - tex: [16, 80, 16, 32]
+          - tex: [32, 80, 16, 32]
+          - tex: [48, 80, 16, 32]
+          - tex: [64, 80, 16, 32]
 ##
 ##  veggie_item:
 ##    boxes:

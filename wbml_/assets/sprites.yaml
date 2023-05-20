@@ -1,0 +1,266 @@
+multi_sprites:
+  wonderboy:
+    nodes:
+      - id: legs
+      - id: body
+        parent: legs
+        joint: 0
+      - id: sword
+        parent: body
+        joint: 0
+      - id: shield
+        parent: body
+        joint: 1
+    animations:
+      idle:
+        legs: idle
+        body: idle
+        sword: idle
+      walk:
+        legs: walk
+        body: walk
+        sword: idle
+      jump:
+        legs: jump
+        body: jump
+        sword: jump
+
+sprites:
+  gradius:
+    animations:
+      idle:
+        frames:
+          - tex: [0, 134, 8, 10]
+            anchor: [4, 0]
+            z: 0.1
+      jump:
+        frames:
+          - tex: [0, 146, 10, 8]
+            anchor: [0, 0]
+            z: 0.1
+  broad_sword:
+    animations:
+      idle:
+        frames:
+          - tex: [9, 130, 9, 14]
+            anchor: [4, 0]
+            z: 0.1
+  great_sword:
+    animations:
+      idle:
+        frames:
+          - tex: [19, 127, 9, 17]
+            anchor: [4, 0]
+            z: 0.1
+  excalibur:
+    animations:
+      idle:
+        frames:
+          - tex: [29, 122, 8, 22]
+            anchor: [4, 2]
+            z: 0.1
+  legend_sword:
+    animations:
+      idle:
+        frames:
+          - tex: [38, 123, 10, 21]
+            anchor: [5, 2]
+            z: 0.1
+  boots_no:
+    ticks: 10
+    joints:
+      - [10, 8]
+    animations:
+      idle:
+        frames:
+          - tex: [2, 1, 11, 6]
+            anchor: [5, 0]
+            joints:
+             - [1, 4]
+      jump:
+        frames:
+          - tex: [45,21,21,9]
+            anchor: [10, 0]
+      walk:
+        frames:
+          - tex: [15, 1, 22, 7]
+            anchor: [10, 0]
+            joints:
+             - [7, 4]
+          - tex: [2, 1, 11, 6]
+            anchor: [5, 0]
+            joints:
+              - [1, 4]
+          - tex: [38, 0, 9, 7]
+            anchor: [5, 0]
+            joints:
+              - [1, 4]
+          - tex: [49, 2, 11, 6]
+            anchor: [5, 0]
+            joints:
+              - [1, 3]
+          - tex: [2, 1, 11, 6]
+            anchor: [5, 0]
+            joints:
+              - [1, 4]
+          - tex: [61, 1, 15, 7]
+            anchor: [6, 0]
+            joints:
+              - [3,4]
+  boots_leather:
+    ticks: 10
+    joints:
+      - [10, 8]
+    animations:
+      idle:
+        frames:
+          - tex: [1, 8, 12, 6]
+            anchor: [6, 0]
+            joints:
+             - [2, 4]
+      jump:
+        frames:
+          - tex: [45,21,21,9]
+            anchor: [10, 0]
+      walk:
+        frames:
+          - tex: [15, 9, 22, 7]
+            anchor: [10, 0]
+            joints:
+             - [7, 4]
+          - tex: [1, 8, 12, 6]
+            anchor: [6, 0]
+            joints:
+              - [2, 4]
+          - tex: [38, 8, 9, 7]
+            anchor: [5, 0]
+            joints:
+              - [1, 4]
+          - tex: [51, 9, 9, 5]
+            anchor: [3, 0]
+            joints:
+              - [-1, 3]
+          - tex: [1, 8, 12, 6]
+            anchor: [6, 0]
+            joints:
+              - [2, 4]
+          - tex: [61, 9, 15, 7]
+            anchor: [6, 0]
+            joints:
+              - [3,4]
+  boots_ceramic:
+    ticks: 10
+    joints:
+      - [10, 8]
+    animations:
+      idle:
+        frames:
+          - tex: [1, 15, 12, 6]
+            anchor: [6, 0]
+            joints:
+             - [2, 4]
+      jump:
+        frames:
+          - tex: [45,21,21,9]
+            anchor: [10, 0]
+      walk:
+        frames:
+          - tex: [15, 17, 22, 7]
+            anchor: [10, 0]
+            joints:
+             - [7, 4]
+          - tex: [1, 15, 12, 6]
+            anchor: [6, 0]
+            joints:
+              - [2, 4]
+          - tex: [38, 16, 9, 7]
+            anchor: [5, 0]
+            joints:
+              - [1, 4]
+          - tex: [51, 17, 9, 5]
+            anchor: [3, 0]
+            joints:
+              - [-1, 3]
+          - tex: [1, 15, 12, 6]
+            anchor: [6, 0]
+            joints:
+              - [2, 4]
+          - tex: [61, 17, 15, 7]
+            anchor: [6, 0]
+            joints:
+              - [3,4]
+  boots_legend:
+    ticks: 10
+    joints:
+      - [10, 8]
+    animations:
+      idle:
+        frames:
+          - tex: [1, 24, 12, 6]
+            anchor: [6, 0]
+            joints:
+             - [2, 4]
+      jump:
+        frames:
+          - tex: [45,21,21,9]
+            anchor: [10, 0]
+      walk:
+        frames:
+          - tex: [15, 25, 22, 7]
+            anchor: [10, 0]
+            joints:
+             - [7, 4]
+          - tex: [1, 24, 12, 6]
+            anchor: [6, 0]
+            joints:
+              - [2, 4]
+          - tex: [38, 24, 9, 7]
+            anchor: [5, 0]
+            joints:
+              - [1, 4]
+          - tex: [51, 25, 9, 5]
+            anchor: [3, 0]
+            joints:
+              - [-1, 3]
+          - tex: [1, 24, 12, 6]
+            anchor: [6, 0]
+            joints:
+              - [2, 4]
+          - tex: [61, 25, 15, 7]
+            anchor: [6, 0]
+            joints:
+              - [3,4]
+  body_no:
+    ticks: 10
+    joints:
+      - [2, 3]
+    animations:
+      idle:
+        frames:
+          - tex: [78, 1, 21, 20]
+            anchor: [6, 0]
+      jump:
+        frames:
+          - tex: [100, 1, 21, 20]
+            anchor: [0,0]
+      walk:
+        frames:
+          - tex: [100, 1, 21, 20]
+            anchor: [7, 0]
+          - tex: [78, 1, 21, 20]
+            anchor: [6, 0]
+          - tex: [123, 1, 21, 20]
+            anchor: [6, 0]
+          - tex: [145, 1, 21, 21]
+            anchor: [6, 0]
+          - tex: [78, 1, 21, 20]
+            anchor: [6, 0]
+          - tex: [167, 1, 21, 20]
+            anchor: [7, 0]
+  body_light:
+    animations:
+      idle:
+        frames:
+          - tex: [1, 18, 21, 16]
+            anchor: [10, 0]
+
