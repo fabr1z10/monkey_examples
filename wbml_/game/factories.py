@@ -10,9 +10,14 @@ def platform(**kwargs):
     return monkey_toolkit.platformer.platform(settings.main_batch, **dict(kwargs, tile=tile))# pos[0], pos[1], size[0], size[1], tile, z)
 
 
+def ciao():
+    n =monkey.get_node(settings.player_id)
+    n.set_state('attack')
+    print(n.x)
+
 def player(**kwargs):
     aa = monkey_toolkit.multi_sprite(settings.main_batch, 'sprites', 'wonderboy')
-    aa.add("legs", monkey.get_sprite(settings.main_batch, "sprites/boots_legend"))
+    aa.add("legs", monkey.get_sprite(settings.main_batch, "sprites/boots_no"))
     aa.add("body", monkey.get_sprite(settings.main_batch, "sprites/body_no"))
     #aa.add("sword", monkey.get_sprite(settings.main_batch, "sprites/gradius"))
 
@@ -30,9 +35,15 @@ def player(**kwargs):
             'joint': 0
         }
     ]
+
+    keys = [
+        (settings.Keys.FIRE, ciao),
+    ]
+
     player = monkey_toolkit.character(settings.main_batch, **dict(kwargs, size=[10,14], speed=50, player=True, controller_mask_down=monkey_toolkit.flags.platform |
-        monkey_toolkit.flags.platform_passthrough, climb=True, model=aa, walk_keys=[], collision_shape = monkey.aabb(0, 10, 0, 10)))
+        monkey_toolkit.flags.platform_passthrough, climb=True, model=aa, walk_keys=keys, collision_shape = monkey.aabb(0, 10, 0, 10)))
     sm = player.get_state_machine()
+    sm.add('attack', monkey.attack(), anim='attack', speed=0, speed_air=50)
     #sm.add(monkey.attack("attack1", anims=['attack1'], speed=settings.mario_speed, gravity=settings.gravity, exit_state='walk'))
 
     #sm.add(monkey.idle("lift", "lift", exit_on_complete=True, exit_state='walk_item'))
