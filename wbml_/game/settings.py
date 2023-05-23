@@ -11,7 +11,10 @@ room = 'prova'
 
 shaders = [monkey.SHADER_BATCH]
 clear_color = [0, 174/255.0, 1.0, 1.0]
-gravity = 100
+gravity = 500
+
+# player speed
+speed = 200
 
 class Keys:
     FIRE = 68

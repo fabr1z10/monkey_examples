@@ -40,8 +40,8 @@ def player(**kwargs):
         (settings.Keys.FIRE, ciao),
     ]
 
-    player = monkey_toolkit.character(settings.main_batch, **dict(kwargs, size=[10,14], speed=50, player=True, controller_mask_down=monkey_toolkit.flags.platform |
-        monkey_toolkit.flags.platform_passthrough, climb=True, model=aa, walk_keys=keys, collision_shape = monkey.aabb(0, 10, 0, 10)))
+    player = monkey_toolkit.character(settings.main_batch, **dict(kwargs, size=[10,14], speed=settings.speed, player=True, controller_mask_down=monkey_toolkit.flags.platform |
+        monkey_toolkit.flags.platform_passthrough, climb=True, model=aa, walk_keys=keys, collision_shape=monkey.aabb(0, 10, 0, 10), fall_anim='fall'))
     sm = player.get_state_machine()
     sm.add('attack', monkey.attack(), anim='attack', speed=0, speed_air=50)
     #sm.add(monkey.attack("attack1", anims=['attack1'], speed=settings.mario_speed, gravity=settings.gravity, exit_state='walk'))

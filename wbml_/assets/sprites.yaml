@@ -28,7 +28,10 @@ multi_sprites:
         legs: jump
         body: jump
         sword: jump
-
+      fall:
+        legs: fall
+        body: fall
+        sword: idle
 sprites:
   gradius:
     animations:
@@ -93,8 +96,16 @@ sprites:
              - [1, 4]
       jump:
         frames:
-          - tex: [45,21,21,9]
+          - tex: [53,36,21,6]
             anchor: [10, 0]
+            joints:
+              - [7, 2]
+      fall:
+        frames:
+          - tex: [39, 34, 11, 7]
+            anchor: [6, 0]
+            joints:
+              - [2, 3]
       walk:
         frames:
           - tex: [15, 1, 22, 7]
@@ -261,8 +272,12 @@ sprites:
             anchor: [6, 0]
       jump:
         frames:
-          - tex: [100, 1, 21, 20]
-            anchor: [0,0]
+          - tex: [255, 1, 18, 20]
+            anchor: [5, 0]
+      fall:
+        frames:
+          - tex: [230, 1, 21, 20]
+            anchor: [8, 0]
       walk:
         frames:
           - tex: [100, 1, 21, 20]
