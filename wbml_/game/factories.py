@@ -17,9 +17,12 @@ def ciao():
 
 def player(**kwargs):
     aa = monkey_toolkit.multi_sprite(settings.main_batch, 'sprites', 'wonderboy')
-    aa.add("legs", monkey.get_sprite(settings.main_batch, "sprites/boots_no"))
-    aa.add("body", monkey.get_sprite(settings.main_batch, "sprites/body_no"))
-    #aa.add("sword", monkey.get_sprite(settings.main_batch, "sprites/gradius"))
+    boots = settings.boots_sprite[settings.boots]
+
+    aa.add("legs", monkey.get_sprite(settings.main_batch, 'sprites/' + boots[0]), boots[1])
+    aa.add("body", monkey.get_sprite(settings.main_batch, "sprites/body_" + settings.armour.name.lower()), 0)
+    if settings.sword != settings.Sword.NO:
+        aa.add("sword", monkey.get_sprite(settings.main_batch, "sprites/sword_" + settings.sword.name.lower()))
 
     print(type(aa))
 

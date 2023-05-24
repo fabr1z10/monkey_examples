@@ -99,7 +99,7 @@ sprites:
           - tex: [53,36,21,6]
             anchor: [10, 0]
             joints:
-              - [7, 2]
+              - [7, 1]
       fall:
         frames:
           - tex: [39, 34, 11, 7]
@@ -145,8 +145,16 @@ sprites:
              - [2, 4]
       jump:
         frames:
-          - tex: [45,21,21,9]
-            anchor: [10, 0]
+          - tex: [52, 24, 23, 8]
+            anchor: [11, 0]
+            joints:
+              - [7, 2]
+      fall:
+        frames:
+          - tex: [38, 25, 12, 7]
+            anchor: [6, 0]
+            joints:
+              - [4, 4]
       walk:
         frames:
           - tex: [15, 9, 22, 7]
@@ -272,8 +280,8 @@ sprites:
             anchor: [6, 0]
       jump:
         frames:
-          - tex: [255, 1, 18, 20]
-            anchor: [5, 0]
+          - tex: [255, 1, 18, 21]
+            anchor: [4, 0]
       fall:
         frames:
           - tex: [230, 1, 21, 20]
