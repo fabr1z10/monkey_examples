@@ -2,6 +2,25 @@ import monkey
 from . import settings
 import yaml
 
+
+# this is called at the very beginning,
+# before loading 1st room. Here we initialize all object maps
+def on_startup():
+    print('?')
+    with open("assets/objects.yaml", "r") as stream:
+        try:
+            data = yaml.safe_load(stream)
+            for key, value in data['objects'].items():
+                room = value['room']
+                settings.objects[key] = value
+                if room not in settings.objects_in_room:
+                    settings.objects_in_room[room] = []
+                settings.objects_in_room[room].append(key)
+        except yaml.YAMLError as exc:
+            print(exc)
+            exit(1)
+
+
 def main_click(node, pos, btn, act):
     # walk on left button CLICK
     if btn == 0 and act == 1:
@@ -78,9 +97,16 @@ def room_loader(room, id):
             hs.set_on_click(main_click)
             playableArea.add_component(hs)
             root.add(playableArea)
+            walkareas = []
             for wa in world['walk_areas']:
-                walkArea = monkey.walkarea(poly=wa, batch='line')
+                outline = wa['outline']
+                walkArea = monkey.walkarea(poly=outline, batch='line')
+                if 'z_func' in wa:
+                    walkArea.set_z_function(monkey.func_ply(wa['z_func']))
+                if 'scale_func' in wa:
+                    walkArea.set_scale_function(monkey.func_ply(wa['scale_func']))
                 root.add(walkArea)
+                walkareas.append(walkArea)
             # add player
             player = monkey.get_multi('main/guybrush', 'sprites')
             player.add_component(monkey.scumm_char(speed=settings.speed))
@@ -91,6 +117,19 @@ def room_loader(room, id):
             walkArea.add(player)
 
             root.add(make_ui())
+
+            # add objects
+            for obj in settings.objects_in_room.get(id, []):
+                print('adding ',obj)
+                obj_data = settings.objects[obj]
+                pos = obj_data['pos']
+                walkarea_id = obj_data.get('walkarea', 0)
+                node = monkey.Node()
+                node.set_position(pos[0], pos[1], 0)
+                if 'sprite' in obj_data:
+                    node.set_model(monkey.get_sprite(obj_data['sprite']), batch='sprites')
+                walkareas[walkarea_id].add(node)
+
         except yaml.YAMLError as exc:
             print(exc)
 

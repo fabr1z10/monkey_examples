@@ -1,0 +1,6 @@
+objects:
+  prova:
+    room: a
+    walkarea: 0
+    pos: [60, 15]
+    sprite: 'main/fire'

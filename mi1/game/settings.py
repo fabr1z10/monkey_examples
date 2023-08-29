@@ -22,3 +22,7 @@ spritesheets = {
 
 class ids:
     current_action = None
+
+
+objects = dict()
+objects_in_room = dict()
