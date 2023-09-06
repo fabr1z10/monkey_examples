@@ -9,6 +9,11 @@ debug_collision = True
 room='hello_world'
 
 player_script_id = '_player'
+dialogue_font='main/large'
+dialogue_batch='sprites'
+dialogue_margin = (10,5)
+dialogue_offset = 60
+dialogue_timeout = 0.5
 
 speed = 100
 
@@ -17,7 +22,9 @@ x1=0
 main_node=0
 
 spritesheets = {
-    'main': '../assets/spritesheet/mi1'
+    'main': '../assets/spritesheet/mi1/main',
+    'lookout': '../assets/spritesheet/mi1/lookout',
+    'village1': '../assets/spritesheet/mi1/village1'
 }
 
 class ids:
@@ -26,3 +33,60 @@ class ids:
 
 objects = dict()
 objects_in_room = dict()
+current_action = []
+strings = None
+default_verb = None
+verbs = {
+    'open': {
+        'text': 0,
+        'pos': [2, 40]
+    },
+    'close': {
+        'text': 1,
+        'pos': [2, 31]
+    },
+    'push': {
+        'text': 2,
+        'pos': [2, 22]
+    },
+    'pull': {
+        'text': 3,
+        'pos': [2, 13]
+    },
+    'walk': {
+        'text': 4,
+        'pos': [48, 40],
+        'default': True
+    },
+    'pickup': {
+        'text': 5,
+        'pos': [48, 31]
+    },
+    'talk': {
+        'text': 6,
+        'pos': [48, 22]
+    },
+    'give': {
+        'text': 7,
+        'pos': [48, 13],
+        'double': True
+    },
+    'use': {
+        'text': 8,
+        'pos': [100, 40],
+        'double': True
+    },
+    'look': {
+        'text': 9,
+        'pos': [100, 31]
+    },
+    'turnon': {
+        'text': 10,
+        'pos': [100, 22]
+    },
+    'turnoff': {
+        'text': 11,
+        'pos': [100, 13]
+    },
+
+}

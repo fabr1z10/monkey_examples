@@ -21,7 +21,7 @@ def g():
 
 
 def hello_world(r):
-    scumm.room_loader(r, 'a')
+    scumm.room_loader(r, 'village1')
     return
     r.add_runner(monkey.hotspot_manager())
 
@@ -38,6 +38,7 @@ def hello_world(r):
 
 
     r.add_batch('sprites', monkey.sprite_batch(max_elements=10000, cam=0, sheet='main'))
+    r.add_batch('bg', monkey.sprite_batch(max_elements=1000, cam=0, sheet='lookout'))
     r.add_batch('ui', monkey.sprite_batch(max_elements=1000, cam=1, sheet='main'))
     r.add_batch('line', monkey.line_batch(max_elements=1000, cam=0))
     r.add_batch('ui_line', monkey.line_batch(max_elements=1000, cam=1))

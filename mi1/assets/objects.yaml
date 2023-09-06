@@ -1,6 +1,46 @@
 objects:
+  poster:
+    room: village1
+    pos: [259, 27, 0]
+    text: 102
+    walkto: [269, 15]
+    turn: n
+    hotspot:
+      box: [0,0,20,23]
+  cliffside:
+    room: village1
+    pos: [0, 0,0]
+    text: 103
+    walkto: [0, 144]
+    turn: 'w'
+    hotspot:
+      box: [0, 0, 10, 144]
+
+
   prova:
     room: a
     walkarea: 0
     pos: [60, 15]
     sprite: 'main/fire'
+    text: 100
+    walkto: [70, 14]
+    turn: n
+    hotspot:
+      box: [0,0,50,10]
+  path_lookout_village:
+    room: lookout
+    pos: [230, 0,0]
+    walkto: [245, 2]
+    turn: s
+    text: 101
+    hotspot:
+      box: [0,0,30,10]
+  path_lookout_melee:
+    room: lookout
+    pos: [310, 30, 0]
+    walkto: [314, 50]
+    turn: e
+    text: 100
+    hotspot:
+      box: [0, 0, 10,100]
+

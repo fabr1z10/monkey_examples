@@ -1,0 +1,26 @@
+0: Open
+1: Close
+2: Push
+3: Pull
+4: Walk to
+5: Pick up
+6: Talk to
+7: Give
+8: Use
+9: Look at
+10: Turn on
+11: Turn off
+
+100: path
+101: stairs
+102: poster
+103: cliffside
+
+1000: "So what brings you to\nMêlée Island™ anyway?"
+1001: "Re-elect Governor Marley."
+1002: "\"When there's only one candidate, there's only\none choice.\""
+1003: "It doesn't seem to open."
+1004: "That doesn't seem to work."
+1005: "I can't move it."
+1006: "I can't pick that up."
+1007: "I don't see anything special about it."
