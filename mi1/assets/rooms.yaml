@@ -10,15 +10,20 @@ rooms:
   village1:
     size: [1008, 144]
     bg: village1
+
     objects:
       - pos: [0, 0, -1]
         quad: [0, 0, 1008, 144]
+        batch: 'bg'
       - pos: [73, 0, 1]
         quad: [4,160,183,122]
+        batch: 'bg'
       - pos: [229, 0, 1]
         quad: [209,157,375,17]
+        batch: 'bg'
       - pos: [606, 0, 1]
         quad: [599,147,402,134]
+        batch: 'bg'
     walk_areas:
       - type: line
         nodes:
@@ -51,12 +56,16 @@ rooms:
         batch: 'bg'
         sprite: 'lookout/fire'
       - pos: [0, 0, -1]
+        batch: 'bg'
         quad: [0, 0, 320, 144]
       - pos: [81, 16, 2]
+        batch: 'bg'
         quad: [1, 147, 138, 49]
       - pos: [294, 33, 2]
+        batch: 'bg'
         quad: [333,2,26,112]
       - pos: [226,0,2]
+        batch: 'bg'
         quad: [365,3,16,27]
 
 

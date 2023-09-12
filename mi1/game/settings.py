@@ -6,7 +6,10 @@ enable_framebuffer = True
 enable_mouse = True
 debug_collision = True
 
+string_file='strings.yaml'
+
 room='hello_world'
+room_id='village1'
 
 player_script_id = '_player'
 dialogue_font='main/large'
@@ -15,7 +18,7 @@ dialogue_margin = (10,5)
 dialogue_offset = 60
 dialogue_timeout = 0.5
 
-speed = 100
+speed = 300
 
 x=0
 x1=0
@@ -30,6 +33,8 @@ spritesheets = {
 class ids:
     current_action = None
 
+
+player = 'guybrush'
 
 objects = dict()
 objects_in_room = dict()

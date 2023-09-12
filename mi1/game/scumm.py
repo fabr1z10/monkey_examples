@@ -17,29 +17,7 @@ def update_current_action_label():
 
     node.set_palette(3)
 
-# this is called at the very beginning,
-# before loading 1st room. Here we initialize all object maps
-def on_startup():
-    print('?')
-    with open("assets/objects.yaml", "r") as stream:
-        try:
-            data = yaml.safe_load(stream)
-            for key, value in data['objects'].items():
-                room = value['room']
-                settings.objects[key] = value
-                if room not in settings.objects_in_room:
-                    settings.objects_in_room[room] = []
-                settings.objects_in_room[room].append(key)
-        except yaml.YAMLError as exc:
-            print(exc)
-            exit(1)
 
-    with open("assets/strings.yaml", "r") as stream:
-        try:
-            settings.strings = yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            print(exc)
-            exit(1)
 
 def main_click(node, pos, btn, act):
     # walk on left button CLICK
@@ -72,6 +50,9 @@ def make_ui():
         dv = info.get('default')
         if dv:
             default_verb = verb_id
+        print(info)
+        print(settings.strings)
+
         k.set_model(monkey.models.text(text=settings.strings[info['text']],
             font='main/small'), batch='ui')
         hs = monkey.text_hotspot(batch='ui_line')
@@ -121,6 +102,7 @@ def room_loader(room, id):
             root = room.root()
 
             playableArea = monkey.Node()
+            playableArea.set_position(0,0, -5)
             hs = monkey.hotspot(monkey.aabb(0, size[0], 0, size[1]), batch='line')
             hs.set_on_click(main_click)
             playableArea.add_component(hs)
@@ -140,21 +122,20 @@ def room_loader(room, id):
                 walkareas.append(walkArea)
 
             # add player
-            player = monkey.get_multi('main/guybrush', 'sprites')
-            player.add_component(monkey.scumm_char(speed=settings.speed, text_pal=4))
-            player.set_animation('idle_e')
-            player.set_position(20, 10, 0)  # random.randint(-160, 160), random.randint(-72,72), 0)
-            player.add_component(monkey.follow(cam=0, pos=(0,0,5)))
-            player.tag = 'player'
-            walkArea.add(player)
+            #player = monkey.get_multi('main/guybrush', 'sprites')
+            #player.add_component(monkey.scumm_char(speed=settings.speed, text_pal=4))
+            #player.set_animation('idle_e')
+            #player.set_position(20, 10, 0)  # random.randint(-160, 160), random.randint(-72,72), 0)
+
+            #walkArea.add(player)
 
             root.add(make_ui())
 
             # add objects
             for obj in settings.objects_in_room.get(id, []):
-                add_object(obj, settings.objects[obj], 'sprites', root, walkareas)
+                add_object(obj, settings.objects[obj], root, walkareas)
             for obj in world.get('objects', []):
-                add_object(None, obj, 'bg', root, walkareas)
+                add_object(None, obj,  root, walkareas)
             # add static bg
             # if bg:
             #     for item in bg['items']:
@@ -171,13 +152,23 @@ def room_loader(room, id):
             print(exc)
 
 
-def add_object(id, obj, batch, root, walkareas):
-    print('adding ', id)
+def add_object(id, obj, root, walkareas):
+
+    batch = obj.get('batch', 'sprites')
+    print('adding ', id, batch)
     obj_data = obj#settings.objects[obj]
     pos = obj_data['pos']
     walkarea_id = obj_data.get('walkarea', -1)
-    node = monkey.Node()
+    if 'multi' in obj_data:
+        node = monkey.get_multi(obj_data['multi'], 'sprites')
+    else:
+        node = monkey.Node()
+
+
     node.set_position(pos[0], pos[1], pos[2])
+
+    if 'character' in obj_data:
+        node.add_component(monkey.scumm_char(**obj_data['character']))
 
     if 'sprite' in obj_data:
         print(batch, obj_data['sprite'])
@@ -185,11 +176,20 @@ def add_object(id, obj, batch, root, walkareas):
     elif 'quad' in obj_data:
         print(obj_data['quad'])
         node.set_model(monkey.models.quad(tex_coords=obj_data['quad']), batch=batch)
+
+    if id == settings.player:
+        node.add_component(monkey.follow(cam=0, pos=(0, 0, 5)))
+        node.tag = 'player'
+    elif id:
+        node.tag = id
+
     if walkarea_id == -1:
         parent_node = root
     else:
         parent_node = walkareas[walkarea_id]
     parent_node.add(node)
+    if 'anim' in obj_data:
+        node.set_animation(obj_data['anim'])
     if 'hotspot' in obj_data:
         box = obj_data['hotspot']['box']
         ohs = monkey.hotspot(monkey.aabb(box[0], box[2], box[1], box[3]), batch='line')
