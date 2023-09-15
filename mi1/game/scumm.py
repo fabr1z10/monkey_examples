@@ -3,6 +3,11 @@ from . import settings
 import yaml
 from . import scripts
 
+
+def ciao():
+    print('sucalo')
+
+
 def update_current_action_label():
     node = monkey.get_node(settings.ids.current_action)
     verb = settings.verbs[settings.current_action[0]]
@@ -13,10 +18,9 @@ def update_current_action_label():
         text_id = settings.objects[settings.current_action[1]]['text']
         text += ' ' + settings.strings[text_id]
     node.set_model(monkey.models.text(text=text, font='main/small',
-        halign=monkey.ALIGN_CENTER), batch='ui')
+                                      halign=monkey.ALIGN_CENTER), batch='ui')
 
     node.set_palette(3)
-
 
 
 def main_click(node, pos, btn, act):
@@ -25,6 +29,7 @@ def main_click(node, pos, btn, act):
         a = monkey.script(id=settings.player_script_id)
         a.add(monkey.actions.walk(target=pos, tag='player'))
         monkey.play(a)
+
 
 def make_ui():
     ui = monkey.Node()
@@ -54,7 +59,7 @@ def make_ui():
         print(settings.strings)
 
         k.set_model(monkey.models.text(text=settings.strings[info['text']],
-            font='main/small'), batch='ui')
+                                       font='main/small'), batch='ui')
         hs = monkey.text_hotspot(batch='ui_line')
         hs.set_on_enter(on_enter_verb)
         hs.set_on_leave(on_leave_verb)
@@ -71,7 +76,23 @@ def make_ui():
     ui.add(lbl_current_action)
     settings.ids.current_action = lbl_current_action.id
     update_current_action_label()
+
+    inventory = monkey.ItemList(font='main/small', height=3, line_height=8, batch='ui', use_mouse=True,
+                                on_enter=change_text_color(6),
+                                on_leave=change_text_color(5), palette=5, arrow_down='main/arrow_down',
+                                arrow_down_pos=(-8, -6 * 8, 0), arrow_palette=7,
+                                arrow_palette_selected=8, arrow_up='main/arrow_up', arrow_up_pos=(-8, -20, 0))
+    inventory.add_item('ciao\ndifa')
+    inventory.add_item('pisdiez')
+    inventory.add_item('yellow petal')
+    inventory.add_item('gino')
+    inventory.add_item('pollo')
+    inventory.add_item('scamandro')
+    inventory.set_position(176, 49, 0)
+    ui.add(inventory)
+
     return ui
+
 
 def room_loader(room, id):
     with open("assets/rooms.yaml", "r") as stream:
@@ -84,13 +105,13 @@ def room_loader(room, id):
             # r.add_spritesheet('main')
             size = world['size']
             cam = monkey.camera_ortho(320, 144,
-                viewport=(0, 56, 320, 144),
-                bounds_x=(160, size[0]-160), bounds_y=(72, size[1]-72))
+                                      viewport=(0, 56, 320, 144),
+                                      bounds_x=(160, size[0] - 160), bounds_y=(72, size[1] - 72))
             room.add_camera(cam)
             ui_cam = monkey.camera_ortho(320, 56,
-                viewport=(0, 0, 320, 56),
-                bounds_x=(160, 160),
-                bounds_y=(28, 28))
+                                         viewport=(0, 0, 320, 56),
+                                         bounds_x=(160, 160),
+                                         bounds_y=(28, 28))
             room.add_camera(ui_cam)
             room.add_batch('sprites', monkey.sprite_batch(max_elements=10000, cam=0, sheet='main'))
             bg = world.get('bg', None)
@@ -102,7 +123,7 @@ def room_loader(room, id):
             root = room.root()
 
             playableArea = monkey.Node()
-            playableArea.set_position(0,0, -5)
+            playableArea.set_position(0, 0, -5)
             hs = monkey.hotspot(monkey.aabb(0, size[0], 0, size[1]), batch='line')
             hs.set_on_click(main_click)
             playableArea.add_component(hs)
@@ -122,20 +143,21 @@ def room_loader(room, id):
                 walkareas.append(walkArea)
 
             # add player
-            #player = monkey.get_multi('main/guybrush', 'sprites')
-            #player.add_component(monkey.scumm_char(speed=settings.speed, text_pal=4))
-            #player.set_animation('idle_e')
-            #player.set_position(20, 10, 0)  # random.randint(-160, 160), random.randint(-72,72), 0)
+            # player = monkey.get_multi('main/guybrush', 'sprites')
+            # player.add_component(monkey.scumm_char(speed=settings.speed, text_pal=4))
+            # player.set_animation('idle_e')
+            # player.set_position(20, 10, 0)  # random.randint(-160, 160), random.randint(-72,72), 0)
 
-            #walkArea.add(player)
+            # walkArea.add(player)
 
+            # ADD UI
             root.add(make_ui())
 
             # add objects
             for obj in settings.objects_in_room.get(id, []):
                 add_object(obj, settings.objects[obj], root, walkareas)
             for obj in world.get('objects', []):
-                add_object(None, obj,  root, walkareas)
+                add_object(None, obj, root, walkareas)
             # add static bg
             # if bg:
             #     for item in bg['items']:
@@ -153,17 +175,15 @@ def room_loader(room, id):
 
 
 def add_object(id, obj, root, walkareas):
-
     batch = obj.get('batch', 'sprites')
     print('adding ', id, batch)
-    obj_data = obj#settings.objects[obj]
+    obj_data = obj  # settings.objects[obj]
     pos = obj_data['pos']
     walkarea_id = obj_data.get('walkarea', -1)
     if 'multi' in obj_data:
         node = monkey.get_multi(obj_data['multi'], 'sprites')
     else:
         node = monkey.Node()
-
 
     node.set_position(pos[0], pos[1], pos[2])
 
@@ -199,42 +219,56 @@ def add_object(id, obj, root, walkareas):
         ohs.set_on_click(on_click_playable_item(id))
         node.add_component(ohs)
 
+
+def change_text_color(pal):
+    def f(node):
+        print('OKKE')
+        node.set_palette(pal)
+
+    return f
+
+
 def on_enter_verb(node):
     node.set_palette(2)
 
+
 def on_leave_verb(node):
     node.set_palette(1)
-
 
 
 def on_click_verb(verb_id):
     def on_click(node, pos, btn, act):
         settings.current_action = [verb_id]
         update_current_action_label()
+
     return on_click
+
 
 def on_enter_playable_item(item_id):
     def on_enter(node):
         settings.current_action.append(item_id)
         update_current_action_label()
+
     return on_enter
+
 
 def on_leave_playable_item(item_id):
     def on_leave(node):
         if len(settings.current_action) > 1:
             settings.current_action.pop()
             update_current_action_label()
+
     return on_leave
 
 
-
 def on_click_playable_item(item_id):
-    def on_click(node,pos,btn,act):
+    def on_click(node, pos, btn, act):
         if btn == 0 and act == 1:
             if len(settings.current_action) <= 1:
                 return
             if len(settings.current_action) == 4:
-                action = settings.current_action[0] + '_' + settings.current_action[1] + '_' + settings.current_action[2]
+                action = settings.current_action[0] + '_' + settings.current_action[1] + '_' + settings.current_action[
+                    2]
             else:
                 objid = settings.current_action[1]
                 action = settings.current_action[0] + '_' + objid
@@ -257,8 +291,9 @@ def on_click_playable_item(item_id):
                     else:
                         print(' no default')
                 monkey.play(s)
-            print('checking ',action)
+            print('checking ', action)
 
             settings.current_action = [settings.default_verb]
             update_current_action_label()
+
     return on_click

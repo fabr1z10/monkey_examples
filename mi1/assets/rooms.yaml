@@ -7,6 +7,17 @@ rooms:
         z_func: [0,1,144,0]
         scale_func: [0,1,144,0.5]
 
+  scummbar:
+    size: [640, 144]
+    bg: scummbar
+    objects:
+      - pos: [0,0,-1]
+        quad: [0,0,640,144]
+        batch: 'bg'
+    walk_areas:
+      - type: poly
+        outline: [32, 16, 85, 10, 90, 0, 149, 0, 200, 16, 256, 0, 626, 0, 580, 35, 565, 40, 514, 40, 492, 50, 467,41, 345, 32, 321, 10, 311, 10, 251, 18, 128, 19, 70, 24 ]
+        z_func: [0,1,144,0]
   village1:
     size: [1008, 144]
     bg: village1

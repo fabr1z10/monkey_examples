@@ -9,7 +9,7 @@ debug_collision = True
 string_file='strings.yaml'
 
 room='hello_world'
-room_id='village1'
+room_id='scummbar'
 
 player_script_id = '_player'
 dialogue_font='main/large'
@@ -27,7 +27,8 @@ main_node=0
 spritesheets = {
     'main': '../assets/spritesheet/mi1/main',
     'lookout': '../assets/spritesheet/mi1/lookout',
-    'village1': '../assets/spritesheet/mi1/village1'
+    'village1': '../assets/spritesheet/mi1/village1',
+    'scummbar': '../assets/spritesheet/mi1/scummbar',
 }
 
 class ids:

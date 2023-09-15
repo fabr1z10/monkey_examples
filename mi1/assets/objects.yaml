@@ -19,14 +19,26 @@ objects:
     room: village1
     pos: [699, 6, -0.5]
     text: 104
-    walkto: [715, 6]
+    walkto: [715, 13]
     turn: 'n'
     anim: 'closed'
+    connected_doors: ['door_scummbar_village']
     batch: 'bg'
     sprite: 'village1/door'
     hotspot:
       box: [0, 0, 31, 52]
-
+  door_scummbar_village:
+    room: scummbar
+    pos: [32, 24, -0.5]
+    text: 104
+    walkto: [59,20]
+    turn: 'w'
+    anim: 'closed'
+    connected_doors: ['door_village_scummbar']
+    batch: 'bg'
+    sprite: 'scummbar/door'
+    hotspot:
+      box: [0, 0, 38, 47]
   prova:
     room: a
     walkarea: 0
@@ -54,7 +66,7 @@ objects:
     hotspot:
       box: [0, 0, 10,100]
   guybrush:
-    room: village1
+    room: scummbar
     walkarea: 0
     pos: [20, 10, 0]
     multi: 'main/guybrush'
@@ -62,7 +74,17 @@ objects:
     character:
       speed: 300
       text_pal: 4
-
+  mancomb:
+    room: scummbar
+    walkarea: 0
+    pos: [89, 24, 2]
+    text: 105
+    batch: 'bg'
+    sprite: 'scummbar/mancomb'
+    walkto: [120, 20]
+    turn: 'n'
+    hotspot:
+      box: [0,0,30,30]
 
 
 

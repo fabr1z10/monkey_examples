@@ -19,7 +19,12 @@ walk_path_lookout_village = ss.change_room('village1', (8, 71), 'e')
 
 open_door_village_scummbar = ss.open_door('door_village_scummbar')
 close_door_village_scummbar = ss.close_door('door_village_scummbar')
-walk_door_village_scummbar = ss.walk_door('door_village_scummbar', 'lookout', (247, 10), 'n')
+walk_door_village_scummbar = ss.walk_door('door_village_scummbar', 'scummbar', (59, 20), 'e')
+
+open_door_scummbar_village = ss.open_door('door_scummbar_village')
+close_door_scummbar_village = ss.close_door('door_scummbar_village')
+walk_door_scummbar_village = ss.walk_door('door_scummbar_village', 'village1', (715, 13), 's')
+
 # def open_door_village_scummbar(s: monkey.script):
 #     obj = settings.objects['door_village_scummbar']
 #     if obj['anim'] == 'open':
