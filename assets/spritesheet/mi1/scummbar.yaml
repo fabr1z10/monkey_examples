@@ -1,10 +1,19 @@
-sheet: 'village1.png'
+sheet: 'scummbar.png'
 sprites:
   door:
     animations:
       closed:
         frames:
-          - tex: [239,183,31,52]
+          - tex: [1,194,38,47]
       open:
         frames:
-          - tex: [207,183,31,52]
+          - tex: [1,146,38,47]
+  mancomb:
+    animations:
+      idle_1:
+        frames:
+          - tex: [43,146,33,40]
+            #[43,146,33,40]
+      idle_2:
+        frames:
+          - tex: [79,146,36,40]

@@ -1,10 +1,10 @@
-sheet: 'lookout.png'
+sheet: 'village1.png'
 sprites:
-  fire:
+  door:
     animations:
-      default:
+      closed:
         frames:
-          - tex: [ 143,150,24,32 ]
-          - tex: [ 169,150,24,32 ]
-          - tex: [ 195,150,24,32 ]
-          - tex: [ 221,150,24,32 ]
+          - tex: [239,183,31,52]
+      open:
+        frames:
+          - tex: [207,183,31,52]
