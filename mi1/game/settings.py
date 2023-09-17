@@ -16,7 +16,11 @@ dialogue_font='main/large'
 dialogue_batch='sprites'
 dialogue_margin = (10,5)
 dialogue_offset = 60
-dialogue_timeout = 0.5
+dialogue_timeout = 2
+
+class palettes:
+    inventory_unselected_palette = 5
+    inventory_selected_palette = 6
 
 speed = 300
 
@@ -95,4 +99,8 @@ verbs = {
         'pos': [100, 13]
     },
 
+}
+
+inventory={
+    'pieces_of_eight': 20
 }

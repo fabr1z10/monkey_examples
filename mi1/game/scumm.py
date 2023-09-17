@@ -14,9 +14,18 @@ def update_current_action_label():
 
     text = settings.strings[verb['text']]
     if len(settings.current_action) == 2:
+        object_id = settings.current_action[1]
+        obj = settings.objects[object_id]
         print(settings.current_action[1], 'figone')
-        text_id = settings.objects[settings.current_action[1]]['text']
-        text += ' ' + settings.strings[text_id]
+        if object_id in settings.inventory:
+            quantity = settings.inventory[object_id]
+            if quantity == 1:
+                text_id = settings.strings[obj['text']]
+            else:
+                text_id = str(quantity) + ' ' + settings.strings[obj['plural']]
+        else:
+            text_id = settings.strings[obj['text']]
+        text += ' ' + text_id
     node.set_model(monkey.models.text(text=text, font='main/small',
                                       halign=monkey.ALIGN_CENTER), batch='ui')
 
@@ -78,20 +87,38 @@ def make_ui():
     update_current_action_label()
 
     inventory = monkey.ItemList(font='main/small', height=3, line_height=8, batch='ui', use_mouse=True,
-                                on_enter=change_text_color(6),
-                                on_leave=change_text_color(5), palette=5, arrow_down='main/arrow_down',
+                                on_enter=on_enter_inventory_item, on_click=on_click_inventory_item,
+                                on_leave=on_leave_inventory_item, palette=5, arrow_down='main/arrow_down',
                                 arrow_down_pos=(-8, -6 * 8, 0), arrow_palette=7,
                                 arrow_palette_selected=8, arrow_up='main/arrow_up', arrow_up_pos=(-8, -20, 0))
-    inventory.add_item('ciao\ndifa')
-    inventory.add_item('pisdiez')
-    inventory.add_item('yellow petal')
-    inventory.add_item('gino')
-    inventory.add_item('pollo')
-    inventory.add_item('scamandro')
-    inventory.set_position(176, 49, 0)
+    settings.ids.inventory = inventory.id
     ui.add(inventory)
 
+    for key, quantity in settings.inventory.items():
+        add_to_inventory(key, quantity)
+    #inventory.add_item('pieces_of_eight', 1)
+    #inventory.add_item('pisdiez')
+    #inventory.add_item('yellow petal')
+    #inventory.add_item('gino')
+    #inventory.add_item('pollo')
+    #inventory.add_item('scamandro')
+    inventory.set_position(176, 49, 0)
+
+
     return ui
+
+def add_to_inventory(object_id, quantity):
+
+    inv = monkey.get_node(settings.ids.inventory)
+    obj = settings.objects[object_id]
+    if quantity == 1:
+        text = settings.strings[obj['text']]
+    else:
+        text = str(quantity) + ' ' + settings.strings[obj['plural']]
+    inv.add_item(text=text, user_data=object_id)
+
+
+
 
 
 def room_loader(room, id):
@@ -227,6 +254,20 @@ def change_text_color(pal):
 
     return f
 
+def on_enter_inventory_item(node):
+    node.set_palette(settings.palettes.inventory_selected_palette)
+    settings.current_action.append(node.user_data)
+    update_current_action_label()
+
+def on_leave_inventory_item(node):
+    node.set_palette(settings.palettes.inventory_unselected_palette)
+    if len(settings.current_action) > 1:
+        settings.current_action.pop()
+        update_current_action_label()
+
+def on_click_inventory_item(node, pos, btn, act):
+    if btn == 0 and act == 1:
+        execute_action()
 
 def on_enter_verb(node):
     node.set_palette(2)
@@ -261,39 +302,43 @@ def on_leave_playable_item(item_id):
     return on_leave
 
 
+def execute_action():
+    print('fottimi')
+    if len(settings.current_action) <= 1:
+        return
+    if len(settings.current_action) == 4:
+        action = settings.current_action[0] + '_' + settings.current_action[1] + '_' + settings.current_action[2]
+    else:
+        objid = settings.current_action[1]
+        action = settings.current_action[0] + '_' + objid
+        obj = settings.objects[objid]
+        s = monkey.script(id=settings.player_script_id)
+        # we have to walk to the object unless it's in our inventory
+        if 'walkto' in obj and objid not in settings.inventory:
+            s.add(monkey.actions.walk(target=obj['walkto'], tag='player'))
+            if 'turn' in obj:
+                s.add(monkey.actions.turn(dir=obj['turn'], tag='player'))
+        f = getattr(scripts, action, None)
+        if f:
+            print('found')
+            f(s)
+            print('lclcc')
+        else:
+            print('not found')
+            # get default for this verb
+            f1 = getattr(scripts, '_' + settings.current_action[0], None)
+            if f1:
+                f1(s)
+            else:
+                print(' no default')
+        monkey.play(s)
+    #print('checking ', action)
+    settings.current_action = [settings.default_verb]
+    update_current_action_label()
+
 def on_click_playable_item(item_id):
     def on_click(node, pos, btn, act):
         if btn == 0 and act == 1:
-            if len(settings.current_action) <= 1:
-                return
-            if len(settings.current_action) == 4:
-                action = settings.current_action[0] + '_' + settings.current_action[1] + '_' + settings.current_action[
-                    2]
-            else:
-                objid = settings.current_action[1]
-                action = settings.current_action[0] + '_' + objid
-                obj = settings.objects[objid]
-                s = monkey.script(id=settings.player_script_id)
-                if 'walkto' in obj:
-                    s.add(monkey.actions.walk(target=obj['walkto'], tag='player'))
-                if 'turn' in obj:
-                    s.add(monkey.actions.turn(dir=obj['turn'], tag='player'))
-                f = getattr(scripts, action, None)
-                if f:
-                    print('found')
-                    f(s)
-                else:
-                    print('not found')
-                    # get default for this verb
-                    f1 = getattr(scripts, '_' + settings.current_action[0], None)
-                    if f1:
-                        f1(s)
-                    else:
-                        print(' no default')
-                monkey.play(s)
-            print('checking ', action)
-
-            settings.current_action = [settings.default_verb]
-            update_current_action_label()
+            execute_action()
 
     return on_click

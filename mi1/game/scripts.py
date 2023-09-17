@@ -65,3 +65,4 @@ def open_prova(s: monkey.script):
 #close_prova = player_say("So what brings you to\nMêlée Island™ anyway?")
 close_prova = ss.player_say("I've come seeking my\nfortune.")
 look_poster = ss.player_say(1001, 1002)
+look_pieces_of_eight = ss.player_say(1008)

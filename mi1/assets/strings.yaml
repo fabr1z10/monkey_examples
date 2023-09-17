@@ -17,7 +17,8 @@
 103: cliffside
 104: door
 105: pirate
-
+106: piece of eight
+107: pieces of eight
 
 1000: "So what brings you to\nMêlée Island™ anyway?"
 1001: "Re-elect Governor Marley."
@@ -27,3 +28,4 @@
 1005: "I can't move it."
 1006: "I can't pick that up."
 1007: "I don't see anything special about it."
+1008: "ciao ##math.factorial(10)##"

@@ -85,6 +85,9 @@ objects:
     turn: 'n'
     hotspot:
       box: [0,0,30,30]
+  pieces_of_eight:
+    text: 106
+    plural: 107
 
 
 
