@@ -40,7 +40,7 @@ def main_click(node, pos, btn, act):
         monkey.play(a)
 
 
-def make_ui():
+def make_ui(type):
     ui = monkey.Node()
     # keys = [
     #     ('Open', 2, 40),
@@ -58,15 +58,15 @@ def make_ui():
     # ]
     keys = settings.verbs
     default_verb = None
+    ui_main = monkey.Node()
     for verb_id, info in keys.items():
         k = monkey.Node()
         pos = info['pos']
         dv = info.get('default')
         if dv:
             default_verb = verb_id
-        print(info)
-        print(settings.strings)
-
+        #print(info)
+        #print(settings.strings)
         k.set_model(monkey.models.text(text=settings.strings[info['text']],
                                        font='main/small'), batch='ui')
         hs = monkey.text_hotspot(batch='ui_line')
@@ -76,13 +76,13 @@ def make_ui():
         k.add_component(hs)
         k.set_position(pos[0], pos[1] + 9, 0)
         k.set_palette(1)
-        ui.add(k)
+        ui_main.add(k)
     settings.default_verb = default_verb
     settings.current_action = [default_verb]
     lbl_current_action = monkey.Node()
     lbl_current_action.set_position(160, 58, 0)
 
-    ui.add(lbl_current_action)
+    ui_main.add(lbl_current_action)
     settings.ids.current_action = lbl_current_action.id
     update_current_action_label()
 
@@ -92,7 +92,17 @@ def make_ui():
                                 arrow_down_pos=(-8, -6 * 8, 0), arrow_palette=7,
                                 arrow_palette_selected=8, arrow_up='main/arrow_up', arrow_up_pos=(-8, -20, 0))
     settings.ids.inventory = inventory.id
-    ui.add(inventory)
+    ui_main.add(inventory)
+    ui.add(ui_main)
+
+    dialogue = monkey.ItemList(font='main/small', height=6, line_height=8, batch='ui', use_mouse=True,
+                               on_enter=on_enter_dialogue_item, on_click=on_click_dialogue_item,
+                               on_leave=on_leave_dialogue_item, palette=settings.palettes.dialogue_unselected_palette, arrow_down='main/arrow_down',
+                               arrow_down_pos=(0, -6*8, 0), arrow_palette=9,
+                               arrow_palette_selected=10, arrow_up='main/arrow_up', arrow_up_pos=(0, -20, 0))
+    settings.ids.dialogue = dialogue.id
+    ui.add(dialogue)
+
 
     for key, quantity in settings.inventory.items():
         add_to_inventory(key, quantity)
@@ -102,8 +112,13 @@ def make_ui():
     #inventory.add_item('gino')
     #inventory.add_item('pollo')
     #inventory.add_item('scamandro')
-    inventory.set_position(176, 49, 0)
 
+    inventory.set_position(176, 49, 0)
+    dialogue.set_position(0, 56, 0)
+    if type == 0:
+        dialogue.active = False
+    elif type == 1:
+        ui_main.active = False
 
     return ui
 
@@ -119,18 +134,26 @@ def add_to_inventory(object_id, quantity):
 
 
 
+def start_dialogue(dialogue_id):
+    d = monkey.get_node(settings.ids.dialogue)
+    dset = settings.dialogue[dialogue_id][1]
+    for id, line in dset.items():
+        active = line.get('active', True)
+        if active:
+            d.add_item(text=settings.strings[line['text']])
 
+    pass
 
 def room_loader(room, id):
     with open("assets/rooms.yaml", "r") as stream:
         try:
-
             data = yaml.safe_load(stream)
             world = data['rooms'][id]
             room.add_runner(monkey.hotspot_manager())
             room.add_runner(monkey.scheduler())
             # r.add_spritesheet('main')
             size = world['size']
+            type = world.get('type', 0)
             cam = monkey.camera_ortho(320, 144,
                                       viewport=(0, 56, 320, 144),
                                       bounds_x=(160, size[0] - 160), bounds_y=(72, size[1] - 72))
@@ -149,25 +172,27 @@ def room_loader(room, id):
             room.add_batch('ui_line', monkey.line_batch(max_elements=1000, cam=1))
             root = room.root()
 
-            playableArea = monkey.Node()
-            playableArea.set_position(0, 0, -5)
-            hs = monkey.hotspot(monkey.aabb(0, size[0], 0, size[1]), batch='line')
-            hs.set_on_click(main_click)
-            playableArea.add_component(hs)
-            root.add(playableArea)
+            if type == 0:
+                playableArea = monkey.Node()
+                playableArea.set_position(0, 0, -5)
+                hs = monkey.hotspot(monkey.aabb(0, size[0], 0, size[1]), batch='line')
+                hs.set_on_click(main_click)
+                playableArea.add_component(hs)
+                root.add(playableArea)
             walkareas = []
-            for wa in world['walk_areas']:
-                if wa['type'] == 'poly':
-                    outline = wa['outline']
-                    walkArea = monkey.walkarea(poly=outline, batch='line')
-                else:
-                    walkArea = monkey.walkarea_line(nodes=wa['nodes'], edges=wa['edges'], batch='line')
-                if 'z_func' in wa:
-                    walkArea.set_z_function(monkey.func_ply(wa['z_func']))
-                if 'scale_func' in wa:
-                    walkArea.set_scale_function(monkey.func_ply(wa['scale_func']))
-                root.add(walkArea)
-                walkareas.append(walkArea)
+            if 'walk_areas' in world:
+                for wa in world['walk_areas']:
+                    if wa['type'] == 'poly':
+                        outline = wa['outline']
+                        walkArea = monkey.walkarea(poly=outline, batch='line')
+                    else:
+                        walkArea = monkey.walkarea_line(nodes=wa['nodes'], edges=wa['edges'], batch='line')
+                    if 'z_func' in wa:
+                        walkArea.set_z_function(monkey.func_ply(wa['z_func']))
+                    if 'scale_func' in wa:
+                        walkArea.set_scale_function(monkey.func_ply(wa['scale_func']))
+                    root.add(walkArea)
+                    walkareas.append(walkArea)
 
             # add player
             # player = monkey.get_multi('main/guybrush', 'sprites')
@@ -178,13 +203,17 @@ def room_loader(room, id):
             # walkArea.add(player)
 
             # ADD UI
-            root.add(make_ui())
+            root.add(make_ui(type))
 
             # add objects
             for obj in settings.objects_in_room.get(id, []):
                 add_object(obj, settings.objects[obj], root, walkareas)
             for obj in world.get('objects', []):
                 add_object(None, obj, root, walkareas)
+
+            # ON STARTUP
+            if type == 1:
+                start_dialogue(world.get('dialogue'))
             # add static bg
             # if bg:
             #     for item in bg['items']:
@@ -259,15 +288,27 @@ def on_enter_inventory_item(node):
     settings.current_action.append(node.user_data)
     update_current_action_label()
 
+def on_enter_dialogue_item(node):
+    node.set_palette(settings.palettes.dialogue_selected_palette)
+
+
+
 def on_leave_inventory_item(node):
     node.set_palette(settings.palettes.inventory_unselected_palette)
     if len(settings.current_action) > 1:
         settings.current_action.pop()
         update_current_action_label()
 
+def on_leave_dialogue_item(node):
+    node.set_palette(settings.palettes.dialogue_unselected_palette)
+
+
 def on_click_inventory_item(node, pos, btn, act):
     if btn == 0 and act == 1:
         execute_action()
+
+def on_click_dialogue_item(node, pos, btn, act):
+    pass
 
 def on_enter_verb(node):
     node.set_palette(2)

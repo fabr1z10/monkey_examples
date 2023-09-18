@@ -18,10 +18,19 @@ rooms:
       - type: poly
         outline: [32, 16, 85, 10, 90, 0, 149, 0, 200, 16, 256, 0, 626, 0, 580, 35, 565, 40, 514, 40, 492, 50, 467,41, 345, 32, 321, 10, 311, 10, 251, 18, 128, 19, 70, 24 ]
         z_func: [0,1,144,0]
+  mancomb:
+    type: 1
+    dialogue: mancomb
+    size: [320, 144]
+    bg: mancomb
+    objects:
+      - pos: [0,0,-1]
+        quad: [0,0,320,144]
+        batch: 'bg'
+
   village1:
     size: [1008, 144]
     bg: village1
-
     objects:
       - pos: [0, 0, -1]
         quad: [0, 0, 1008, 144]

@@ -17,6 +17,10 @@ palettes:
     ffffff: 0000aa
   8: # arrow selected
     ffffff: 5555ff
+  9: # dialogue unselected
+    ffffff: 00aa00
+  10: # dialogue selected
+    ffffff: ffff55
 fonts:
   small:
     line_height: 9
@@ -82,6 +86,9 @@ fonts:
       '1': [167,448,5,7,6]
       '2': [173,448,5,7,6]
       '3': [179,448,5,7,6]
+      "'": [315,448,1,7,2]
+      ".": [250,453,1,2,2]
+      "?": [330,448,5,7,6]
   large:
     line_height: 9
     chars:

@@ -9,7 +9,7 @@ debug_collision = True
 string_file='strings.yaml'
 
 room='hello_world'
-room_id='scummbar'
+room_id='mancomb'
 
 player_script_id = '_player'
 dialogue_font='main/large'
@@ -21,6 +21,8 @@ dialogue_timeout = 2
 class palettes:
     inventory_unselected_palette = 5
     inventory_selected_palette = 6
+    dialogue_unselected_palette = 9
+    dialogue_selected_palette = 10
 
 speed = 300
 
@@ -33,6 +35,7 @@ spritesheets = {
     'lookout': '../assets/spritesheet/mi1/lookout',
     'village1': '../assets/spritesheet/mi1/village1',
     'scummbar': '../assets/spritesheet/mi1/scummbar',
+    'mancomb': '../assets/spritesheet/mi1/mancomb',
 }
 
 class ids:
@@ -102,5 +105,5 @@ verbs = {
 }
 
 inventory={
-    'pieces_of_eight': 20
+    'pieces_of_eight': 203
 }
