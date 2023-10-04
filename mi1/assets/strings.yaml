@@ -31,7 +31,7 @@
 1005: "I can't move it."
 1006: "I can't pick that up."
 1007: "I don't see anything special about it."
-1008: "I have ##settings.inventory['pieces_of_eight']## pieces of eight"
+1008: "I have ##settings.inventory['pieces_of_eight']## pieces of eight."
 1100: "My name's Guybrush Threepwood. I'm new in town."
 1101: "Are you a pirate? Can I be on your crew?"
 1102: "Who's in charge here?"

@@ -33,6 +33,14 @@ open_door_kitchen_scummbar = ss.open_door('door_kitchen_scummbar')
 close_door_kitchen_scummbar = ss.close_door('door_kitchen_scummbar')
 walk_door_kitchen_scummbar = ss.walk_door('door_kitchen_scummbar', 'scummbar', (595, 13), 'w')
 
+def open_door_kitchen_pier(s):
+    #monkey.get_node(settings.ids.walk_areas[0]).set_wall(0, False)
+    ss.open_door('door_kitchen_pier')(s)
+    s.add(sa.set_wall(0, 0, False))
+def close_door_kitchen_pier(s):
+    #monkey.get_node(settings.ids.walk_areas[0]).set_wall(0, True)
+    ss.close_door('door_kitchen_pier')(s)
+    s.add(sa.set_wall(0, 0, True))
 # def open_door_village_scummbar(s: monkey.script):
 #     obj = settings.objects['door_village_scummbar']
 #     if obj['anim'] == 'open':

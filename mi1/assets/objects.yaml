@@ -62,6 +62,17 @@ objects:
     sprite: 'kitchen/door'
     connected_doors: ['door_scummbar_kitchen']
     hotspot:
+      box: [0,0,37,53]
+  door_kitchen_pier:
+    room: kitchen
+    pos: [192, 9, -1]
+    text: 104
+    walkto: [187, 11]
+    turn: 'e'
+    anim: 'closed'
+    batch: 'bg'
+    sprite: 'kitchen/door_pier'
+    hotspot:
       box: [0,0,32,60]
 
   prova:

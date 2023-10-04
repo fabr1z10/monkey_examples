@@ -147,6 +147,7 @@ def add_to_inventory(object_id, quantity):
 
 def room_loader(room, id):
     settings.game_is_active = True
+    settings.ids.walk_areas = []
     with open("assets/rooms.yaml", "r") as stream:
         try:
             data = yaml.safe_load(stream)
@@ -200,6 +201,7 @@ def room_loader(room, id):
                     if 'scale_func' in wa:
                         walkArea.set_scale_function(monkey.func_ply(wa['scale_func']))
                     root.add(walkArea)
+                    settings.ids.walk_areas.append(walkArea.id)
                     walkareas.append(walkArea)
 
             # add player
