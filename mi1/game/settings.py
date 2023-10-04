@@ -5,18 +5,23 @@ device_size=window_size
 enable_framebuffer = True
 enable_mouse = True
 debug_collision = True
+game_is_active = True
+
 
 string_file='strings.yaml'
 
 room='hello_world'
-room_id='mancomb'
+room_id='scummbar'
 
 player_script_id = '_player'
 dialogue_font='main/large'
 dialogue_batch='sprites'
 dialogue_margin = (10,5)
-dialogue_offset = 60
-dialogue_timeout = 2
+dialogue_offset = 75
+dialogue_timeout = 222
+dialogue_width = 148
+msg_parent_node = 0
+
 
 class palettes:
     inventory_unselected_palette = 5
@@ -36,10 +41,15 @@ spritesheets = {
     'village1': '../assets/spritesheet/mi1/village1',
     'scummbar': '../assets/spritesheet/mi1/scummbar',
     'mancomb': '../assets/spritesheet/mi1/mancomb',
+    'estevan': '../assets/spritesheet/mi1/estevan',
+    'cobb': '../assets/spritesheet/mi1/cobb',
+    'kitchen': '../assets/spritesheet/mi1/kitchen',
 }
 
 class ids:
     current_action = None
+    root = None
+    ui_main = None
 
 
 player = 'guybrush'
@@ -107,3 +117,14 @@ verbs = {
 inventory={
     'pieces_of_eight': 203
 }
+
+actors = {
+    0: {'pos': [240, 128], 'pal': 0},           # guybrush rhs
+    1: {'pos': [80, 128], 'pal': 11},           # mancomb seepgood
+    2: {'pos': [240, 128], 'pal': 12},          # estevan
+    3: {'pos': [80, 128], 'pal': 0},            # guybrush lhs
+    4: {'pos': [184, 114], 'pal': 13}           # cobb
+}
+
+class Variables:
+    talked_to_estevan = 0

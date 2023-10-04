@@ -1,19 +1,172 @@
+ilp:
+  1:
+    10:
+      text: 1178
+      next: -1
+    20:
+      text: 1179
+      next: 2
+    30:
+      text: 1180
+      next: -1
+  2:
+    10:
+      text: 1209
+      next: 2
+      act: [11]
+      deact: [10]
+    11:
+      text: 1223
+      next: 2
+      active: False
+    20:
+      text: 1210
+      next: 2
+      act: [21]
+      deact: [20]
+    21:
+      text: 1233
+      next: 2
+      active: False
+    30:
+      text: 1211
+      next: 2
+    40:
+      text: 1212
+      next: 2
+    50:
+      text: 1213
+      next: 2
+    60:
+      text: 1214
+      next: 2
+
+
 mancomb:
   1:
     10:
       text: 1100
       next: 2
-      off: [10]
+      deact: [10]
       active: True
     20:
       text: 1101
       next: 1
-      off: [20, 30]
+      deact: [20, 30]
+      act: [21]
       active: True
+    21:
+      text: 1112
+      next: 5
+      deact: [21]
+      active: False
     30:
       text: 1102
+      next: 4
       active: True
     40:
       text: 1103
       active: True
       next: -1
+  2:
+    10:
+        text: 1104
+        next: 2
+        deact: [10]
+    20:
+        text: 1105
+        next: 3
+    30:
+        text: 1106
+        next: -1
+    40:
+        text: 1107
+        next: -1
+  3:
+    10:
+      text: 1108 # i want to be a pirate
+      next: 1
+      deact: [ [ 'mancomb', 1, 30 ], [ 'mancomb', 1, 20 ] ]
+      act: [ [ 'mancomb', 1, 21 ] ]
+    20:
+      text: 1109
+      next: 1
+      deact: [ [ 'mancomb', 1, 30 ], [ 'mancomb', 1, 20 ] ]
+      act: [ [ 'mancomb', 1, 21 ] ]
+    30:
+      text: 1110
+      next: 1
+      deact: [ [ 'mancomb', 1, 30 ], [ 'mancomb', 1, 20 ] ]
+      act: [ [ 'mancomb', 1, 21 ] ]
+    40:
+      text: 1111
+      next: 1
+  4:
+    10:
+      text: 1113
+      next: 1
+      deact: [ [ 'mancomb', 1, 30 ], [ 'mancomb', 1, 20 ] ]
+      act: [ [ 'mancomb', 1, 21 ] ]
+    20:
+      text: 1114
+    30:
+      text: 1115
+      next: 1
+  5:
+    10:
+      text: 1116
+      next: 6
+    20:
+      text: 1117
+      next: 1
+    30:
+      text: 1118
+      next: 1
+  6:
+    10:
+      text: 1119
+      next: 1
+    20:
+      text: 1120
+      next: 1
+    30:
+      text: 1121
+estevan:
+  1:
+    10:
+      text: 1148
+      next: 1
+      deact: [10]
+      act: [35]
+    20:
+      text: 1149
+      deact: [20]
+      next: 1
+    30:
+      text: 1150
+      next: 1
+      deact: [30]
+      act: [35]
+    35:
+      text: 1154
+      next: 1
+      deact: [35]
+      active: false
+    40:
+      text: 1151
+      next: 1
+cobb:
+  1:
+    10:
+      text: 1170
+      next: 1
+    20:
+      text: 1171
+      next: 1
+    30:
+      text: 1172
+      next: 1
+    40:
+      text: 1173
+      next: 1
+

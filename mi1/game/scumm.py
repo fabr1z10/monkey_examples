@@ -1,7 +1,8 @@
 import monkey
+import monkey_toolkit
 from . import settings
 import yaml
-from . import scripts
+import game.scripts
 
 
 def ciao():
@@ -34,7 +35,7 @@ def update_current_action_label():
 
 def main_click(node, pos, btn, act):
     # walk on left button CLICK
-    if btn == 0 and act == 1:
+    if settings.game_is_active and btn == 0 and act == 1:
         a = monkey.script(id=settings.player_script_id)
         a.add(monkey.actions.walk(target=pos, tag='player'))
         monkey.play(a)
@@ -102,7 +103,7 @@ def make_ui(type):
                                arrow_palette_selected=10, arrow_up='main/arrow_up', arrow_up_pos=(0, -20, 0))
     settings.ids.dialogue = dialogue.id
     ui.add(dialogue)
-
+    settings.ids.ui_main = ui_main.id
 
     for key, quantity in settings.inventory.items():
         add_to_inventory(key, quantity)
@@ -134,17 +135,18 @@ def add_to_inventory(object_id, quantity):
 
 
 
-def start_dialogue(dialogue_id):
-    d = monkey.get_node(settings.ids.dialogue)
-    dset = settings.dialogue[dialogue_id][1]
-    for id, line in dset.items():
-        active = line.get('active', True)
-        if active:
-            d.add_item(text=settings.strings[line['text']])
-
-    pass
+# def start_dialogue(dialogue_id, set_id):
+#     d = monkey.get_node(settings.ids.dialogue)
+#     dset = settings.dialogue[dialogue_id][set_id]
+#     for id, line in dset.items():
+#         active = line.get('active', True)
+#         if active:
+#             d.add_item(text=settings.strings[line['text']], user_data={'dialogue': dialogue_id, 'line': id})
+#
+#     pass
 
 def room_loader(room, id):
+    settings.game_is_active = True
     with open("assets/rooms.yaml", "r") as stream:
         try:
             data = yaml.safe_load(stream)
@@ -152,6 +154,9 @@ def room_loader(room, id):
             room.add_runner(monkey.hotspot_manager())
             room.add_runner(monkey.scheduler())
             # r.add_spritesheet('main')
+            on_start_function = getattr(game.scripts, "on_start_" + id, None)
+            if on_start_function:
+                room.on_start = on_start_function
             size = world['size']
             type = world.get('type', 0)
             cam = monkey.camera_ortho(320, 144,
@@ -171,6 +176,8 @@ def room_loader(room, id):
             room.add_batch('ui', monkey.sprite_batch(max_elements=1000, cam=1, sheet='main'))
             room.add_batch('ui_line', monkey.line_batch(max_elements=1000, cam=1))
             root = room.root()
+            settings.msg_parent_node = root.id
+            settings.ids.root = root.id
 
             if type == 0:
                 playableArea = monkey.Node()
@@ -183,10 +190,11 @@ def room_loader(room, id):
             if 'walk_areas' in world:
                 for wa in world['walk_areas']:
                     if wa['type'] == 'poly':
-                        outline = wa['outline']
-                        walkArea = monkey.walkarea(poly=outline, batch='line')
+                        #outline = wa['outline']
+                        #holes = wa.get('holes', None)
+                        walkArea = monkey.walkarea(**wa['desc'], batch='line') # poly=outline, holes=holes, batch='line')
                     else:
-                        walkArea = monkey.walkarea_line(nodes=wa['nodes'], edges=wa['edges'], batch='line')
+                        walkArea = monkey.walkarea_line(**wa['desc'], batch='line') #nodes=wa['nodes'], edges=wa['edges'], batch='line')
                     if 'z_func' in wa:
                         walkArea.set_z_function(monkey.func_ply(wa['z_func']))
                     if 'scale_func' in wa:
@@ -209,11 +217,11 @@ def room_loader(room, id):
             for obj in settings.objects_in_room.get(id, []):
                 add_object(obj, settings.objects[obj], root, walkareas)
             for obj in world.get('objects', []):
-                add_object(None, obj, root, walkareas)
+                add_object(obj.get('id', None), obj, root, walkareas)
 
             # ON STARTUP
-            if type == 1:
-                start_dialogue(world.get('dialogue'))
+            #if type == 1:
+            #    monkey_toolkit.scumm.start_dialogue(world.get('dialogue'), 1)
             # add static bg
             # if bg:
             #     for item in bg['items']:
@@ -265,6 +273,7 @@ def add_object(id, obj, root, walkareas):
         parent_node = walkareas[walkarea_id]
     parent_node.add(node)
     if 'anim' in obj_data:
+        print('sucalo ' , obj_data['anim'])
         node.set_animation(obj_data['anim'])
     if 'hotspot' in obj_data:
         box = obj_data['hotspot']['box']
@@ -308,13 +317,49 @@ def on_click_inventory_item(node, pos, btn, act):
         execute_action()
 
 def on_click_dialogue_item(node, pos, btn, act):
-    pass
+    if btn == 0 and act == 1:
+        a = node.user_data
+        dialogue_node = monkey.get_node(settings.ids.dialogue)
+        dialogue_node.clear()
+        script_id = 'dial_' + a['dialogue'] + '_' + str(a['set']) + '_' + str(a['line'])
+        scr = getattr(game.scripts, script_id, None)
+        s = monkey.script()
+        print(settings.dialogue[a['dialogue']])
+        line_info = settings.dialogue[a['dialogue']][a['set']][a['line']]
+        for line_off in line_info.get('deact', []):
+            if isinstance(line_off, int):
+                print('deactivate', line_off)
+                settings.dialogue[a['dialogue']][a['set']][line_off]['active'] = False
+            else:
+                settings.dialogue[line_off[0]][line_off[1]][line_off[2]]['active'] = False
+        for line_on in line_info.get('act', []):
+            if isinstance(line_on, int):
+                settings.dialogue[a['dialogue']][a['set']][line_on]['active'] = True
+            else:
+                settings.dialogue[line_on[0]][line_on[1]][line_on[2]]['active'] = True
+
+        next = line_info['next']
+        if scr:
+            print('found script ' + script_id)
+            scr(s)
+            monkey.play(s)
+        else:
+            print('not found script ' + script_id)
+        if next >= 0:
+            s.add(monkey_toolkit.scumm.actions.start_dialogue(dialogue=a['dialogue'], set=next))
+        else:
+            s.add(monkey_toolkit.scumm.actions.end_dialogue())
+        monkey.play(s)
+        #f = getattr(scripts, '_dial_', None)
+        #print(node.user_data)
 
 def on_enter_verb(node):
+    print('entering ', node.x)
     node.set_palette(2)
 
 
 def on_leave_verb(node):
+    print('leaving ', node.x)
     node.set_palette(1)
 
 
@@ -359,7 +404,7 @@ def execute_action():
             s.add(monkey.actions.walk(target=obj['walkto'], tag='player'))
             if 'turn' in obj:
                 s.add(monkey.actions.turn(dir=obj['turn'], tag='player'))
-        f = getattr(scripts, action, None)
+        f = getattr(game.scripts, action, None)
         if f:
             print('found')
             f(s)
@@ -367,7 +412,7 @@ def execute_action():
         else:
             print('not found')
             # get default for this verb
-            f1 = getattr(scripts, '_' + settings.current_action[0], None)
+            f1 = getattr(game.scripts, 'default_' + settings.current_action[0], None)
             if f1:
                 f1(s)
             else:
@@ -379,7 +424,7 @@ def execute_action():
 
 def on_click_playable_item(item_id):
     def on_click(node, pos, btn, act):
-        if btn == 0 and act == 1:
+        if settings.game_is_active and btn == 0 and act == 1:
             execute_action()
 
     return on_click

@@ -1,0 +1,18 @@
+sheet: 'kitchen.png'
+sprites:
+  door:
+    animations:
+      closed:
+        frames:
+          - tex: [40,145,37,53]
+      open:
+        frames:
+          - tex: [1,145,37,53]
+  door_pier:
+    animations:
+      closed:
+        frames:
+          - tex: [112,145,32,60]
+      open:
+        frames:
+          - tex: [78,145,32,60]

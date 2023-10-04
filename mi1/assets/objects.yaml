@@ -39,6 +39,31 @@ objects:
     sprite: 'scummbar/door'
     hotspot:
       box: [0, 0, 38, 47]
+  door_scummbar_kitchen:
+    room: scummbar
+    pos: [591, 8, -1]
+    text: 104
+    walkto: [595, 13]
+    turn: 'e'
+    anim: 'closed'
+    batch: 'bg'
+    sprite: 'scummbar/door_kitchen'
+    connected_doors: ['door_kitchen_scummbar']
+    hotspot:
+      box: [0,0,35,69]
+  door_kitchen_scummbar:
+    room: kitchen
+    pos: [19, 18, -1]
+    text: 104
+    walkto: [46, 13]
+    turn: 'w'
+    anim: 'closed'
+    batch: 'bg'
+    sprite: 'kitchen/door'
+    connected_doors: ['door_scummbar_kitchen']
+    hotspot:
+      box: [0,0,32,60]
+
   prova:
     room: a
     walkarea: 0
@@ -70,10 +95,11 @@ objects:
     walkarea: 0
     pos: [20, 10, 0]
     multi: 'main/guybrush'
-    anim: 'idle_e'
+    #anim: 'idle_e'
     character:
       speed: 300
-      text_pal: 4
+      text_pal: 0
+      direction: [1, 0]
   mancomb:
     room: scummbar
     walkarea: 0
@@ -85,6 +111,143 @@ objects:
     turn: 'n'
     hotspot:
       box: [0,0,30,30]
+  estevan:
+    room: scummbar
+    pos: [164, 21, 1]
+    text: 105
+    batch: 'bg'
+    sprite: 'scummbar/estevan'
+    walkto: [194, 10]
+    turn: 's'
+    hotspot:
+      box: [0,0,30,20]
+  cobb:
+    room: scummbar
+    pos: [260, 17, 1]
+    walkarea: 0
+    text: 105
+    batch: 'bg'
+    sprite: 'scummbar/cobb'
+    walkto: [250, 10]
+    turn: 'n'
+    hotspot:
+      box: [0,0,20,20]
+
+  scummbar_pirate1:
+    room: scummbar
+    pos: [138,38,0]
+    walkarea: 0
+    text: 109
+    batch: 'bg'
+    sprite: 'scummbar/pirate1'
+    walkto: [120, 20]
+    turn: 'n'
+    hotspot:
+      box: [0,0,30,30]
+  scummbar_pirate2:
+    room: scummbar
+    pos: [124, 20, 0]
+    walkarea: 0
+    batch: 'bg'
+    sprite: 'scummbar/pirate2'
+  scummbar_pirate3:
+    room: scummbar
+    pos: [30,0,2]
+    batch: 'bg'
+    sprite: 'scummbar/pirate3'
+  scummbar_pirate4:
+    room: scummbar
+    pos: [0,0,1]
+    walkarea: 0
+    batch: 'bg'
+    sprite: 'scummbar/pirate4'
+    text: 105
+    hotspot:
+      box: [0,0,70,20]
+    walkto: [50, 10]
+    turn: s
+  scummbar_pirate5:
+    room: scummbar
+    pos: [200, 18, 1]
+    batch: 'bg'
+    sprite: 'scummbar/pirate5'
+    walkto: [194, 10]
+    turn: 's'
+    text: 109
+    hotspot:
+      box: [0, 0, 30, 30]
+  scummbar_pirate6:
+    room: scummbar
+    pos: [160,0,2]
+    batch: 'bg'
+    sprite: 'scummbar/pirate6'
+  scummbar_pirate7:
+    room: scummbar
+    pos: [255, 38, 1]
+    batch: 'bg'
+    sprite: 'scummbar/pirate7'
+    walkarea: 0
+  scummbar_pirate8:
+    room: scummbar
+    pos: [215, 44, 1]
+    walkarea: 0
+    batch: 'bg'
+    sprite: 'scummbar/pirate8'
+  scummbar_pirate_9:
+    room: scummbar
+    pos: [278, 40, 1]
+    walkarea: 0
+    batch: 'bg'
+    sprite: 'scummbar/pirate9'
+  fireplace:
+    room: scummbar
+    walkarea: 0
+    pos: [509, 44, 0]
+    text: 108
+    batch: 'bg'
+    sprite: 'scummbar/fireplace'
+    walkto: [512, 40]
+    hotspot:
+      box: [0, 0, 29, 18]
+    turn: 'e'
+  scummbar_important_pirate1:
+    pos: [374,11,0]
+    walkarea: 0
+    room: scummbar
+    batch: 'bg'
+    sprite: 'scummbar/important_pirate1'
+    character:
+      type: 0
+      speed: 300
+      text_pal: 13
+  scummbar_important_pirate2:
+    pos: [410,11,0]
+    walkarea: 0
+    room: scummbar
+    batch: 'bg'
+    sprite: 'scummbar/important_pirate2'
+    character:
+      type: 0
+      speed: 300
+      text_pal: 4
+  scummbar_important_pirate3:
+    pos: [444,17,0]
+    walkarea: 0
+    room: scummbar
+    batch: 'bg'
+    sprite: 'scummbar/important_pirate3'
+    character:
+      type: 0
+      speed: 300
+      text_pal: 6
+  important_looking_pirates:
+    room: scummbar
+    pos: [373,27,1]
+    walkto: [480, 3]
+    turn: 'w'
+    text: 110
+    hotspot:
+      box: [0,0,128,30]
   pieces_of_eight:
     text: 106
     plural: 107

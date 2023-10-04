@@ -1,18 +1,18 @@
 import monkey
 import monkey_toolkit.scumm.actions as sa
 import monkey_toolkit.scumm.scripts as ss
-from . import settings
+from .. import settings
 
 # default actions
-_open = ss.player_say(1003)
-_close = ss.player_say(1004)
-_push = ss.player_say(1005)
-_pull = ss.player_say(1005)
-_pickup = ss.player_say(1006)
-_use = ss.player_say(1004)
-_turnon = ss.player_say(1004)
-_turnoff = ss.player_say(1004)
-_look = ss.player_say(1007)
+default_open = ss.player_say(1003)
+default_close = ss.player_say(1004)
+default_push = ss.player_say(1005)
+default_pull = ss.player_say(1005)
+default_pickup = ss.player_say(1006)
+default_use = ss.player_say(1004)
+default_turnon = ss.player_say(1004)
+default_turnoff = ss.player_say(1004)
+default_look = ss.player_say(1007)
 
 walk_cliffside = ss.change_room('lookout', (247, 10), 'n')
 walk_path_lookout_village = ss.change_room('village1', (8, 71), 'e')
@@ -24,6 +24,14 @@ walk_door_village_scummbar = ss.walk_door('door_village_scummbar', 'scummbar', (
 open_door_scummbar_village = ss.open_door('door_scummbar_village')
 close_door_scummbar_village = ss.close_door('door_scummbar_village')
 walk_door_scummbar_village = ss.walk_door('door_scummbar_village', 'village1', (715, 13), 's')
+
+open_door_scummbar_kitchen = ss.open_door('door_scummbar_kitchen')
+close_door_scummbar_kitchen = ss.close_door('door_scummbar_kitchen')
+walk_door_scummbar_kitchen = ss.walk_door('door_scummbar_kitchen', 'kitchen', (46, 13), 'e')
+
+open_door_kitchen_scummbar = ss.open_door('door_kitchen_scummbar')
+close_door_kitchen_scummbar = ss.close_door('door_kitchen_scummbar')
+walk_door_kitchen_scummbar = ss.walk_door('door_kitchen_scummbar', 'scummbar', (595, 13), 'w')
 
 # def open_door_village_scummbar(s: monkey.script):
 #     obj = settings.objects['door_village_scummbar']
@@ -65,4 +73,17 @@ def open_prova(s: monkey.script):
 #close_prova = player_say("So what brings you to\nMêlée Island™ anyway?")
 close_prova = ss.player_say("I've come seeking my\nfortune.")
 look_poster = ss.player_say(1001, 1002)
+look_fireplace = ss.player_say(1147)
+look_mancomb =ss.change_room('mancomb')
+look_estevan = ss.change_room('estevan')
+look_cobb = ss.change_room('cobb')
 look_pieces_of_eight = ss.player_say(1008)
+look_scummbar_pirate1 = ss.player_say(1174)
+talk_scummbar_pirate1 = ss.player_say(1175, 1174)
+look_scummbar_pirate4 = ss.player_say(1176)
+look_scummbar_pirate5 = ss.player_say(1177)
+
+def talk_important_looking_pirates(s):
+    s.add(sa.say(tag='scummbar_important_pirate2', line=1182))
+    s.add(sa.start_dialogue(dialogue='ilp', set=1))
+

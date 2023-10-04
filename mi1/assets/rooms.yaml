@@ -6,7 +6,24 @@ rooms:
         outline: [1, 1, 200, 1, 200, 50, 400, 50, 400, 70, 180, 70, 180, 30, 1, 30]
         z_func: [0,1,144,0]
         scale_func: [0,1,144,0.5]
-
+  kitchen:
+    size: [320, 144]
+    bg: kitchen
+    objects:
+      - pos: [0,0,-1]
+        quad: [0,0,320,144]
+        batch: 'bg'
+      - pos: [115, 0, 1]
+        quad: [146,145,33,26]
+        batch: 'bg'
+    walk_areas:
+      - type: poly
+        desc:
+          poly: [40, 0, 100, 0, 112, 8, 149, 8, 160, 0, 207, 0, 199, 9, 307, 12, 294, 18, 192, 18, 180, 18, 155, 21, 59, 21, 40, 16]
+          z_func: [0,1,144,0]
+          walls:
+            - A: [209, 0]
+              B: [184, 30]
   scummbar:
     size: [640, 144]
     bg: scummbar
@@ -14,10 +31,24 @@ rooms:
       - pos: [0,0,-1]
         quad: [0,0,640,144]
         batch: 'bg'
+      - pos: [374, 5, 1]
+        quad: [1,248,127,39]
+        walkarea: 0
+        batch: 'bg'
+      - pos: [157, 0, 0.99]
+        quad: [132,256,87,29]
+        batch: 'bg'
+      - pos: [20, 0, 0.99]
+        quad: [226, 262, 62, 24]
+        batch: 'bg'
+        
     walk_areas:
       - type: poly
-        outline: [32, 16, 85, 10, 90, 0, 149, 0, 200, 16, 256, 0, 626, 0, 580, 35, 565, 40, 514, 40, 492, 50, 467,41, 345, 32, 321, 10, 311, 10, 251, 18, 128, 19, 70, 24 ]
-        z_func: [0,1,144,0]
+        desc:
+          poly: [32, 16, 85, 10, 90, 0, 149, 0, 200, 16, 256, 0, 626, 0, 580, 35, 565, 40, 514, 40, 492, 50, 467,41, 345, 32, 321, 10, 311, 10, 251, 18, 128, 19, 70, 24 ]
+          holes:
+            - [374,5,501,5,501,23,474,30,374,23]
+          z_func: [0,1,144,0]
   mancomb:
     type: 1
     dialogue: mancomb
@@ -27,7 +58,35 @@ rooms:
       - pos: [0,0,-1]
         quad: [0,0,320,144]
         batch: 'bg'
-
+      - pos: [52, 18, 0]
+        batch: 'bg'
+        id: mancomb
+        sprite: 'mancomb/mancomb'
+  estevan:
+    type: 1
+    dialogue: estevan
+    size: [320, 144]
+    bg: estevan
+    objects:
+      - pos: [0,0,-1]
+        quad: [0,0,320,144]
+        batch: 'bg'
+      - pos: [176,15,1]
+        batch: 'bg'
+        id: estevan
+        sprite: 'estevan/estevan'
+  cobb:
+    type: 1
+    size: [320, 144]
+    bg: cobb
+    objects:
+      - pos: [0, 0, -1]
+        quad: [0,0,320,144]
+        batch: 'bg'
+      - pos: [212, 26, 1]
+        batch: 'bg'
+        id: cobb
+        sprite: 'cobb/cobb'
   village1:
     size: [1008, 144]
     bg: village1
