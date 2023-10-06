@@ -13,9 +13,16 @@ rooms:
       - pos: [0,0,-1]
         quad: [0,0,320,144]
         batch: 'bg'
+      - pos: [204,0,1]
+        quad: [306,145,13,144]
+        batch: 'bg'
       - pos: [115, 0, 1]
         quad: [146,145,33,26]
         batch: 'bg'
+      - pos: [248, 0, 1]
+        batch: 'bg'
+        id: plank
+        sprite: 'kitchen/plank'
     walk_areas:
       - type: poly
         desc:

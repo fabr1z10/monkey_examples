@@ -51,6 +51,16 @@ objects:
     connected_doors: ['door_kitchen_scummbar']
     hotspot:
       box: [0,0,35,69]
+  potostew:
+    room: kitchen
+    pos: [153, 39, -1]
+    text: 112
+    walkto: [168,18]
+    turn: 'n'
+    batch: 'bg'
+    sprite: 'kitchen/potostew'
+    hotspot:
+      box: [0,0,27,15]
   door_kitchen_scummbar:
     room: kitchen
     pos: [19, 18, -1]
@@ -107,10 +117,32 @@ objects:
     pos: [20, 10, 0]
     multi: 'main/guybrush'
     #anim: 'idle_e'
+    collider:
+      flag: 0
+      mask: 1
+      tag: 0
+      box: [-5, 0, 5, 1]
     character:
       speed: 300
       text_pal: 0
       direction: [1, 0]
+  collider_seagull:
+    room: kitchen
+    pos: [0,0,2]
+    collider:
+      flag: 1
+      mask: 0
+      tag: 1
+      box: [150,0,160,144]
+    user_data:
+      on_enter: kitchen_create_seagull
+  clickable_plank:
+    room: kitchen
+    pos: [280,6,1]
+    hotspot:
+      box: [0,0,30,8]
+      func:
+        on_click: plank
   mancomb:
     room: scummbar
     walkarea: 0
@@ -262,6 +294,37 @@ objects:
   pieces_of_eight:
     text: 106
     plural: 107
+  meat:
+    room: kitchen
+    pos: [79, 40, -0.9]
+    batch: 'bg'
+    sprite: 'kitchen/meat'
+    text: 111
+    walkto: [90, 18]
+    turn: 'n'
+    hotspot:
+      box: [0, 0, 20, 10]
+  fish:
+    room: kitchen
+    pos: [ 234, 9, 1 ]
+    batch: 'bg'
+    sprite: 'kitchen/fish'
+    text: 114
+    walkto: [ 234, 12 ]
+    turn: s
+    hotspot:
+      box: [0,0,12,7]
+  pot:
+    room: kitchen
+    pos: [ 104, 24, -0.90 ]
+    batch: 'bg'
+    type: item1
+    sprite: 'kitchen/pot'
+    text: 113
+    hotspot:
+      box: [0,0,15, 7]
+    walkto: [ 112,18 ]
+    turn: n
 
 
 

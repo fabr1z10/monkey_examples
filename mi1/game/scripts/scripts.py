@@ -33,14 +33,30 @@ open_door_kitchen_scummbar = ss.open_door('door_kitchen_scummbar')
 close_door_kitchen_scummbar = ss.close_door('door_kitchen_scummbar')
 walk_door_kitchen_scummbar = ss.walk_door('door_kitchen_scummbar', 'scummbar', (595, 13), 'w')
 
+pickup_meat = ss.pickup('meat')
+pickup_pot = ss.pickup('pot')
+def pickup_fish(s):
+    gulls = monkey.get_nodes('gull')
+    if gulls and next(iter(gulls)).anim == 'eat':
+        ss.player_say(1000)(s)
+    else:
+        ss.pickup('fish')(s)
+
+
 def open_door_kitchen_pier(s):
     #monkey.get_node(settings.ids.walk_areas[0]).set_wall(0, False)
     ss.open_door('door_kitchen_pier')(s)
+    settings.rooms['rooms']['kitchen']['walk_areas'][0]['desc']['walls'][0]['active'] = False
     s.add(sa.set_wall(0, 0, False))
 def close_door_kitchen_pier(s):
     #monkey.get_node(settings.ids.walk_areas[0]).set_wall(0, True)
+    settings.rooms['rooms']['kitchen']['walk_areas'][0]['desc']['walls'][0]['active'] = True
     ss.close_door('door_kitchen_pier')(s)
     s.add(sa.set_wall(0, 0, True))
+
+
+
+
 # def open_door_village_scummbar(s: monkey.script):
 #     obj = settings.objects['door_village_scummbar']
 #     if obj['anim'] == 'open':
@@ -95,3 +111,5 @@ def talk_important_looking_pirates(s):
     s.add(sa.say(tag='scummbar_important_pirate2', line=1182))
     s.add(sa.start_dialogue(dialogue='ilp', set=1))
 
+def pippo():
+    print('stupendo')

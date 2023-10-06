@@ -144,103 +144,105 @@ def add_to_inventory(object_id, quantity):
 #             d.add_item(text=settings.strings[line['text']], user_data={'dialogue': dialogue_id, 'line': id})
 #
 #     pass
+def on_enter_trap(player, trap, pos):
+    ud = trap.user_data
+    f = ud.get('on_enter', None)
+    trap.remove()
+    if f:
+        func = getattr(game.scripts, f, None)
+        if func:
+            func()
+    print('ENTERING TRAP')
+
+def on_leave_trap(player, trap):
+    ud = trap.user_data
+    f = ud.get('on_leave', None)
+    trap.remove()
+    if f:
+        func = getattr(game.scripts, f, None)
+        if func:
+            func()
+    print('LEAVING TRAP')
+
 
 def room_loader(room, id):
     settings.game_is_active = True
     settings.ids.walk_areas = []
-    with open("assets/rooms.yaml", "r") as stream:
-        try:
-            data = yaml.safe_load(stream)
-            world = data['rooms'][id]
-            room.add_runner(monkey.hotspot_manager())
-            room.add_runner(monkey.scheduler())
-            # r.add_spritesheet('main')
-            on_start_function = getattr(game.scripts, "on_start_" + id, None)
-            if on_start_function:
-                room.on_start = on_start_function
-            size = world['size']
-            type = world.get('type', 0)
-            cam = monkey.camera_ortho(320, 144,
-                                      viewport=(0, 56, 320, 144),
-                                      bounds_x=(160, size[0] - 160), bounds_y=(72, size[1] - 72))
-            room.add_camera(cam)
-            ui_cam = monkey.camera_ortho(320, 56,
-                                         viewport=(0, 0, 320, 56),
-                                         bounds_x=(160, 160),
-                                         bounds_y=(28, 28))
-            room.add_camera(ui_cam)
-            room.add_batch('sprites', monkey.sprite_batch(max_elements=10000, cam=0, sheet='main'))
-            bg = world.get('bg', None)
-            if bg:
-                room.add_batch('bg', monkey.sprite_batch(max_elements=100, cam=0, sheet=bg))
-            room.add_batch('line', monkey.line_batch(max_elements=1000, cam=0))
-            room.add_batch('ui', monkey.sprite_batch(max_elements=1000, cam=1, sheet='main'))
-            room.add_batch('ui_line', monkey.line_batch(max_elements=1000, cam=1))
-            root = room.root()
-            settings.msg_parent_node = root.id
-            settings.ids.root = root.id
-
-            if type == 0:
-                playableArea = monkey.Node()
-                playableArea.set_position(0, 0, -5)
-                hs = monkey.hotspot(monkey.aabb(0, size[0], 0, size[1]), batch='line')
-                hs.set_on_click(main_click)
-                playableArea.add_component(hs)
-                root.add(playableArea)
-            walkareas = []
-            if 'walk_areas' in world:
-                for wa in world['walk_areas']:
-                    if wa['type'] == 'poly':
-                        #outline = wa['outline']
-                        #holes = wa.get('holes', None)
-                        walkArea = monkey.walkarea(**wa['desc'], batch='line') # poly=outline, holes=holes, batch='line')
-                    else:
-                        walkArea = monkey.walkarea_line(**wa['desc'], batch='line') #nodes=wa['nodes'], edges=wa['edges'], batch='line')
-                    if 'z_func' in wa:
-                        walkArea.set_z_function(monkey.func_ply(wa['z_func']))
-                    if 'scale_func' in wa:
-                        walkArea.set_scale_function(monkey.func_ply(wa['scale_func']))
-                    root.add(walkArea)
-                    settings.ids.walk_areas.append(walkArea.id)
-                    walkareas.append(walkArea)
-
-            # add player
-            # player = monkey.get_multi('main/guybrush', 'sprites')
-            # player.add_component(monkey.scumm_char(speed=settings.speed, text_pal=4))
-            # player.set_animation('idle_e')
-            # player.set_position(20, 10, 0)  # random.randint(-160, 160), random.randint(-72,72), 0)
-
-            # walkArea.add(player)
-
-            # ADD UI
-            root.add(make_ui(type))
-
-            # add objects
-            for obj in settings.objects_in_room.get(id, []):
-                add_object(obj, settings.objects[obj], root, walkareas)
-            for obj in world.get('objects', []):
-                add_object(obj.get('id', None), obj, root, walkareas)
-
-            # ON STARTUP
-            #if type == 1:
-            #    monkey_toolkit.scumm.start_dialogue(world.get('dialogue'), 1)
-            # add static bg
-            # if bg:
-            #     for item in bg['items']:
-            #         bg1 = monkey.Node()
-            #         tex_coords = item['tex_coords']
-            #         pos = item.get('pos', (0, 0, 0))
-            #         m1 = monkey.models.quad(tex_coords=tex_coords)
-            #         bg1.set_position(pos[0], pos[1], pos[2])
-            #         bg1.set_model(m1, batch='bg')
-            #         root.add(bg1)
 
 
-        except yaml.YAMLError as exc:
-            print(exc)
 
+    #with open("assets/rooms.yaml", "r") as stream:
+    #    try:
+    #        data = yaml.safe_load(stream)
+    world = settings.rooms['rooms'][id]
+    room.add_runner(monkey.hotspot_manager())
+    room.add_runner(monkey.scheduler())
+    ce = monkey.collision_engine(80, 80, 0)
+    ce.add_response(0, 1, on_start=on_enter_trap, on_end=on_leave_trap)
+    room.add_runner(ce)
+    on_start_function = getattr(game.scripts, "on_start_" + id, None)
+    if on_start_function:
+        room.on_start = on_start_function
+    size = world['size']
+    type = world.get('type', 0)
+    cam = monkey.camera_ortho(320, 144,
+        viewport=(0, 56, 320, 144),
+        bounds_x=(160, size[0] - 160), bounds_y=(72, size[1] - 72))
+    room.add_camera(cam)
+    ui_cam = monkey.camera_ortho(320, 56,
+        viewport=(0, 0, 320, 56),
+        bounds_x=(160, 160), bounds_y=(28, 28))
+    room.add_camera(ui_cam)
+    room.add_batch('sprites', monkey.sprite_batch(max_elements=10000, cam=0, sheet='main'))
+    bg = world.get('bg', None)
+    if bg:
+        room.add_batch('bg', monkey.sprite_batch(max_elements=100, cam=0, sheet=bg))
+    room.add_batch('line', monkey.line_batch(max_elements=1000, cam=0))
+    room.add_batch('ui', monkey.sprite_batch(max_elements=1000, cam=1, sheet='main'))
+    room.add_batch('ui_line', monkey.line_batch(max_elements=1000, cam=1))
+    root = room.root()
+    settings.msg_parent_node = root.id
+    settings.ids.root = root.id
+
+    if type == 0:
+        playableArea = monkey.Node()
+        playableArea.set_position(0, 0, -5)
+        hs = monkey.hotspot(monkey.aabb(0, size[0], 0, size[1]), batch='line')
+        hs.set_on_click(main_click)
+        playableArea.add_component(hs)
+        root.add(playableArea)
+    walkareas = []
+    if 'walk_areas' in world:
+        for wa in world['walk_areas']:
+            if wa['type'] == 'poly':
+                walkArea = monkey.walkarea(**wa['desc'], batch='line') # poly=outline, holes=holes, batch='line')
+            else:
+                walkArea = monkey.walkarea_line(**wa['desc'], batch='line') #nodes=wa['nodes'], edges=wa['edges'], batch='line')
+            # if 'z_func' in wa:
+            #     walkArea.set_z_function(monkey.func_ply(wa['z_func']))
+            # if 'scale_func' in wa:
+            #     walkArea.set_scale_function(monkey.func_ply(wa['scale_func']))
+            root.add(walkArea)
+            settings.ids.walk_areas.append(walkArea.id)
+            walkareas.append(walkArea)
+
+    # ADD UI
+    root.add(make_ui(type))
+
+    # add objects
+    for obj in settings.objects_in_room.get(id, []):
+        add_object(obj, settings.objects[obj], root, walkareas)
+    for obj in world.get('objects', []):
+        add_object(obj.get('id', None), obj, root, walkareas)
 
 def add_object(id, obj, root, walkareas):
+    active = obj.get('active', True)
+    if not active:
+        return
+    user_data = {}
+    add_if_own = obj.get('add_if_own', False)
+    if id in settings.inventory and not add_if_own:
+        return
     batch = obj.get('batch', 'sprites')
     print('adding ', id, batch)
     obj_data = obj  # settings.objects[obj]
@@ -255,6 +257,13 @@ def add_object(id, obj, root, walkareas):
 
     if 'character' in obj_data:
         node.add_component(monkey.scumm_char(**obj_data['character']))
+    if 'collider' in obj_data:
+        c = obj_data['collider']
+        box = c['box']
+        node.add_component(monkey.collider(shape=monkey.aabb(box[0], box[2], box[1], box[3]),
+                                           flag=c['flag'], mask=c['mask'], tag=c['tag'], batch='line'))
+    if 'user_data' in obj_data:
+        user_data.update(obj_data['user_data'])
 
     if 'sprite' in obj_data:
         print(batch, obj_data['sprite'])
@@ -281,11 +290,25 @@ def add_object(id, obj, root, walkareas):
         box = obj_data['hotspot']['box']
         ohs = monkey.hotspot(monkey.aabb(box[0], box[2], box[1], box[3]), batch='line')
         # default on enter
-        ohs.set_on_enter(on_enter_playable_item(id))
-        ohs.set_on_leave(on_leave_playable_item(id))
-        ohs.set_on_click(on_click_playable_item(id))
-        node.add_component(ohs)
+        if 'func' in obj_data['hotspot']:
+            f = obj_data['hotspot']['func']
+            on_enter = f.get('on_enter', None)
+            on_leave = f.get('on_leave', None)
+            on_click = f.get('on_click', None)
+            if on_enter:
+                ohs.set_on_enter(getattr(game.scripts, on_enter))
+            if on_leave:
+                ohs.set_on_leave(getattr(game.scripts, on_leave))
+            if on_click:
+                ohs.set_on_click(getattr(game.scripts, on_click))
 
+        else:
+            ohs.set_on_enter(on_enter_playable_item(id))
+            ohs.set_on_leave(on_leave_playable_item(id))
+            ohs.set_on_click(on_click_playable_item(id))
+        node.add_component(ohs)
+    if user_data:
+        node.user_data = user_data
 
 def change_text_color(pal):
     def f(node):
@@ -315,7 +338,7 @@ def on_leave_dialogue_item(node):
 
 
 def on_click_inventory_item(node, pos, btn, act):
-    if btn == 0 and act == 1:
+    if btn == 0 and act == 1 and settings.current_action[0] != 'pickup':
         execute_action()
 
 def on_click_dialogue_item(node, pos, btn, act):

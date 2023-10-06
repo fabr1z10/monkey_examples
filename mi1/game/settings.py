@@ -128,3 +128,4 @@ actors = {
 
 class Variables:
     talked_to_estevan = 0
+    seagull_state = 0
