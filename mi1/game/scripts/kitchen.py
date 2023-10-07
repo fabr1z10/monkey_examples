@@ -29,3 +29,13 @@ def plank(node, pos, btn, act):
                 settings.Variables.seagull_state = (settings.Variables.seagull_state + 1) % 2
                 s.add(monkey.actions.animate(tag='gull', anim=anim))
         monkey.play(s)
+
+
+def seagull_land(gull):
+    if 'fish' in settings.inventory:
+        gull.set_animation('leave')
+    else:
+        gull.set_animation('eat')
+
+def seagull_leave(gull):
+    gull.remove()

@@ -40,6 +40,7 @@ def pickup_fish(s):
     if gulls and next(iter(gulls)).anim == 'eat':
         ss.player_say(1000)(s)
     else:
+        settings.objects['collider_seagull']['active']=False
         ss.pickup('fish')(s)
 
 
