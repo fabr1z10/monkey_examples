@@ -44,6 +44,24 @@ cloud1:
         - data: [160, 161, 162, 163,
                  96, 97, 97, 98,
                  0x60001, 33, 34, 0x60001]
+cloud2:
+  sheet: mario
+  size: [6,3]
+  animations:
+    main:
+      frames:
+        - data: [160, 161, 162, 161, 162, 163,
+                 96, 0x10004, 97, 0x20000, 98,
+                 0x60001, 33, 34, 33, 34, 0x60001]
+cloud3:
+  sheet: mario
+  size: [8,3]
+  animations:
+    main:
+      frames:
+        - data: [160, 161, 162, 161, 162, 161, 162,  163,
+                 96, 0x10006, 97, 0x20000, 98,
+                 0x60001, 33, 34, 33, 34, 33, 34, 0x60001]
 bush3:
   sheet: mario
   size: [8, 2]
@@ -51,6 +69,7 @@ bush3:
     main:
       frames:
         - data: [0x50004, 96, 0x10006, 97, 0x20000, 98, 0x60001, 33, 34, 33, 34, 33, 34, 0x60001]
+
 bush2:
   sheet: mario
   size: [6, 2]
@@ -65,6 +84,16 @@ bush1:
     main:
       frames:
         - data: [0x50004, 96, 0x10002, 97, 0x20000, 98, 0x60001, 33, 34, 0x60001]
+hill_small:
+  sheet: mario
+  size: [6,3]
+  animations:
+    main:
+      frames:
+        - data: [
+              35, 0x10004, 134, 0x20000, 0x30023,
+              0x60001, 35, 134, 36, 0x30023, 0x60001,
+              0x60002, 37, 0x30025, 0x60002]
 hill_large:
   sheet: mario
   size: [10,5]

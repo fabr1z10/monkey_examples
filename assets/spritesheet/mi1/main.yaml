@@ -11,7 +11,7 @@ palettes:
     ffffff: ffff55
   5: # inventory
     ffffff: aa00aa
-  6: # highlighted inventory, ilp3
+  6: # highlighted inventory, ilp3, alfredo
     000000: 000000
     ffffff: ff55ff
   7: # arrow unselected
@@ -31,6 +31,9 @@ palettes:
   13: # cobb, ilp1
     000000: 000000
     ffffff: 5555ff
+  14: # bill
+    000000: 000000
+    ffffff: 55ff55
 fonts:
   small:
     line_height: 9
@@ -227,6 +230,7 @@ sprites:
       default:
         frames:
           - tex: [1,418,12,20]
+
 
   guybrush_body:
     animations:
